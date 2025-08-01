@@ -4,52 +4,45 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MindTrail.HostConfiguration.Providers;
-using MindTrail.WebHost.Interfaces.Services;
 
 namespace MindTrail.WebHost.Services.Hosted;
 
-public class LifetimeEventsHostedService(
-    ILogger<LifetimeEventsHostedService> logger,
-    IHostApplicationLifetime appLifetime,
-    IExecutionService executionManager = null)
-    : IHostedService
+/// <summary>
+/// Used to handle events related to the application lifetime.
+/// </summary>
+/// <param name="logger">The logger.</param>
+public class AppLifetimeHostedService(ILogger<AppLifetimeHostedService> logger) : IHostedService
 {
-    public static string InstanceId { get; }
-
-    static LifetimeEventsHostedService()
+    static AppLifetimeHostedService()
     {
         InstanceId = Guid.NewGuid().ToString();
     }
 
+    /// <summary>
+    /// Instance ID.
+    /// </summary>
+    public static string InstanceId { get; }
+
     #region IHostedService
 
+    /// <inheritdoc cref="IHostedService.StartAsync"/>
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        appLifetime.ApplicationStopping.Register(OnStopping);
-
         LoggerProvider.SetInstanceId(InstanceId);
 
-        logger.LogInformation("Starting instance...");
+        logger.LogInformation("Launching an instance ...");
 
         return Task.CompletedTask;
     }
 
+    /// <inheritdoc cref="IHostedService.StopAsync"/>
     public Task StopAsync(CancellationToken cancellationToken)
     {
         LoggerProvider.SetInstanceId(InstanceId);
 
-        logger.LogInformation("Shutting down instance");
+        logger.LogInformation("Instance shutdown ...");
 
         return Task.CompletedTask;
-    }
-
-    #endregion
-
-    #region Private methods
-
-    private void OnStopping()
-    {
-        executionManager?.Shutdown();
     }
 
     #endregion

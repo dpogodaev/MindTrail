@@ -12,7 +12,7 @@ using MindTrail.HostConfiguration.Extensions;
 namespace MindTrail.HostConfiguration.Configs.Common;
 
 /// <summary>
-/// NLog configuration.
+/// Used to configure the NLog.
 /// </summary>
 /// <remarks>
 /// The sequence of method calls:
@@ -28,7 +28,7 @@ public static class NLogConfig
     /// <summary>
     /// Adds a configuration for NLog framework.
     /// </summary>
-    /// <param name="configuration">Application configuration.</param>
+    /// <param name="configuration">The application configuration.</param>
     public static void AddNLogConfig(IConfiguration configuration)
     {
         SetLogManagerConfiguration(configuration);

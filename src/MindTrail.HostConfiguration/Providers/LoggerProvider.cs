@@ -24,7 +24,7 @@ public static class LoggerProvider
     /// <summary>
     /// Configures the logger provider with the specified application configuration.
     /// </summary>
-    /// <param name="configuration">Application configuration.</param>
+    /// <param name="configuration">The application configuration.</param>
     public static void Configure(IConfiguration configuration)
     {
         NLogConfig.AddNLogConfig(configuration);

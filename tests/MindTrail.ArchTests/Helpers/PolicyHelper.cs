@@ -26,6 +26,18 @@ public static class PolicyHelper
         return policyDefinition;
     }
 
+    /// <summary>
+    /// Builds failure message.
+    /// </summary>
+    /// <param name="result">The result of testing the policy.</param>
+    /// <returns>A failure message.</returns>
+    public static string BuildFailureMessage(PolicyResult result)
+    {
+        return result.IsSuccessful
+            ? null
+            : $"{result.Description}. Failed types: {string.Join(", ", result.FailingTypes)}";
+    }
+
     #region Private methods
 
     private static Types GetTypes(string workingNamespace) =>

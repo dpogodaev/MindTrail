@@ -9,13 +9,16 @@ using MindTrail.WebHost.Settings;
 namespace MindTrail.WebHost.Configs.Components;
 
 /// <summary>
-/// Configuration of component <see cref="MindTrail.WebApi"/>.
+/// Used to configure the component <see cref="MindTrail.WebApi"/>.
 /// </summary>
 internal static class WebApiConfig
 {
     /// <summary>
-    /// Adds configuration for component <see cref="MindTrail.WebApi"/>.
+    /// Adds a configuration for the web API (Swagger, health checks, HTTP logging, etc.).
     /// </summary>
+    /// <param name="services">Used to register application services.</param>
+    /// <param name="configuration">The application configuration.</param>
+    /// <param name="logger">The startup logger. Optional.</param>
     public static void AddWebApiConfig(this IServiceCollection services,
         IConfiguration configuration, IStartupLogger logger = null)
     {

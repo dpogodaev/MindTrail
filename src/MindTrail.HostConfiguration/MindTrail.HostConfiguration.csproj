@@ -16,18 +16,24 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AutoMapper" Version="14.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0"/>
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0"/>
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0"/>
-        <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1"/>
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1"/>
         <PackageReference Include="NLog" Version="5.3.2"/>
         <PackageReference Include="NLog.Appsettings.Standard" Version="2.1.0"/>
         <PackageReference Include="NLog.Extensions.Hosting" Version="5.3.11"/>
+        <PackageReference Include="NLog.Schema" Version="5.3.2"/>
+        <PackageReference Include="NLog.Targets.Loki" Version="2.2.0"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MindTrail.Common\MindTrail.Common.csproj" />
+        <ProjectReference Include="..\MindTrail.AppServices\MindTrail.AppServices.csproj"/>
+        <ProjectReference Include="..\MindTrail.Common\MindTrail.Common.csproj"/>
+        <ProjectReference Include="..\MindTrail.DomainEntities\MindTrail.DomainEntities.csproj"/>
+        <ProjectReference Include="..\MindTrail.DomainServices\MindTrail.DomainServices.csproj"/>
+        <ProjectReference Include="..\MindTrail.EfCoreMssql\MindTrail.EfCoreMssql.csproj"/>
+        <ProjectReference Include="..\MindTrail.EfCorePostgreSql\MindTrail.EfCorePostgreSql.csproj"/>
+        <ProjectReference Include="..\MindTrail.EfCore\MindTrail.EfCore.csproj"/>
     </ItemGroup>
 
 </Project>

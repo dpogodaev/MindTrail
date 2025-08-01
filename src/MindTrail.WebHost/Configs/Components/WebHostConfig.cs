@@ -1,19 +1,28 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using MindTrail.HostConfiguration.Configs.Common;
-using MindTrail.WebHost.Configs.Common;
+using MindTrail.WebHost.Services.Hosted;
 
 namespace MindTrail.WebHost.Configs.Components;
 
 /// <summary>
-/// Configuration of component <see cref="MindTrail.WebHost"/>.
+/// Used to configure the component <see cref="MindTrail.WebHost"/>.
 /// </summary>
 internal static class WebHostConfig
 {
     /// <summary>
-    /// Adds configuration for component <see cref="MindTrail.WebHost"/>.
+    /// Adds a configuration for the web host (infrastructure services, providers, adapters, etc.).
     /// </summary>
+    /// <param name="services">Used to register application services.</param>
     public static void AddWebHostConfig(this IServiceCollection services)
     {
-        services.AddAutomapperConfig();
+        AddHostedServicesConfig(services);
     }
+
+    #region Private methods
+
+    private static void AddHostedServicesConfig(IServiceCollection services)
+    {
+        services.AddHostedService<AppLifetimeHostedService>();
+    }
+
+    #endregion
 }

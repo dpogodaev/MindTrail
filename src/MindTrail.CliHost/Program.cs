@@ -25,7 +25,7 @@ try
     startupLogger.Info("The application was successfully built", timer.ElapsedTimeInMs);
 
     timer.Restart();
-    await host.ApplyAutoMigrationAsync(startupLogger);
+    await host.ApplyAutoMigrationAsync(builder.Configuration, startupLogger);
 
     startupLogger.Info("The application was successfully launched", timer.ElapsedTimeInMs, timer.TotalElapsedTimeInMs);
 

@@ -1,89 +1,89 @@
 ﻿using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MindTrail.ArchTests.Constants;
 using MindTrail.ArchTests.Extensions;
 using MindTrail.ArchTests.Helpers;
-using Xunit;
 
 namespace MindTrail.ArchTests.ArchTests;
 
 /// <summary>
 /// Architectural tests for <see cref="MindTrail.WebApi"/> component.
 /// </summary>
+[TestClass]
+[TestCategory("Architecture")]
 public class WebApiArchTests
 {
-    private const string WorkingNamespace = ComponentNamespaces.WebApi;
+    private const string CurrentNamespace = ComponentNamespaces.WebApi;
+
+    private static readonly string[] UsingLibs =
+    [
+        "System",
+        "Microsoft",
+        "Swashbuckle"
+    ];
 
     /// <summary>
     /// Tests to check the dependency policy for <see cref="MindTrail.WebApi"/> component.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void DependencyOfComponentsShouldFollowCleanArchitecture()
     {
         //Arrange
-        var policyDefinition = PolicyHelper.BuildPolicyDefinition(WorkingNamespace,
+        var policyDefinition = PolicyHelper.BuildPolicyDefinition(CurrentNamespace,
             "Components dependency policy",
-            "Describes the dependencies of the 'WebApi' component");
+            $"Describes the dependencies of the ${nameof(WebApi)} component");
 
         policyDefinition.Add(types => types
-                .That().ResideInNamespace(WorkingNamespace)
-                .ShouldNot().HaveDependenciesOtherThan(CreateAllowedDependenciesList([
-                    ComponentNamespaces.Common,
-                    ComponentNamespaces.WebAuth
-                ])),
-            "The rule of dependence of the 'WebApi' on other components",
-            "The 'WebApi' component can only depend on the 'Common' component " +
-            "and components that also implement the interface (e.g., 'WebAuth')");
+                .That().ResideInNamespace(CurrentNamespace)
+                .ShouldNot().HaveDependenciesOtherThan(
+                    CreateAllowedDependenciesList([
+                        ComponentNamespaces.Common,
+                        ComponentNamespaces.WebAuth
+                    ])),
+            $"The dependency rule of ${nameof(WebApi)} on other components",
+            $"The ${nameof(WebApi)} component can only depend on the ${nameof(Common)} component " +
+            $"and components that also implement the interface (e.g., ${nameof(WebAuth)})");
 
         // Act
         var results = policyDefinition.Evaluate().Results;
 
         // Assert
-        Assert.All(results, x => Assert.True(x.IsSuccessful));
+        foreach (var result in results) Assert.IsTrue(result.IsSuccessful);
     }
 
     /// <summary>
     /// Tests to check class naming of <see cref="MindTrail.WebApi"/> component.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void ClassNamesMustFollowNamingRules()
     {
         //Arrange
-        var policyDefinition = PolicyHelper.BuildPolicyDefinition(WorkingNamespace,
-            "File naming policy",
+        var policyDefinition = PolicyHelper.BuildPolicyDefinition(CurrentNamespace,
+            "Class naming policy",
             "Describes the naming policy for files with the '.cs' extension");
 
         policyDefinition
-            .AddAttributeNamingRule(WorkingNamespace)
-            .AddControllerNamingRule(WorkingNamespace)
-            .AddFilterNamingRule(WorkingNamespace)
-            .AddModelNamingRule(WorkingNamespace);
+            .AddAttributeNamingRule(CurrentNamespace)
+            .AddControllerNamingRule(CurrentNamespace)
+            .AddFilterNamingRule(CurrentNamespace)
+            .AddModelNamingRule(CurrentNamespace);
 
         // Act
         var results = policyDefinition.Evaluate().Results;
 
         // Assert
-        Assert.All(results, x => Assert.True(x.IsSuccessful));
+        foreach (var result in results) Assert.IsTrue(result.IsSuccessful);
     }
 
     #region Private methods
 
     private static string[] CreateAllowedDependenciesList(IEnumerable<string> allowedComponents)
     {
-        var allowedDependenciesList = new List<string> { WorkingNamespace };
-        allowedDependenciesList.AddRange(GetUsingLibs());
+        var allowedDependenciesList = new List<string> { CurrentNamespace };
+        allowedDependenciesList.AddRange(UsingLibs);
         allowedDependenciesList.AddRange(allowedComponents);
 
         return allowedDependenciesList.ToArray();
-    }
-
-    private static IEnumerable<string> GetUsingLibs()
-    {
-        return
-        [
-            "System",
-            "Microsoft",
-            "Swashbuckle"
-        ];
     }
 
     #endregion

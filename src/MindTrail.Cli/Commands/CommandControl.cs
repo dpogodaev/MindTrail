@@ -10,7 +10,7 @@ public class CommandControl
     /// <summary>
     /// Indicates if to exit the application.
     /// </summary>
-    public bool IsExit { get; set; } //TODO
+    public bool ShouldExit { get; set; }
 
     /// <summary>
     /// Command execution counter.
@@ -20,6 +20,5 @@ public class CommandControl
     /// <summary>
     /// Command execution history.
     /// </summary>
-    /// <remarks>Remark</remarks>
     public List<string> ExecutionHistory { get; } = [];
 }

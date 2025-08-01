@@ -13,7 +13,7 @@ using System.Text.Json;
 namespace MindTrail.WebHost.Configs.Common;
 
 /// <summary>
-/// Swagger configuration.
+/// Used to configure the Swagger.
 /// </summary>
 internal static class SwaggerConfig
 {

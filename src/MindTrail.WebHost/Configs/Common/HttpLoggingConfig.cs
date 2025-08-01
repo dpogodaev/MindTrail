@@ -9,7 +9,7 @@ using MindTrail.WebHost.Settings;
 namespace MindTrail.WebHost.Configs.Common;
 
 /// <summary>
-/// HTTP logging configuration.
+/// Used to configure the HTTP logging.
 /// </summary>
 internal static class HttpLoggingConfig
 {
@@ -29,6 +29,9 @@ internal static class HttpLoggingConfig
     /// <summary>
     /// Adds a configuration for HTTP logging.
     /// </summary>
+    /// <param name="services">Used to register application services.</param>
+    /// <param name="configuration">The application configuration.</param>
+    /// <param name="logger">The startup logger. Optional.</param>
     /// <remarks>
     /// Also need to add the use of the <see cref="HttpLoggingBuilderExtensions.UseHttpLogging"/> method.
     /// </remarks>

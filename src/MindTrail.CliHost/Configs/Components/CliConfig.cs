@@ -4,13 +4,14 @@ using MindTrail.Cli.Services;
 namespace MindTrail.CliHost.Configs.Components;
 
 /// <summary>
-/// Configuration of component <see cref="MindTrail.Cli"/>.
+/// Used to configure the component <see cref="MindTrail.Cli"/>.
 /// </summary>
 internal static class CliConfig
 {
     /// <summary>
-    /// Adds configuration for component <see cref="MindTrail.Cli"/>.
+    /// Adds a configuration for command line interface (hosted services, etc.).
     /// </summary>
+    /// <param name="services">Used to register application services.</param>
     public static void AddCliConfig(this IServiceCollection services)
     {
         AddServices(services);

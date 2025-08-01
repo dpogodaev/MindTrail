@@ -31,7 +31,7 @@ public class CliService(IServiceScopeFactory scopeFactory) : IHostedService
             .Build(CommandFactory.HelpCommandName)
             .Execute(commandControl);
 
-        while (!commandControl.IsExit)
+        while (!commandControl.ShouldExit)
         {
             commandFactory
                 .Build(GetUserCommand())

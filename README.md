@@ -1,6 +1,7 @@
 # Mind Trail
 
-The Mind Trail is a web application that ... TODO
+The Mind Trail is a web application that captures and organizes thoughts and ideas as interconnected cards. 
+Each card can reference other cards, as well as external sources like books and publications.
 
 ## Requirements
 

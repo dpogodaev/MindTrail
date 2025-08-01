@@ -13,7 +13,7 @@ using MindTrail.WebAuth.Validators;
 namespace MindTrail.WebHost.Configs.Components;
 
 /// <summary>
-/// Configuration of component <see cref="MindTrail.WebAuth"/>.
+/// Used to configure the component <see cref="MindTrail.WebAuth"/>.
 /// </summary>
 internal static class WebAuthConfig
 {
@@ -23,8 +23,11 @@ internal static class WebAuthConfig
     private const string ApiKeyClaimName = "FullAccessByApiKey";
 
     /// <summary>
-    /// Adds configuration for component <see cref="MindTrail.WebAuth"/>.
+    /// Adds a configuration for user authentication and authorization.
     /// </summary>
+    /// <param name="services">Used to register application services.</param>
+    /// <param name="configuration">The application configuration.</param>
+    /// <param name="logger">The startup logger. Optional.</param>
     public static void AddWebAuthConfig(this IServiceCollection services,
         IConfiguration configuration, IStartupLogger logger = null)
     {

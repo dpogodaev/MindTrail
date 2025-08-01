@@ -1,81 +1,87 @@
 ﻿using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MindTrail.ArchTests.Constants;
 using MindTrail.ArchTests.Extensions;
 using MindTrail.ArchTests.Helpers;
-using Xunit;
 
 namespace MindTrail.ArchTests.ArchTests;
 
 /// <summary>
 /// Architectural tests for <see cref="MindTrail.Common"/> component.
 /// </summary>
+[TestClass]
+[TestCategory("Architecture")]
 public class CommonArchTests
 {
-    private const string WorkingNamespace = ComponentNamespaces.Common;
+    private const string CurrentNamespace = ComponentNamespaces.Common;
+
+    private static readonly string[] UsingLibs =
+    [
+        "System",
+        "Microsoft"
+    ];
 
     /// <summary>
-    /// Tests to check the dependency policy for <see cref="MindTrail.Common"/> component.
+    /// Verifies that the <see cref="MindTrail.Common"/> component follows the dependency rules.
     /// </summary>
-    [Fact]
-    public void DependencyOfComponentsShouldFollowCleanArchitecture()
+    [TestMethod]
+    public void Common_ShouldFollowDependencyRules()
     {
-        //Arrange
-        var policyDefinition = PolicyHelper.BuildPolicyDefinition(WorkingNamespace,
-            "Components dependency policy",
-            "Describes the dependencies of the 'Common' component");
+        // Arrange
+        var policyDefinition = PolicyHelper.BuildPolicyDefinition(CurrentNamespace,
+            "Component dependency policy",
+            $"Enforces the dependencies of the {nameof(Common)} component");
 
         policyDefinition.Add(types => types
-                .That().ResideInNamespace(WorkingNamespace)
-                .ShouldNot().HaveDependenciesOtherThan(CreateAllowedDependenciesList()),
-            "The rule of dependence of the 'Common' on other components",
-            "The 'Common' component should not have any dependencies on other components");
+                .That().ResideInNamespace(CurrentNamespace)
+                .ShouldNot().HaveDependenciesOtherThan(
+                    CreateAllowedDependenciesList()),
+            "Common_ShouldNotDependOn_OtherComponent",
+            "The shared logic should not have any dependencies on other components");
 
         // Act
         var results = policyDefinition.Evaluate().Results;
 
         // Assert
-        Assert.All(results, x => Assert.True(x.IsSuccessful));
+        foreach (var result in results)
+        {
+            Assert.IsTrue(result.IsSuccessful, PolicyHelper.BuildFailureMessage(result));
+        }
     }
 
     /// <summary>
-    /// Tests to check class naming of <see cref="MindTrail.Common"/> component.
+    /// Verifies that the <see cref="MindTrail.Common"/> component's types follow the naming conventions.
     /// </summary>
-    [Fact]
-    public void ClassNamesMustFollowNamingRules()
+    [TestMethod]
+    public void Common_ShouldFollowNamingConventions()
     {
-        //Arrange
-        var policyDefinition = PolicyHelper.BuildPolicyDefinition(WorkingNamespace,
-            "File naming policy",
-            "Describes the naming policy for files with the '.cs' extension");
+        // Arrange
+        var policyDefinition = PolicyHelper.BuildPolicyDefinition(CurrentNamespace,
+            "Type naming policy",
+            $"Enforces naming conventions for types in the {nameof(Common)} component");
 
         policyDefinition
-            .AddExtensionNamingRule(WorkingNamespace)
-            .AddInterfaceNamingRule(WorkingNamespace);
+            .AddExtensionNamingRule(CurrentNamespace)
+            .AddInterfaceNamingRule(CurrentNamespace);
 
         // Act
         var results = policyDefinition.Evaluate().Results;
 
         // Assert
-        Assert.All(results, x => Assert.True(x.IsSuccessful));
+        foreach (var result in results)
+        {
+            Assert.IsTrue(result.IsSuccessful, PolicyHelper.BuildFailureMessage(result));
+        }
     }
 
     #region Private methods
 
     private static string[] CreateAllowedDependenciesList()
     {
-        var allowedDependenciesList = new List<string> { WorkingNamespace };
-        allowedDependenciesList.AddRange(GetUsingLibs());
+        var allowedDependenciesList = new List<string> { CurrentNamespace };
+        allowedDependenciesList.AddRange(UsingLibs);
 
         return allowedDependenciesList.ToArray();
-    }
-
-    private static IEnumerable<string> GetUsingLibs()
-    {
-        return
-        [
-            "System",
-            "Microsoft"
-        ];
     }
 
     #endregion

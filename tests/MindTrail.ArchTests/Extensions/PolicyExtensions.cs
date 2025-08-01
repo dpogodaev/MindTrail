@@ -9,6 +9,32 @@ namespace MindTrail.ArchTests.Extensions;
 public static class PolicyExtensions
 {
     /// <summary>
+    /// Adds a naming rule for classes that implement an adapter.
+    /// </summary>
+    /// <param name="policyDefinition">Source policy definition.</param>
+    /// <param name="workingNamespace">Working namespace.</param>
+    /// <param name="exceptionsToRule">Names of classes that are exceptions to the rule.</param>
+    /// <returns>Policy definition with an added rule.</returns>
+    public static PolicyDefinition AddAdapterNamingRule(
+        this PolicyDefinition policyDefinition, string workingNamespace, string[] exceptionsToRule = null)
+    {
+        const string name = "Naming rule for a class that implements an adapter";
+        const string description = "The name of a class that implements an adapter must end with the word 'Adapter'";
+
+        ConditionList Definition(Types types)
+        {
+            var conditions = types
+                .That().ResideInNamespace($"{workingNamespace}.Adapters")
+                .Should().HaveNameEndingWith("Adapter");
+
+            conditions.AddExceptionsToRule(exceptionsToRule);
+            return conditions;
+        }
+
+        return policyDefinition.Add(Definition, name, description);
+    }
+
+    /// <summary>
     /// Adds a naming rule for classes inherited from the 'Attribute' class.
     /// </summary>
     /// <param name="policyDefinition">Source policy definition.</param>
@@ -45,7 +71,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddCommandNamingRule(
         this PolicyDefinition policyDefinition, string workingNamespace, string[] exceptionsToRule = null)
     {
-        const string name = "Naming rule for a class that implement a command";
+        const string name = "Naming rule for a class that implements a command";
         const string description = "The name of a class that implements a command must end with the word 'Command'";
 
         ConditionList Definition(Types types)
@@ -71,8 +97,8 @@ public static class PolicyExtensions
     public static PolicyDefinition AddConfigNamingRule(
         this PolicyDefinition policyDefinition, string workingNamespace, string[] exceptionsToRule = null)
     {
-        const string name = "Naming rule for a class that manage the configuration";
-        const string description = "The name of a class that manage the configuration must end with the word 'Config'";
+        const string name = "Naming rule for a class that manages the configuration";
+        const string description = "The name of a class that manages the configuration must end with the word 'Config'";
 
         ConditionList Definition(Types types)
         {
@@ -123,7 +149,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddControllerNamingRule(
         this PolicyDefinition policyDefinition, string workingNamespace, string[] exceptionsToRule = null)
     {
-        const string name = "Naming rule a class that implement a controller";
+        const string name = "Naming rule a class that implements a controller";
         const string description =
             "The name of a class that implements a controller must end with the word 'Controller'";
 
@@ -132,6 +158,59 @@ public static class PolicyExtensions
             var conditions = types
                 .That().ResideInNamespace($"{workingNamespace}.Controllers")
                 .Should().HaveNameEndingWith("Controller");
+
+            conditions.AddExceptionsToRule(exceptionsToRule);
+            return conditions;
+        }
+
+        return policyDefinition.Add(Definition, name, description);
+    }
+
+    /// <summary>
+    /// Adds a naming rule for classes that implement an enum.
+    /// </summary>
+    /// <param name="policyDefinition">Source policy definition.</param>
+    /// <param name="workingNamespace">Working namespace.</param>
+    /// <param name="exceptionsToRule">Names of classes that are exceptions to the rule.</param>
+    /// <returns>Policy definition with an added rule.</returns>
+    public static PolicyDefinition AddEnumNamingRule(
+        this PolicyDefinition policyDefinition, string workingNamespace, string[] exceptionsToRule = null)
+    {
+        const string name = "Naming rule for a class that implements an enum";
+        const string description = "The name of a class that implements an enum must end with the word 'Type'";
+
+        ConditionList Definition(Types types)
+        {
+            var conditions = types
+                .That().ResideInNamespace($"{workingNamespace}.Enums")
+                .Should().HaveNameEndingWith("Type");
+
+            conditions.AddExceptionsToRule(exceptionsToRule);
+            return conditions;
+        }
+
+        return policyDefinition.Add(Definition, name, description);
+    }
+
+    /// <summary>
+    /// Adds a naming rule for classes inherited from the 'Exception' class.
+    /// </summary>
+    /// <param name="policyDefinition">Source policy definition.</param>
+    /// <param name="workingNamespace">Working namespace.</param>
+    /// <param name="exceptionsToRule">Names of classes that are exceptions to the rule.</param>
+    /// <returns>Policy definition with an added rule.</returns>
+    public static PolicyDefinition AddExceptionNamingRule(
+        this PolicyDefinition policyDefinition, string workingNamespace, string[] exceptionsToRule = null)
+    {
+        const string name = "Naming rule for a class inherited from the 'Exception' class";
+        const string description =
+            "The name of a class inherited from the 'Exception' class must end with the word 'Exception'";
+
+        ConditionList Definition(Types types)
+        {
+            var conditions = types
+                .That().ResideInNamespace($"{workingNamespace}.Exceptions")
+                .Should().HaveNameEndingWith("Exception");
 
             conditions.AddExceptionsToRule(exceptionsToRule);
             return conditions;
@@ -176,7 +255,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddFactoryNamingRule(
         this PolicyDefinition policyDefinition, string workingNamespace, string[] exceptionsToRule = null)
     {
-        const string name = "Naming rule for a class that implement a factory";
+        const string name = "Naming rule for a class that implements a factory";
         const string description = "The name of a class that implements a factory must end with the word 'Factory'";
 
         ConditionList Definition(Types types)
@@ -202,7 +281,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddFilterNamingRule(
         this PolicyDefinition policyDefinition, string workingNamespace, string[] exceptionsToRule = null)
     {
-        const string name = "Naming rule for a class that implement a filter";
+        const string name = "Naming rule for a class that implements a filter";
         const string description = "The name of a class that implements a filter must end with the word 'Filter'";
 
         ConditionList Definition(Types types)
@@ -228,7 +307,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddHandlerNamingRule(
         this PolicyDefinition policyDefinition, string workingNamespace, string[] exceptionsToRule = null)
     {
-        const string name = "Naming rule for a class that implement a handler";
+        const string name = "Naming rule for a class that implements a handler";
         const string description = "The name of a class that implements a handler must end with the word 'Handler'";
 
         ConditionList Definition(Types types)
@@ -254,7 +333,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddHelperNamingRule(
         this PolicyDefinition policyDefinition, string workingNamespace, string[] exceptionsToRule = null)
     {
-        const string name = "Naming rule for a class that implement a helper";
+        const string name = "Naming rule for a class that implements a helper";
         const string description = "The name of a class that implements a helper must end with the word 'Helper'";
 
         ConditionList Definition(Types types)
@@ -306,7 +385,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddModelNamingRule(
         this PolicyDefinition policyDefinition, string workingNamespace, string[] exceptionsToRule = null)
     {
-        const string name = "Naming rule for a class that implement a model";
+        const string name = "Naming rule for a class that implements a model";
         const string description = "The name of a class that implements a model must end with the word 'Model'";
 
         ConditionList Definition(Types types)
@@ -358,7 +437,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddProviderNamingRule(
         this PolicyDefinition policyDefinition, string workingNamespace, string[] exceptionsToRule = null)
     {
-        const string name = "Naming rule for a class that implement a provider";
+        const string name = "Naming rule for a class that implements a provider";
         const string description = "The name of a class that implements a provider must end with the word 'Provider'";
 
         ConditionList Definition(Types types)
@@ -366,6 +445,32 @@ public static class PolicyExtensions
             var conditions = types
                 .That().ResideInNamespace($"{workingNamespace}.Providers")
                 .Should().HaveNameEndingWith("Provider");
+
+            conditions.AddExceptionsToRule(exceptionsToRule);
+            return conditions;
+        }
+
+        return policyDefinition.Add(Definition, name, description);
+    }
+
+    /// <summary>
+    /// Adds a naming rule for classes that implement a repository.
+    /// </summary>
+    /// <param name="policyDefinition">Source policy definition.</param>
+    /// <param name="workingNamespace">Working namespace.</param>
+    /// <param name="exceptionsToRule">Names of classes that are exceptions to the rule.</param>
+    /// <returns>Policy definition with an added rule.</returns>
+    public static PolicyDefinition AddRepositoryNamingRule(
+        this PolicyDefinition policyDefinition, string workingNamespace, string[] exceptionsToRule = null)
+    {
+        const string name = "Naming rule for a class that implements a repository";
+        const string description = "The name of a class that implements a provider must end with the word 'Repository'";
+
+        ConditionList Definition(Types types)
+        {
+            var conditions = types
+                .That().ResideInNamespace($"{workingNamespace}.Repositories")
+                .Should().HaveNameEndingWith("Repository");
 
             conditions.AddExceptionsToRule(exceptionsToRule);
             return conditions;
@@ -384,7 +489,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddServiceNamingRule(
         this PolicyDefinition policyDefinition, string workingNamespace, string[] exceptionsToRule = null)
     {
-        const string name = "Naming rule for a class that implement a service";
+        const string name = "Naming rule for a class that implements a service";
         const string description = "The name of a class that implements a service must end with the word 'Service'";
 
         ConditionList Definition(Types types)
@@ -436,7 +541,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddValidatorNamingRule(
         this PolicyDefinition policyDefinition, string workingNamespace, string[] exceptionsToRule = null)
     {
-        const string name = "Naming rule for a class that implement a validator";
+        const string name = "Naming rule for a class that implements a validator";
         const string description = "The name of a class that implements a validator must end with the word 'Validator'";
 
         ConditionList Definition(Types types)

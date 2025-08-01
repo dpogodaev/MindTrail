@@ -1,18 +1,17 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using MindTrail.HostConfiguration.Configs.Common;
 
 namespace MindTrail.CliHost.Configs.Components;
 
 /// <summary>
-/// Configuration of component <see cref="MindTrail.CliHost"/>.
+/// Used to configure the component <see cref="MindTrail.CliHost"/>.
 /// </summary>
 internal static class CliHostConfig
 {
     /// <summary>
-    /// Adds configuration for component <see cref="MindTrail.CliHost"/>.
+    /// Adds a configuration for the CLI host (infrastructure services, providers, adapters, etc.).
     /// </summary>
+    /// <param name="services">Used to register application services.</param>
     public static void AddCliHostConfig(this IServiceCollection services)
     {
-        services.AddAutomapperConfig();
     }
 }

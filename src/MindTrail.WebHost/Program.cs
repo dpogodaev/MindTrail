@@ -30,7 +30,7 @@ try
     startupLogger.Info("The application's HTTP request pipeline was successfully configured", timer.ElapsedTimeInMs);
 
     timer.Restart();
-    await app.ApplyAutoMigrationAsync(startupLogger);
+    await app.ApplyAutoMigrationAsync(builder.Configuration, startupLogger);
 
     startupLogger.Info("The application was successfully launched", timer.ElapsedTimeInMs, timer.TotalElapsedTimeInMs);
 

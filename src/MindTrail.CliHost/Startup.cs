@@ -16,24 +16,27 @@ internal static class Startup
     /// Configures all necessary services.
     /// </summary>
     /// <param name="builder">The builder used to configure application services.</param>
-    /// <param name="configuration">Application configuration.</param>
+    /// <param name="configuration">The application configuration.</param>
     /// <param name="logger">The startup logger. Optional.</param>
     public static void ConfigureServices(this IHostApplicationBuilder builder,
         IConfiguration configuration, IStartupLogger logger = null)
     {
         builder.Services.AddCommonConfig();
-        builder.Services.AddCliConfig();
+        builder.Services.AddEfCoreConfig(configuration, logger);
+
         builder.Services.AddCliHostConfig();
+        builder.Services.AddCliConfig();
     }
 
     /// <summary>
     /// Applies automatic database migration.
     /// </summary>
-    /// <param name="host">A host abstraction.</param>
+    /// <param name="host">The application host.</param>
+    /// <param name="configuration">The application configuration.</param>
     /// <param name="logger">The startup logger. Optional.</param>
-    public static Task ApplyAutoMigrationAsync(this IHost host, IStartupLogger logger)
+    public static async Task ApplyAutoMigrationAsync(this IHost host,
+        IConfiguration configuration, IStartupLogger logger)
     {
-        //TODO: add a call to the database provider
-        return Task.CompletedTask;
+        await host.ApplyMigrationAsync(configuration, logger);
     }
 }

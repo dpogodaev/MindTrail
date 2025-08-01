@@ -19,7 +19,7 @@ public class ExitCommand(string line, string name, Dictionary<string, string> op
     /// <inheritdoc cref="Command.Execute"/>
     public override void Execute(CommandControl control)
     {
-        control.IsExit = true;
+        control.ShouldExit = true;
 
         Console.ForegroundColor = ColorConstants.OutputColor;
         Console.WriteLine("Exit...");

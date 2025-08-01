@@ -19,21 +19,23 @@ internal static class Startup
     /// Configures all necessary services.
     /// </summary>
     /// <param name="builder">The builder used to register application services.</param>
-    /// <param name="configuration">Application configuration.</param>
+    /// <param name="configuration">The application configuration.</param>
     /// <param name="logger">The startup logger. Optional.</param>
     public static void ConfigureServices(this IHostApplicationBuilder builder,
         IConfiguration configuration, IStartupLogger logger = null)
     {
         builder.Services.AddCommonConfig();
-        builder.Services.AddWebApiConfig(configuration, logger);
-        builder.Services.AddWebAuthConfig(configuration, logger);
+        builder.Services.AddEfCoreConfig(configuration, logger);
+
         builder.Services.AddWebHostConfig();
+        builder.Services.AddWebAuthConfig(configuration, logger);
+        builder.Services.AddWebApiConfig(configuration, logger);
     }
 
     /// <summary>
     /// Configures the HTTP request pipeline.
     /// </summary>
-    /// <param name="app">The web application used to configure the HTTP pipeline and routes.</param>
+    /// <param name="app">Used to configure the HTTP pipeline and routes.</param>
     public static void ConfigureHttpRequestPipeline(this WebApplication app)
     {
         app.MapHealthChecks("/health");
@@ -52,11 +54,12 @@ internal static class Startup
     /// <summary>
     /// Applies automatic database migration.
     /// </summary>
-    /// <param name="host">A host abstraction.</param>
+    /// <param name="host">The application host.</param>
+    /// <param name="configuration">The application configuration.</param>
     /// <param name="logger">The startup logger. Optional.</param>
-    public static Task ApplyAutoMigrationAsync(this IHost host, IStartupLogger logger)
+    public static async Task ApplyAutoMigrationAsync(this IHost host,
+        IConfiguration configuration, IStartupLogger logger)
     {
-        //TODO: add a call to the database provider.
-        return Task.CompletedTask;
+        await host.ApplyMigrationAsync(configuration, logger);
     }
 }

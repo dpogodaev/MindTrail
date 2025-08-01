@@ -1,85 +1,117 @@
 ﻿using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MindTrail.ArchTests.Constants;
 using MindTrail.ArchTests.Extensions;
 using MindTrail.ArchTests.Helpers;
-using Xunit;
 
 namespace MindTrail.ArchTests.ArchTests;
 
 /// <summary>
 /// Architectural tests for <see cref="MindTrail.CliHost"/> component.
 /// </summary>
+[TestClass]
+[TestCategory("Architecture")]
 public class CliHostArchTests
 {
-    private const string WorkingNamespace = ComponentNamespaces.CliHost;
+    private const string CurrentNamespace = ComponentNamespaces.CliHost;
+
+    private static readonly string[] UsingLibs =
+    [
+        "System",
+        "Microsoft"
+    ];
 
     /// <summary>
-    /// Tests to check the dependency policy for <see cref="MindTrail.CliHost"/> component.
+    /// Verifies that the <see cref="MindTrail.CliHost"/> component follows the dependency rules.
     /// </summary>
-    [Fact]
-    public void DependencyOfComponentsShouldFollowCleanArchitecture()
+    [TestMethod]
+    public void CliHost_ShouldFollowDependencyRules()
     {
-        //Arrange
-        var policyDefinition = PolicyHelper.BuildPolicyDefinition(WorkingNamespace,
-            "Components dependency policy",
-            "Describes the dependencies of the 'CliHost' component");
+        // Arrange
+        var policyDefinition = PolicyHelper.BuildPolicyDefinition(CurrentNamespace,
+            "Component dependency policy",
+            $"Enforces the dependencies of the {nameof(CliHost)} component");
 
         policyDefinition.Add(types => types
-                .That().ResideInNamespace(WorkingNamespace)
-                .ShouldNot().HaveDependenciesOtherThan(CreateAllowedDependenciesList([
-                    ComponentNamespaces.Cli,
-                    ComponentNamespaces.HostConfiguration
-                ])),
-            "The rule of dependence of the 'CliHost' on other components",
-            "The 'CliHost' component can only depend on the components implementing its interface (e.g., 'Cli') " +
-            "and the application configurator ('HostConfiguration')");
+                .That().ResideInNamespace(CurrentNamespace)
+                .ShouldNot().HaveDependencyOnAny(
+                    ComponentNamespaces.EfCore,
+                    ComponentNamespaces.EfCoreMssql,
+                    ComponentNamespaces.EfCorePostgreSql),
+            "CliHost_ShouldNotDependOn_DomainLayer",
+            "The CLI host should not have any dependencies on the application (domain) layer");
+
+        policyDefinition.Add(types => types
+                .That().ResideInNamespace(CurrentNamespace)
+                .ShouldNot().HaveDependencyOnAny(
+                    ComponentNamespaces.EfCore,
+                    ComponentNamespaces.EfCoreMssql,
+                    ComponentNamespaces.EfCorePostgreSql),
+            "CliHost_ShouldNotDependOn_DataAccessLayer",
+            "The CLI host should not have any dependencies on the data access layer");
+
+        policyDefinition.Add(types => types
+                .That().ResideInNamespace(CurrentNamespace)
+                .ShouldNot().HaveDependencyOnAny(
+                    ComponentNamespaces.WebApi,
+                    ComponentNamespaces.WebAuth,
+                    ComponentNamespaces.WebHost),
+            "CliHost_ShouldNotDependOn_WebComponents",
+            $"The CLI host should not depend on web-based presentation components such as {nameof(WebApi)}");
+
+        policyDefinition.Add(types => types
+                .That().ResideInNamespace(CurrentNamespace)
+                .ShouldNot().HaveDependenciesOtherThan(
+                    CreateAllowedDependenciesList([
+                        ComponentNamespaces.Cli,
+                        ComponentNamespaces.HostConfiguration
+                    ])),
+            "CliHost_ShouldOnlyDependOn_CliAndHostConfiguration",
+            $"The CLI host can only depend on the components implementing its interface (e.g., ${nameof(Cli)}) " +
+            $"and the application configurator (${nameof(HostConfiguration)})");
 
         // Act
         var results = policyDefinition.Evaluate().Results;
 
         // Assert
-        Assert.All(results, x => Assert.True(x.IsSuccessful));
+        foreach (var result in results)
+        {
+            Assert.IsTrue(result.IsSuccessful, PolicyHelper.BuildFailureMessage(result));
+        }
     }
 
     /// <summary>
-    /// Tests to check class naming of <see cref="MindTrail.CliHost"/> component.
+    /// Verifies that the <see cref="MindTrail.CliHost"/> component's types follow the naming conventions.
     /// </summary>
-    [Fact]
-    public void ClassNamesMustFollowNamingRules()
+    [TestMethod]
+    public void CliHost_ShouldFollowNamingConventions()
     {
         //Arrange
-        var policyDefinition = PolicyHelper.BuildPolicyDefinition(WorkingNamespace,
-            "File naming policy",
-            "Describes the naming policy for files with the '.cs' extension");
+        var policyDefinition = PolicyHelper.BuildPolicyDefinition(CurrentNamespace,
+            "Type naming policy",
+            $"Enforces naming conventions for types in the {nameof(CliHost)} component");
 
-        policyDefinition.AddConfigNamingRule(WorkingNamespace);
+        policyDefinition.AddConfigNamingRule(CurrentNamespace);
 
         // Act
         var results = policyDefinition.Evaluate().Results;
 
         // Assert
-        Assert.All(results, x => Assert.True(x.IsSuccessful));
+        foreach (var result in results)
+        {
+            Assert.IsTrue(result.IsSuccessful, PolicyHelper.BuildFailureMessage(result));
+        }
     }
 
     #region Private methods
 
     private static string[] CreateAllowedDependenciesList(IEnumerable<string> allowedComponents)
     {
-        var allowedDependenciesList = new List<string> { WorkingNamespace };
-        allowedDependenciesList.AddRange(GetUsingLibs());
+        var allowedDependenciesList = new List<string> { CurrentNamespace };
+        allowedDependenciesList.AddRange(UsingLibs);
         allowedDependenciesList.AddRange(allowedComponents);
 
         return allowedDependenciesList.ToArray();
-    }
-
-    private static IEnumerable<string> GetUsingLibs()
-    {
-        return
-        [
-            "System",
-            "Microsoft",
-            "AutoMapper"
-        ];
     }
 
     #endregion
