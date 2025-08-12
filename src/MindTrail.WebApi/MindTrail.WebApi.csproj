@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>disable</ImplicitUsings>
-        <Nullable>disable</Nullable>
+        <Nullable>enable</Nullable>
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
     </PropertyGroup>
 
@@ -20,6 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\MindTrail.AppServices\MindTrail.AppServices.csproj" />
         <ProjectReference Include="..\MindTrail.Common\MindTrail.Common.csproj" />
         <ProjectReference Include="..\MindTrail.WebAuth\MindTrail.WebAuth.csproj" />
     </ItemGroup>

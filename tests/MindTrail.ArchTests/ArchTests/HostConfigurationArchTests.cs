@@ -18,7 +18,8 @@ public class HostConfigurationArchTests
     private static readonly string[] UsingLibs =
     [
         "System",
-        "Microsoft"
+        "Microsoft",
+        "NLog"
     ];
 
     /// <summary>
@@ -57,6 +58,9 @@ public class HostConfigurationArchTests
                         ComponentNamespaces.DomainEntities,
                         ComponentNamespaces.DomainServices,
                         ComponentNamespaces.AppServices,
+                        ComponentNamespaces.EfCore,
+                        ComponentNamespaces.EfCoreMssql,
+                        ComponentNamespaces.EfCorePostgreSql
                     ])),
             "HostConfiguration_ShouldOnlyDependOn_DomainLayerAndDataAccessLayer",
             "The application configurator can only depend on application (domain) layer and data access layer");

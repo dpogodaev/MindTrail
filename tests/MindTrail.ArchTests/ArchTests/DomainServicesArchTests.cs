@@ -13,7 +13,7 @@ namespace MindTrail.ArchTests.ArchTests;
 [TestCategory("Architecture")]
 public class DomainServicesArchTests
 {
-    private const string CurrentNamespace = ComponentNamespaces.WebAuth;
+    private const string CurrentNamespace = ComponentNamespaces.DomainServices;
 
     private static readonly string[] UsingLibs =
     [

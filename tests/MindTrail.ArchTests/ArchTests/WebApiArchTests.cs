@@ -23,15 +23,49 @@ public class WebApiArchTests
     ];
 
     /// <summary>
-    /// Tests to check the dependency policy for <see cref="MindTrail.WebApi"/> component.
+    /// Verifies that the <see cref="MindTrail.WebApi"/> component follows the dependency rules.
     /// </summary>
     [TestMethod]
-    public void DependencyOfComponentsShouldFollowCleanArchitecture()
+    public void WebApi_ShouldFollowDependencyRules()
     {
         //Arrange
         var policyDefinition = PolicyHelper.BuildPolicyDefinition(CurrentNamespace,
-            "Components dependency policy",
-            $"Describes the dependencies of the ${nameof(WebApi)} component");
+            "Component dependency policy",
+            $"Enforces the dependencies of the {nameof(WebApi)} component");
+
+        policyDefinition.Add(types => types
+                .That().ResideInNamespace(CurrentNamespace)
+                .ShouldNot().HaveDependencyOnAny(
+                    ComponentNamespaces.EfCore,
+                    ComponentNamespaces.EfCoreMssql,
+                    ComponentNamespaces.EfCorePostgreSql),
+            "WebApi_ShouldNotDependOn_DomainLayer",
+            "The Web API should not have any dependencies on the application (domain) layer");
+
+        policyDefinition.Add(types => types
+                .That().ResideInNamespace(CurrentNamespace)
+                .ShouldNot().HaveDependencyOnAny(
+                    ComponentNamespaces.EfCore,
+                    ComponentNamespaces.EfCoreMssql,
+                    ComponentNamespaces.EfCorePostgreSql),
+            "WebApi_ShouldNotDependOn_DataAccessLayer",
+            "The Web API should not have any dependencies on the data access layer");
+
+        policyDefinition.Add(types => types
+                .That().ResideInNamespace(CurrentNamespace)
+                .ShouldNot().HaveDependencyOnAny(
+                    ComponentNamespaces.HostConfiguration,
+                    ComponentNamespaces.CliHost,
+                    ComponentNamespaces.WebHost),
+            "WebApi_ShouldNotDependOn_InfrastructureLayer",
+            "The Web API should not have any dependencies on the infrastructure layer");
+
+        policyDefinition.Add(types => types
+                .That().ResideInNamespace(CurrentNamespace)
+                .ShouldNot().HaveDependencyOnAny(
+                    ComponentNamespaces.Cli),
+            "WebApi_ShouldNotDependOn_CliComponents",
+            $"The Web API should not depend on command-line-based presentation components such as {nameof(Cli)}");
 
         policyDefinition.Add(types => types
                 .That().ResideInNamespace(CurrentNamespace)
@@ -40,27 +74,30 @@ public class WebApiArchTests
                         ComponentNamespaces.Common,
                         ComponentNamespaces.WebAuth
                     ])),
-            $"The dependency rule of ${nameof(WebApi)} on other components",
-            $"The ${nameof(WebApi)} component can only depend on the ${nameof(Common)} component " +
-            $"and components that also implement the interface (e.g., ${nameof(WebAuth)})");
+            "WebApi_ShouldOnlyDependOn_WebComponentsAndCommonLogic",
+            $"The Web API can only depend on the shared logic ({nameof(Common)}) " +
+            $"and on components that also implement the web interface, such as {nameof(WebAuth)}");
 
         // Act
         var results = policyDefinition.Evaluate().Results;
 
         // Assert
-        foreach (var result in results) Assert.IsTrue(result.IsSuccessful);
+        foreach (var result in results)
+        {
+            Assert.IsTrue(result.IsSuccessful, PolicyHelper.BuildFailureMessage(result));
+        }
     }
 
     /// <summary>
-    /// Tests to check class naming of <see cref="MindTrail.WebApi"/> component.
+    /// Verifies that the <see cref="MindTrail.WebApi"/> component's types follow the naming conventions.
     /// </summary>
     [TestMethod]
-    public void ClassNamesMustFollowNamingRules()
+    public void WebApi_ShouldFollowNamingConventions()
     {
-        //Arrange
+        // Arrange
         var policyDefinition = PolicyHelper.BuildPolicyDefinition(CurrentNamespace,
-            "Class naming policy",
-            "Describes the naming policy for files with the '.cs' extension");
+            "Type naming policy",
+            $"Enforces naming conventions for types in the {nameof(WebApi)} component");
 
         policyDefinition
             .AddAttributeNamingRule(CurrentNamespace)
@@ -72,7 +109,10 @@ public class WebApiArchTests
         var results = policyDefinition.Evaluate().Results;
 
         // Assert
-        foreach (var result in results) Assert.IsTrue(result.IsSuccessful);
+        foreach (var result in results)
+        {
+            Assert.IsTrue(result.IsSuccessful, PolicyHelper.BuildFailureMessage(result));
+        }
     }
 
     #region Private methods

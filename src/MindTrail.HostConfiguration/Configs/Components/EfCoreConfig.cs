@@ -3,12 +3,15 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MindTrail.EfCore.Context;
+using MindTrail.EfCore.Interfaces.Repositories;
+using MindTrail.EfCore.Repositories;
 using MindTrail.EfCoreMssql.Context;
+using MindTrail.EfCorePostgreSql.Context;
 using MindTrail.HostConfiguration.Extensions;
 using MindTrail.HostConfiguration.Interfaces;
 using MindTrail.HostConfiguration.Settings;
-using MssqlDbContext = MindTrail.EfCoreMssql.Context.AppDbContext;
-using PostgreSqlContext = MindTrail.EfCorePostgreSql.Context.AppDbContext;
+using IUnitOfWork = MindTrail.DomainServices.Interfaces.Storages.Repositories.IUnitOfWork;
 
 namespace MindTrail.HostConfiguration.Configs.Components;
 
@@ -42,7 +45,8 @@ public static class EfCoreConfig
     /// <param name="host">The application host.</param>
     /// <param name="configuration">The application configuration.</param>
     /// <param name="logger">The startup logger. Optional.</param>
-    /// <exception cref="Exception">The <see cref="AppDbContext"/> is not configured.</exception>
+    /// <exception cref="Exception">Thrown when <see cref="MssqlDbContext"/> is not configured.</exception>
+    /// <exception cref="Exception">Thrown when <see cref="PostgreSqlDbContext"/> is not configured.</exception>
     public static async Task ApplyMigrationAsync(
         this IHost host, IConfiguration configuration, IStartupLogger logger = null)
     {
@@ -54,7 +58,7 @@ public static class EfCoreConfig
                 await host.ApplyMssqlMigrationAsync<MssqlDbContext>(logger);
                 break;
             case PostgreSqlProviderName:
-                await host.ApplyPostgreSqlMigrationAsync<PostgreSqlContext>(logger);
+                await host.ApplyPostgreSqlMigrationAsync<PostgreSqlDbContext>(logger);
                 break;
             default:
                 HandleUnsupportedDatabaseProvider(databaseSettings);
@@ -66,6 +70,8 @@ public static class EfCoreConfig
 
     private static void AddRepositories(IServiceCollection services)
     {
+        services.AddTransient<IPersonRepository, PersonRepository>();
+        services.AddTransient<ICountryRepository, CountryRepository>();
     }
 
     private static void AddDatabaseProvider(this IServiceCollection services,
@@ -77,9 +83,13 @@ public static class EfCoreConfig
         {
             case SqlServerProviderName:
                 services.AddEfCoreMssqlConfig<MssqlDbContext>(configuration, logger);
+                services.AddScoped<IUnitOfWork, AppUnitOfWork<MssqlDbContext>>(sp =>
+                    new AppUnitOfWork<MssqlDbContext>(sp.GetService<MssqlDbContext>()));
                 break;
             case PostgreSqlProviderName:
-                services.AddEfCorePostgreSqlConfig<PostgreSqlContext>(configuration, logger);
+                services.AddEfCorePostgreSqlConfig<PostgreSqlDbContext>(configuration, logger);
+                services.AddScoped<IUnitOfWork, AppUnitOfWork<PostgreSqlDbContext>>(sp =>
+                    new AppUnitOfWork<PostgreSqlDbContext>(sp.GetService<PostgreSqlDbContext>()));
                 break;
             default:
                 HandleUnsupportedDatabaseProvider(databaseSettings);

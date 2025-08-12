@@ -35,7 +35,7 @@ public class BuildInfoControllerTests(WebApplicationFactory<Program> app)
     /// Test for <see cref="BuildInfoController.HeadInfo"/> method.
     /// </summary>
     [Theory]
-    [InlineData("HEAD", "api/thought-guide/v1/info")]
+    [InlineData("HEAD", "api/mind-trail/v1/info")]
     public async Task HeadInfo_Call_ReturnsBuildInfoInResponseHeader(string method, string url)
     {
         // Arrange
@@ -54,7 +54,7 @@ public class BuildInfoControllerTests(WebApplicationFactory<Program> app)
     /// Test for <see cref="BuildInfoController.GetInfo"/> method.
     /// </summary>
     [Theory]
-    [InlineData("GET", "api/thought-guide/v1/info")]
+    [InlineData("GET", "api/mind-trail/v1/info")]
     public async Task GetInfo_Call_ReturnsBuildInfoInResponseBody(string method, string url)
     {
         // Arrange

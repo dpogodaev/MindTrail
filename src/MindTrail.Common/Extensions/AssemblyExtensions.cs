@@ -36,7 +36,7 @@ public static class AssemblyExtensions
     /// <param name="format">Date format. The default format is ISO 8601, <c>yyyy-MM-ddTHH:mm:ss.fffffffZ</c>.</param>
     /// <returns>The assembly date in the specified format; if the assembly file cannot be accessed, <c>null</c> is returned.</returns>
     /// <remarks>The time of the last write of the assembly file is used, which is usually the same as the date the assembly was last compiled or modified.</remarks>
-    public static string GetAssemblyDate(this Assembly assembly, string format = DefaultDateFormat)
+    public static string? GetAssemblyDate(this Assembly assembly, string format = DefaultDateFormat)
     {
         ArgumentNullException.ThrowIfNull(assembly);
 
@@ -50,7 +50,7 @@ public static class AssemblyExtensions
     /// </summary>
     /// <param name="assembly">An assembly.</param>
     /// <returns>The value of the configuration attribute of the assembly, or <c>null</c> if the attribute is not present.</returns>
-    public static string GetAssemblyConfiguration(this Assembly assembly)
+    public static string? GetAssemblyConfiguration(this Assembly assembly)
     {
         ArgumentNullException.ThrowIfNull(assembly);
 
@@ -62,7 +62,7 @@ public static class AssemblyExtensions
     /// </summary>
     /// <param name="assembly">An assembly.</param>
     /// <returns>The value of the product attribute of the assembly, or <c>null</c> if the attribute is not present.</returns>.
-    public static string GetAssemblyProductName(this Assembly assembly)
+    public static string? GetAssemblyProductName(this Assembly assembly)
     {
         ArgumentNullException.ThrowIfNull(assembly);
 

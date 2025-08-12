@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace MindTrail.EfCorePostgreSql.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
+    [DbContext(typeof(PostgreSqlDbContext))]
     [Migration("20250731081441_Init")]
     partial class Init
     {

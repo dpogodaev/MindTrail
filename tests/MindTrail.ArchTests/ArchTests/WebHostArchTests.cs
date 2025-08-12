@@ -23,45 +23,74 @@ public class WebHostArchTests
     ];
 
     /// <summary>
-    /// Tests to check the dependency policy for <see cref="MindTrail.WebHost"/> component.
+    /// Verifies that the <see cref="MindTrail.WebHost"/> component follows the dependency rules.
     /// </summary>
     [TestMethod]
-    public void DependencyOfComponentsShouldFollowCleanArchitecture()
+    public void WebHost_ShouldFollowDependencyRules()
     {
+        // Arrange
         var policyDefinition = PolicyHelper.BuildPolicyDefinition(CurrentNamespace,
-            "Components dependency policy",
-            $"Describes the dependencies of the ${nameof(WebHost)} component");
+            "Component dependency policy",
+            $"Enforces the dependencies of the {nameof(WebHost)} component");
+
+        policyDefinition.Add(types => types
+                .That().ResideInNamespace(CurrentNamespace)
+                .ShouldNot().HaveDependencyOnAny(
+                    ComponentNamespaces.EfCore,
+                    ComponentNamespaces.EfCoreMssql,
+                    ComponentNamespaces.EfCorePostgreSql),
+            "WebHost_ShouldNotDependOn_DomainLayer",
+            "The Web host should not have any dependencies on the application (domain) layer");
+
+        policyDefinition.Add(types => types
+                .That().ResideInNamespace(CurrentNamespace)
+                .ShouldNot().HaveDependencyOnAny(
+                    ComponentNamespaces.EfCore,
+                    ComponentNamespaces.EfCoreMssql,
+                    ComponentNamespaces.EfCorePostgreSql),
+            "WebHost_ShouldNotDependOn_DataAccessLayer",
+            "The Web host should not have any dependencies on the data access layer");
+
+        policyDefinition.Add(types => types
+                .That().ResideInNamespace(CurrentNamespace)
+                .ShouldNot().HaveDependencyOnAny(
+                    ComponentNamespaces.Cli),
+            "WebHost_ShouldNotDependOn_CliComponents",
+            $"The Web host should not depend on command-line-based presentation components such as {nameof(Cli)}");
 
         policyDefinition.Add(types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependenciesOtherThan(
                     CreateAllowedDependenciesList([
-                        ComponentNamespaces.HostConfiguration,
                         ComponentNamespaces.WebApi,
-                        ComponentNamespaces.WebAuth
+                        ComponentNamespaces.WebAuth,
+                        ComponentNamespaces.HostConfiguration
                     ])),
-            $"The dependency rule of ${nameof(WebHost)} on other components",
-            $"The ${nameof(WebHost)} component can only depend on the components implementing its interface " +
-            $"(e.g., ${nameof(WebApi)} and ${nameof(WebAuth)}) " +
-            $"and the application configurator (${nameof(HostConfiguration)})");
+            "WebHost_ShouldOnlyDependOn_WebAndHostConfiguration",
+            $"The Web host can only depend on the components implementing its interface, " +
+            $"such as {nameof(WebApi)} and {nameof(WebAuth)}, " +
+            $"and the application configurator ({nameof(HostConfiguration)})");
 
         // Act
         var results = policyDefinition.Evaluate().Results;
 
         // Assert
-        foreach (var result in results) Assert.IsTrue(result.IsSuccessful);
+        foreach (var result in results)
+        {
+            Assert.IsTrue(result.IsSuccessful, PolicyHelper.BuildFailureMessage(result));
+        }
     }
 
     /// <summary>
-    /// Tests to check class naming of <see cref="MindTrail.WebHost"/> component.
+    /// Verifies that the <see cref="MindTrail.WebHost"/> component's types follow the naming conventions.
     /// </summary>
     [TestMethod]
-    public void ClassNamesMustFollowTheNamingRules()
+    public void WebHost_ShouldFollowNamingConventions()
     {
         //Arrange
         var policyDefinition = PolicyHelper.BuildPolicyDefinition(CurrentNamespace,
-            "Class naming policy",
-            "Describes the naming policy for files with the '.cs' extension");
+            "Type naming policy",
+            $"Enforces naming conventions for types in the {nameof(WebHost)} component");
 
         policyDefinition
             .AddConfigNamingRule(CurrentNamespace)
@@ -71,7 +100,10 @@ public class WebHostArchTests
         var results = policyDefinition.Evaluate().Results;
 
         // Assert
-        foreach (var result in results) Assert.IsTrue(result.IsSuccessful);
+        foreach (var result in results)
+        {
+            Assert.IsTrue(result.IsSuccessful, PolicyHelper.BuildFailureMessage(result));
+        }
     }
 
     #region Private methods

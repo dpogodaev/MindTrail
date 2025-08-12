@@ -25,6 +25,8 @@ internal static class Startup
         IConfiguration configuration, IStartupLogger logger = null)
     {
         builder.Services.AddCommonConfig();
+        builder.Services.AddDomainServicesConfig(configuration, logger);
+        builder.Services.AddAppServicesConfig(configuration, logger);
         builder.Services.AddEfCoreConfig(configuration, logger);
 
         builder.Services.AddWebHostConfig();

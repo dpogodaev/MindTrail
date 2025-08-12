@@ -30,7 +30,7 @@ public static class ConfigurationHelper
     /// </summary>
     /// <param name="runtimeEnvironment">Name of the runtime environment.</param>
     /// <returns>The application configuration.</returns>
-    /// <exception cref="Exception">The file "appsettings.json" was not found.</exception>
+    /// <exception cref="Exception">Thrown when file "appsettings.json" was not found.</exception>
     public static IConfiguration BuildAppConfiguration(string runtimeEnvironment)
     {
         return new ConfigurationBuilder()

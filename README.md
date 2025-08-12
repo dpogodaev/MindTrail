@@ -16,8 +16,8 @@ To run the unit tests, go to the root folder of the application and run the `dot
 To run the application, go to the `src/MindTrail.WebHost` folder of the application
 and run the `dotnet run` command.
 
-ℹ️ The [appsettings.json](src/MindTrail.WebHost/appsettings.json) file already contains the minimal working
-configuration.
+ℹ️ The [appsettings.json](src/MindTrail.WebHost/appsettings.json) file 
+already contains the minimal working configuration to run the application on a local machine.
 
 ℹ️ To automatically create (and update) a database when launching the application,
 you need to set the `EfCore:ApplyMigrationsAutomatically` parameter
@@ -58,7 +58,7 @@ If you omit the version, it will insert `1.0.0.0`.
 
 ### Running a container
 
-The [thought-guide.env](src/MindTrail.WebHost/thought-guide.env) file is used to configure the container.
+The [mind-trail.env](src/MindTrail.WebHost/mind-trail.env) file is used to configure the container.
 It is based on the [appsettings.json](src/MindTrail.WebHost/appsettings.json) file.
 
 To create and run a new container locally from an image, launch the Docker Desktop, 
@@ -72,6 +72,6 @@ If necessary, specify the launch port and a specific configuration file (.env):
 ```
 
 By default, port `12345` and configuration 
-file [thought-guide.env](src/MindTrail.WebHost/thought-guide.env) are used.
+file [mind-trail.env](src/MindTrail.WebHost/mind-trail.env) are used.
 Therefore, by default, the URL of the running application will be as follows:
 http://localhost:12345/swagger.

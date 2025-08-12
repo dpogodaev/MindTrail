@@ -54,8 +54,7 @@ public class CliHostArchTests
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.WebApi,
-                    ComponentNamespaces.WebAuth,
-                    ComponentNamespaces.WebHost),
+                    ComponentNamespaces.WebAuth),
             "CliHost_ShouldNotDependOn_WebComponents",
             $"The CLI host should not depend on web-based presentation components such as {nameof(WebApi)}");
 
@@ -67,8 +66,8 @@ public class CliHostArchTests
                         ComponentNamespaces.HostConfiguration
                     ])),
             "CliHost_ShouldOnlyDependOn_CliAndHostConfiguration",
-            $"The CLI host can only depend on the components implementing its interface (e.g., ${nameof(Cli)}) " +
-            $"and the application configurator (${nameof(HostConfiguration)})");
+            $"The CLI host can only depend on the components implementing its interface (e.g., {nameof(Cli)}) " +
+            $"and the application configurator ({nameof(HostConfiguration)})");
 
         // Act
         var results = policyDefinition.Evaluate().Results;

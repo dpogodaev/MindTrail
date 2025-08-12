@@ -9,15 +9,15 @@ using MindTrail.WebApi.Dtos;
 namespace MindTrail.WebApi.Controllers;
 
 /// <summary>
-/// Provides information about the application, such as version, build date, etc.
+/// Used to get information about the application, such as version, build date, etc.
 /// </summary>
 [AllowAnonymous]
 [ApiController]
-[Route("api/thought-guide/v1")]
+[Route("api/mind-trail/v1")]
 public class BuildInfoController : ControllerBase
 {
     /// <summary>
-    /// Returns build information.
+    /// Returns the build information.
     /// </summary>
     [HttpHead("info")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -38,11 +38,11 @@ public class BuildInfoController : ControllerBase
     }
 
     /// <summary>
-    /// Returns build information.
+    /// Returns the build information.
     /// </summary>
     [HttpGet("info")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BuildInfoDto))]
-    public ActionResult<BuildInfoDto> GetInfo()
+    public IActionResult GetInfo()
     {
         var buildInfo = GetBuildInfo();
 
@@ -52,11 +52,12 @@ public class BuildInfoController : ControllerBase
     /// <summary>
     /// Default action.
     /// </summary>
-    /// <returns>Build information.</returns>
+    /// <returns>The build information.</returns>
     [ApiExplorerSettings(IgnoreApi = true)]
-    [HttpGet("")]
+    [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BuildInfoDto))]
-    public ActionResult<BuildInfoDto> Default()
+    [Produces("application/json")]
+    public IActionResult Default()
     {
         return GetInfo();
     }

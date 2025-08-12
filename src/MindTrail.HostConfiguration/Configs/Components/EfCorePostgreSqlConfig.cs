@@ -5,6 +5,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MindTrail.EfCore.Context;
+using MindTrail.EfCore.Interfaces.Context;
+using MindTrail.EfCorePostgreSql.Context;
 using MindTrail.HostConfiguration.Extensions;
 using MindTrail.HostConfiguration.Interfaces;
 using MindTrail.HostConfiguration.Settings;
@@ -26,7 +29,7 @@ public static class EfCorePostgreSqlConfig
     /// <param name="logger">The startup logger. Optional.</param>
     /// <typeparam name="TContext">The type of the database context.</typeparam>
     public static void AddEfCorePostgreSqlConfig<TContext>(this IServiceCollection services,
-        IConfiguration configuration, IStartupLogger logger = null) where TContext : DbContext
+        IConfiguration configuration, IStartupLogger logger = null) where TContext : AppDbContext
     {
         var connectionString = configuration.GetConnectionString(ConnectionString);
 
@@ -38,7 +41,7 @@ public static class EfCorePostgreSqlConfig
 
         var settings = configuration.BindSection<EfCoreSettings>(EfCoreConfig.EfCoreConfigSection);
 
-        services.AddDbContext<DbContext, TContext>(options =>
+        services.AddDbContext<AppDbContext, TContext>(options =>
         {
             options.UseNpgsql(connectionString);
 
@@ -55,7 +58,7 @@ public static class EfCorePostgreSqlConfig
     /// <param name="host">The application host.</param>
     /// <param name="logger">The startup logger. Optional.</param>
     /// <typeparam name="TContext">The type of the database context.</typeparam>
-    /// <exception cref="Exception">The <see cref="DbContext"/> is not configured.</exception>
+    /// <exception cref="Exception">Thrown when <see cref="DbContext"/> is not configured.</exception>
     public static async Task ApplyPostgreSqlMigrationAsync<TContext>(this IHost host, IStartupLogger logger = null)
         where TContext : DbContext
     {

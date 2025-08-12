@@ -34,11 +34,11 @@ public class EfCoreMssqlArchTests
         policyDefinition.Add(types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
-                    ComponentNamespaces.EfCore,
-                    ComponentNamespaces.EfCoreMssql,
-                    ComponentNamespaces.EfCorePostgreSql),
-            "Cli_ShouldNotDependOn_DomainLayer",
-            "The CLI should not have any dependencies on the application (domain) layer");
+                    ComponentNamespaces.DomainEntities,
+                    ComponentNamespaces.DomainServices,
+                    ComponentNamespaces.AppServices),
+            "EfCoreMssql_ShouldNotDependOn_DomainLayer",
+            "The SQL Server data access implementation should not have any dependencies on the application (domain) layer");
 
         policyDefinition.Add(types => types
                 .That().ResideInNamespace(CurrentNamespace)

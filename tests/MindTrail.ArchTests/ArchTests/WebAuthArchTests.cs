@@ -16,15 +16,42 @@ public class WebAuthArchTests
     private const string CurrentNamespace = ComponentNamespaces.WebAuth;
 
     /// <summary>
-    /// Tests to check the dependency policy for <see cref="MindTrail.WebAuth"/> component.
+    /// Verifies that the <see cref="MindTrail.WebAuth"/> component follows the dependency rules.
     /// </summary>
     [TestMethod]
-    public void DependencyOfComponentsShouldFollowCleanArchitecture()
+    public void WebAuth_ShouldFollowDependencyRules()
     {
         //Arrange
         var policyDefinition = PolicyHelper.BuildPolicyDefinition(CurrentNamespace,
-            "Components dependency policy",
-            $"Describes the dependencies of the ${nameof(WebAuth)} component");
+            "Component dependency policy",
+            $"Enforces the dependencies of the {nameof(WebAuth)} component");
+
+        policyDefinition.Add(types => types
+                .That().ResideInNamespace(CurrentNamespace)
+                .ShouldNot().HaveDependencyOnAny(
+                    ComponentNamespaces.EfCore,
+                    ComponentNamespaces.EfCoreMssql,
+                    ComponentNamespaces.EfCorePostgreSql),
+            "WebAuth_ShouldNotDependOn_DomainLayer",
+            "The Web API should not have any dependencies on the application (domain) layer");
+
+        policyDefinition.Add(types => types
+                .That().ResideInNamespace(CurrentNamespace)
+                .ShouldNot().HaveDependencyOnAny(
+                    ComponentNamespaces.EfCore,
+                    ComponentNamespaces.EfCoreMssql,
+                    ComponentNamespaces.EfCorePostgreSql),
+            "WebAuth_ShouldNotDependOn_DataAccessLayer",
+            "The Web API should not have any dependencies on the data access layer");
+
+        policyDefinition.Add(types => types
+                .That().ResideInNamespace(CurrentNamespace)
+                .ShouldNot().HaveDependencyOnAny(
+                    ComponentNamespaces.HostConfiguration,
+                    ComponentNamespaces.CliHost,
+                    ComponentNamespaces.WebHost),
+            "WebAuth_ShouldNotDependOn_InfrastructureLayer",
+            "The Web API should not have any dependencies on the infrastructure layer");
 
         policyDefinition.Add(types => types
                 .That().ResideInNamespace(CurrentNamespace)
@@ -32,27 +59,29 @@ public class WebAuthArchTests
                     CreateAllowedDependenciesList([
                         ComponentNamespaces.Common
                     ])),
-            $"The dependency rule of ${nameof(WebAuth)} on other components",
-            $"The ${nameof(WebAuth)} component can only depend on the ${nameof(Common)} component " +
-            "and should not have any dependencies on other components");
+            "WebAuth_ShouldOnlyDependOn_CommonLogic",
+            $"The Web authorization component can only depend on the shared logic ({nameof(Common)})");
 
         // Act
         var results = policyDefinition.Evaluate().Results;
 
         // Assert
-        foreach (var result in results) Assert.IsTrue(result.IsSuccessful);
+        foreach (var result in results)
+        {
+            Assert.IsTrue(result.IsSuccessful, PolicyHelper.BuildFailureMessage(result));
+        }
     }
 
     /// <summary>
-    /// Tests to check class naming of <see cref="MindTrail.WebAuth"/> component.
+    /// Verifies that the <see cref="MindTrail.WebAuth"/> component's types follow the naming conventions.
     /// </summary>
     [TestMethod]
-    public void ClassNamesMustFollowNamingRules()
+    public void WebAuth_ShouldFollowNamingConventions()
     {
-        //Arrange
+        // Arrange
         var policyDefinition = PolicyHelper.BuildPolicyDefinition(CurrentNamespace,
-            "Class naming policy",
-            "Describes the naming policy for files with the '.cs' extension");
+            "Type naming policy",
+            $"Enforces naming conventions for types in the {nameof(WebAuth)} component");
 
         policyDefinition
             .AddAttributeNamingRule(CurrentNamespace)
@@ -69,7 +98,10 @@ public class WebAuthArchTests
         var results = policyDefinition.Evaluate().Results;
 
         // Assert
-        foreach (var result in results) Assert.IsTrue(result.IsSuccessful);
+        foreach (var result in results)
+        {
+            Assert.IsTrue(result.IsSuccessful, PolicyHelper.BuildFailureMessage(result));
+        }
     }
 
     #region Private methods

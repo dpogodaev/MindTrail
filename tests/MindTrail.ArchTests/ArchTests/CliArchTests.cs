@@ -36,9 +36,9 @@ public class CliArchTests
         policyDefinition.Add(types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
-                    ComponentNamespaces.EfCore,
-                    ComponentNamespaces.EfCoreMssql,
-                    ComponentNamespaces.EfCorePostgreSql),
+                    ComponentNamespaces.DomainEntities,
+                    ComponentNamespaces.DomainServices,
+                    ComponentNamespaces.AppServices),
             "Cli_ShouldNotDependOn_DomainLayer",
             "The CLI should not have any dependencies on the application (domain) layer");
 
@@ -54,14 +54,6 @@ public class CliArchTests
         policyDefinition.Add(types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
-                    ComponentNamespaces.WebApi,
-                    ComponentNamespaces.WebAuth),
-            "Cli_ShouldNotDependOn_WebComponents",
-            $"The CLI should not depend on web-based presentation components such as {nameof(WebApi)}");
-
-        policyDefinition.Add(types => types
-                .That().ResideInNamespace(CurrentNamespace)
-                .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.HostConfiguration,
                     ComponentNamespaces.CliHost,
                     ComponentNamespaces.WebHost),
@@ -70,12 +62,20 @@ public class CliArchTests
 
         policyDefinition.Add(types => types
                 .That().ResideInNamespace(CurrentNamespace)
+                .ShouldNot().HaveDependencyOnAny(
+                    ComponentNamespaces.WebApi,
+                    ComponentNamespaces.WebAuth),
+            "Cli_ShouldNotDependOn_WebComponents",
+            $"The CLI should not depend on web-based presentation components such as {nameof(WebApi)}");
+
+        policyDefinition.Add(types => types
+                .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependenciesOtherThan(
                     CreateAllowedDependenciesList([
                         ComponentNamespaces.Common
                     ])),
             "Cli_ShouldOnlyDependOn_CommonLogic",
-            $"The CLI can only depend on the shared logic (${nameof(Common)})");
+            $"The CLI can only depend on the shared logic ({nameof(Common)})");
 
         // Act
         var results = policyDefinition.Evaluate().Results;

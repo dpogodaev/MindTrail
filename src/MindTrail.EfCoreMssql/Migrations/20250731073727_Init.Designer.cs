@@ -11,7 +11,7 @@ using MindTrail.EfCoreMssql.Context;
 
 namespace MindTrail.EfCoreMssql.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
+    [DbContext(typeof(MssqlDbContext))]
     [Migration("20250731073727_Init")]
     partial class Init
     {

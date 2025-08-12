@@ -16,22 +16,18 @@ try
     var builder = WebApplication.CreateBuilder(args);
     builder.Host.UseLoggerProviderForDI();
     builder.ConfigureServices(builder.Configuration, startupLogger);
-
     startupLogger.Info("The application's services was successfully configured", timer.ElapsedTimeInMs);
 
     timer.Restart();
     var app = builder.Build();
-
     startupLogger.Info("The application was successfully built", timer.ElapsedTimeInMs);
 
     timer.Restart();
     app.ConfigureHttpRequestPipeline();
-
     startupLogger.Info("The application's HTTP request pipeline was successfully configured", timer.ElapsedTimeInMs);
 
     timer.Restart();
     await app.ApplyAutoMigrationAsync(builder.Configuration, startupLogger);
-
     startupLogger.Info("The application was successfully launched", timer.ElapsedTimeInMs, timer.TotalElapsedTimeInMs);
 
     timer.Stop();
