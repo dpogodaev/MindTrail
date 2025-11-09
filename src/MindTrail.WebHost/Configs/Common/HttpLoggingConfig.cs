@@ -36,7 +36,7 @@ internal static class HttpLoggingConfig
     /// Also need to add the use of the <see cref="HttpLoggingBuilderExtensions.UseHttpLogging"/> method.
     /// </remarks>
     public static void AddHttpLoggingConfig(this IServiceCollection services,
-        IConfiguration configuration, IStartupLogger logger = null)
+        IConfiguration configuration, IStartupLogger? logger = null)
     {
         if (!configuration.SectionExists(HttpLoggingConfigSection))
         {

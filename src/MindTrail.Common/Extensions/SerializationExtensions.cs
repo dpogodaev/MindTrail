@@ -1,11 +1,11 @@
 ﻿using System.Text.Json;
 
-namespace MindTrail.Common.Helpers;
+namespace MindTrail.Common.Extensions;
 
 /// <summary>
-/// String objects helper.
+/// Provides extension methods for serializing objects into JSON strings.
 /// </summary>
-public class StringHelper
+public static class SerializationExtensions
 {
     /// <summary>
     /// Serializes an object of the specified type into a string.
@@ -16,7 +16,7 @@ public class StringHelper
     /// Serialized string value if the <paramref name="source"/> is not <c>null</c>;
     /// <c><see cref="string.Empty"/></c> otherwise.
     /// </returns>
-    public static string Serialize<T>(T? source) where T : class
+    public static string Serialize<T>(this T? source) where T : class
     {
         return source != null
             ? JsonSerializer.Serialize(source)

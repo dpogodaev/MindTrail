@@ -4,10 +4,10 @@ using MindTrail.DomainServices.Exceptions;
 using MindTrail.DomainServices.Filters;
 using MindTrail.DomainServices.Interfaces.Services;
 using MindTrail.DomainServices.Interfaces.Storages.Repositories;
-using MindTrail.DomainServices.ValueObjects;
 
 namespace MindTrail.DomainServices.Services;
 
+/// <inheritdoc/>
 public class PersonService(IPersonRepository personRepository) : IPersonService
 {
     private const int MaxPersonNameLength = 64;
@@ -28,36 +28,19 @@ public class PersonService(IPersonRepository personRepository) : IPersonService
 
     private async Task ValidatePersonAndThrowAsync(Person person)
     {
-        var fullNameValidation = ValidatePersonName(person.FullName);
-        if (!fullNameValidation.IsValid)
-        {
-            throw new PersonNameException(fullNameValidation.ErrorInfo!, person.FullName);
-        }
-
-        var duplicatesValidation = await ValidatePersonDuplicates(person);
-        if (!duplicatesValidation.IsValid)
-        {
-            throw new PersonDuplicateException(duplicatesValidation.ErrorInfo!, person.FullName, person.BirthYear);
-        }
+        ValidatePersonNameLengthAndThrow(person);
+        await ValidatePersonDuplicatesAndThrowAsync(person);
     }
 
-    private static ValidationResult ValidatePersonName(string name)
+    private static void ValidatePersonNameLengthAndThrow(Person person)
     {
-        if (string.IsNullOrEmpty(name))
+        if (person.FullName.Length > MaxPersonNameLength)
         {
-            return ValidationResult.WithUnsuccessful("Name is required");
+            throw new PersonNameTooLongException(person.FullName, MaxPersonNameLength);
         }
-
-        if (name.Length > MaxPersonNameLength)
-        {
-            return ValidationResult.WithUnsuccessful(
-                $"The maximum length of the name is {MaxPersonNameLength} characters");
-        }
-
-        return ValidationResult.WithSuccessful();
     }
 
-    private async Task<ValidationResult> ValidatePersonDuplicates(Person person)
+    private async Task ValidatePersonDuplicatesAndThrowAsync(Person person)
     {
         var duplicateRules = await personRepository.GetPersonsAsReadOnlyAsync(
             new PersonFilter
@@ -66,14 +49,9 @@ public class PersonService(IPersonRepository personRepository) : IPersonService
                 BirthYear = person.BirthYear
             });
 
-        if (duplicateRules.TotalCount == 0)
-        {
-            return ValidationResult.WithSuccessful();
-        }
+        if (duplicateRules.TotalCount == 0) return;
 
-        return ValidationResult.WithUnsuccessful(person.BirthYear == null
-            ? "The person with the specified name already exists, try to set his date of birth"
-            : "The person with the specified name and date of birth already exists");
+        throw new PersonDuplicateException(person.FullName, person.BirthYear);
     }
 
     #endregion

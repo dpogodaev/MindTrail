@@ -2,11 +2,14 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MindTrail.AppServices.Exceptions;
 using MindTrail.AppServices.Interfaces.Services;
 using MindTrail.DomainEntities.Entities;
+using MindTrail.DomainServices.Exceptions;
+using MindTrail.DomainServices.Exceptions.Base;
+using MindTrail.WebApi.Builders;
 using MindTrail.WebApi.Dtos;
-using MindTrail.WebApi.Helpers;
+using MindTrail.WebApi.Handlers.Exceptions;
+using MindTrail.WebApi.Providers;
 using MindTrail.WebApi.RequestModels;
 using MindTrail.WebAuth.Attributes;
 using AppModels = MindTrail.AppServices.Models;
@@ -19,7 +22,9 @@ namespace MindTrail.WebApi.Controllers;
 [ApiController]
 [ApiKeyRequired]
 [Route("api/mind-trail/v1/persons")]
-public class PersonController(IPersonAppService personService) : ControllerBase
+public class PersonController(
+    ProblemDetailsProvider problemDetails,
+    IPersonAppService personService) : ControllerBase
 {
     /// <summary>
     /// Creates a new person.
@@ -28,29 +33,43 @@ public class PersonController(IPersonAppService personService) : ControllerBase
     /// <returns>The created person.</returns>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(PersonDto))]
-    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(BadRequestDto))]
-    [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(ConflictDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+    [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(ProblemDetails))]
     [Produces("application/json")]
     public async Task<IActionResult> CreatePerson([FromBody, Required] PersonCreationModel model)
     {
         try
         {
             var createdPerson = MapDomainEntityToDto(
-                await personService.CreatePersonAsync(MapModelToDomainEntity(model)));
+                await personService.CreatePersonAsync(
+                    MapModelToDomainEntity(model)));
 
             return CreatedAtAction(nameof(CreatePerson), createdPerson);
         }
-        catch (InvalidValueException e)
+        catch (DomainException ex)
         {
-            return BadRequest(ResponseHelper.BuildBadRequestDto(e));
-        }
-        catch (InvalidStateException e)
-        {
-            return Conflict(ResponseHelper.BuildConflictDto(e));
+            switch (ex)
+            {
+                case PersonNameTooLongException e:
+                    return BadRequest(e.Handle(nameof(model.FullName)));
+                case PersonDuplicateException e:
+                    return Conflict(e.Handle());
+                default: throw;
+            }
         }
     }
 
     #region Private methods
+
+    private IActionResult BadRequest(ProblemDetailsBuilder builder)
+    {
+        return problemDetails.CreateBadRequest(builder);
+    }
+
+    private IActionResult Conflict(ProblemDetailsBuilder builder)
+    {
+        return problemDetails.CreateConflict(builder);
+    }
 
     private static AppModels.PersonCreationModel MapModelToDomainEntity(PersonCreationModel model)
     {

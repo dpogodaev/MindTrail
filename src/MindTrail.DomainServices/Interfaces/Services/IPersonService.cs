@@ -4,6 +4,9 @@ using MindTrail.DomainServices.Exceptions;
 
 namespace MindTrail.DomainServices.Interfaces.Services;
 
+/// <summary>
+/// Service for managing person entities.
+/// </summary>
 public interface IPersonService
 {
     /// <summary>
@@ -11,7 +14,7 @@ public interface IPersonService
     /// </summary>
     /// <param name="personToCreate">Person to create.</param>
     /// <returns>The created person.</returns>
-    /// <exception cref="PersonNameException">The person's name has an invalid value.</exception>
+    /// <exception cref="PersonNameTooLongException">The person's name is too long.</exception>
     /// <exception cref="PersonDuplicateException">The person with the specified name and date of birth already exists.</exception>
     Task<Person> CreatePersonAsync(Person personToCreate);
 }

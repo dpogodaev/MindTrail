@@ -3,7 +3,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MindTrail.HostConfiguration.Interfaces;
 using MindTrail.WebApi.Handlers;
+using MindTrail.WebApi.Interfaces;
+using MindTrail.WebApi.Interfaces.Providers;
+using MindTrail.WebApi.Providers;
 using MindTrail.WebHost.Configs.Common;
+using MindTrail.WebHost.Providers;
 using MindTrail.WebHost.Settings;
 
 namespace MindTrail.WebHost.Configs.Components;
@@ -20,8 +24,9 @@ internal static class WebApiConfig
     /// <param name="configuration">The application configuration.</param>
     /// <param name="logger">The startup logger. Optional.</param>
     public static void AddWebApiConfig(this IServiceCollection services,
-        IConfiguration configuration, IStartupLogger logger = null)
+        IConfiguration configuration, IStartupLogger? logger = null)
     {
+        services.AddProviders();
         services.AddHealthChecks();
         services.AddProblemDetails();
         services.AddExceptionHandler<CustomExceptionHandler>();
@@ -37,4 +42,15 @@ internal static class WebApiConfig
             XmlFilesNames = ["MindTrail.WebApi"]
         });
     }
+
+    #region Private methods
+
+    private static void AddProviders(this IServiceCollection services)
+    {
+        services.AddScoped<ITraceIdProvider, TraceIdProvider>();
+        services.AddScoped<IErrorCodeProvider, ErrorCodeProvider>();
+        services.AddScoped<IProblemDetailsProvider, ProblemDetailsProvider>();
+    }
+
+    #endregion
 }

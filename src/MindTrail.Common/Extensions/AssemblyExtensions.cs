@@ -5,7 +5,7 @@ using System.Reflection;
 namespace MindTrail.Common.Extensions;
 
 /// <summary>
-/// Extensions for working with an assembly and its attributes.
+/// Provides extension methods for working with assemblies and their attributes.
 /// </summary>
 public static class AssemblyExtensions
 {

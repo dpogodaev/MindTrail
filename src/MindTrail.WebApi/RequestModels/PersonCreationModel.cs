@@ -1,4 +1,6 @@
-﻿namespace MindTrail.WebApi.RequestModels;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MindTrail.WebApi.RequestModels;
 
 /// <summary>
 /// Model for creating a person.
@@ -8,6 +10,7 @@ public record PersonCreationModel
     /// <summary>
     /// Full name.
     /// </summary>
+    [Required]
     public required string FullName { get; set; }
 
     /// <summary>

@@ -1,7 +1,7 @@
 ﻿namespace MindTrail.Common.Extensions;
 
 /// <summary>
-/// String extensions.
+/// Provides extension methods for manipulating string values.
 /// </summary>
 public static class StringExtensions
 {
