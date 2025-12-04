@@ -19,14 +19,12 @@ public static class DomainServicesConfig
     /// <param name="services">Used to register application services.</param>
     /// <param name="configuration">The application configuration.</param>
     /// <param name="logger">The startup logger. Optional.</param>
-    public static void AddDomainServicesConfig(this IServiceCollection services,
-        IConfiguration configuration, IStartupLogger logger = null)
+    public static void AddDomainServicesConfig(
+        this IServiceCollection services, IConfiguration configuration, IStartupLogger logger = null)
     {
         AddServices(services);
         AddRepositories(services);
     }
-
-    #region Private methods
 
     private static void AddServices(IServiceCollection services)
     {
@@ -38,6 +36,4 @@ public static class DomainServicesConfig
         services.AddTransient<ICountryRepository, CountryRepositoryAdapter>();
         services.AddTransient<IPersonRepository, PersonRepositoryAdapter>();
     }
-
-    #endregion
 }

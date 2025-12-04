@@ -6,17 +6,17 @@
 public class Country
 {
     /// <summary>
-    /// Unique identifier (primary key).
+    /// Gets a unique identifier (primary key).
     /// </summary>
     public int Id { get; init; }
 
     /// <summary>
-    /// Code.
+    /// Gets the country code.
     /// </summary>
     public required string Code { get; init; }
 
     /// <summary>
-    /// Name.
+    /// Gets the name of the country.
     /// </summary>
     public required string Name { get; init; }
 }

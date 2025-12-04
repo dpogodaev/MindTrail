@@ -9,22 +9,22 @@ namespace MindTrail.DomainEntities.Entities;
 public class PagedResult<T>
 {
     /// <summary>
-    /// The collection of items returned for the current page.
+    /// Gets or sets the collection of items returned for the current page.
     /// </summary>
     public IEnumerable<T> Items { get; set; } = [];
 
     /// <summary>
-    /// The total number of items.
+    /// Gets or sets the total number of items.
     /// </summary>
     public int TotalCount { get; set; }
 
     /// <summary>
-    /// The current page number (starting from 1).
+    /// Gets or sets the current page number (starting from 1).
     /// </summary>
     public int PageNumber { get; set; }
 
     /// <summary>
-    /// The number of items per page.
+    /// Gets or sets the number of items per page.
     /// </summary>
     public int PageSize { get; set; }
 }

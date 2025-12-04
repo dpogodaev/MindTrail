@@ -7,8 +7,9 @@ namespace MindTrail.WebApi.Providers;
 
 /// <inheritdoc/>
 public class ProblemDetailsProvider(
-    ErrorCodeProvider errorCodeProvider,
-    ITraceIdProvider traceIdProvider) : IProblemDetailsProvider
+    IErrorCodeProvider errorCodeProvider,
+    ITraceIdProvider traceIdProvider)
+    : IProblemDetailsProvider
 {
     /// <inheritdoc cref="IProblemDetailsProvider.CreateBadRequest"/>
     public IActionResult CreateBadRequest(ProblemDetailsBuilder builder)
@@ -37,12 +38,8 @@ public class ProblemDetailsProvider(
             .Build(StatusCodes.Status404NotFound));
     }
 
-    #region Private methods
-
     private string? GetErrorCode(ProblemDetailsBuilder builder)
     {
         return errorCodeProvider.TryGetCode(builder.Exception, out var code) ? code : null;
     }
-
-    #endregion
 }

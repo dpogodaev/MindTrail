@@ -17,7 +17,7 @@ public class HttpRequestExtensionsTests
     [Fact]
     public void GetHeaderKeyValue_KeyExists_ReturnsKeyValue()
     {
-        //Arrange
+        // Arrange
         const string keyName = "name";
         const string keyValue = "value";
 
@@ -37,7 +37,7 @@ public class HttpRequestExtensionsTests
     [Fact]
     public void GetHeaderKeyValue_KeyNotExists_ReturnsNull()
     {
-        //Arrange
+        // Arrange
         const string keyName = "name";
         const string keyValue = "value";
 
@@ -61,7 +61,7 @@ public class HttpRequestExtensionsTests
     [Fact]
     public void GetRouteParameter_ParamExists_ReturnsKeyValue()
     {
-        //Arrange
+        // Arrange
         const string paramName = "name";
         const string paramValue = "value";
 
@@ -81,7 +81,7 @@ public class HttpRequestExtensionsTests
     [Fact]
     public void GetRouteParameter_ParamNotExists_ReturnsNull()
     {
-        //Arrange
+        // Arrange
         const string paramName = "name";
         const string paramValue = "value";
 
@@ -105,7 +105,7 @@ public class HttpRequestExtensionsTests
     [Fact]
     public void GetQueryParameter_ParamExists_ReturnsKeyValue()
     {
-        //Arrange
+        // Arrange
         const string paramName = "name";
         const string paramValue = "value";
 
@@ -125,7 +125,7 @@ public class HttpRequestExtensionsTests
     [Fact]
     public void GetQueryParameter_ParamNotExists_ReturnsNull()
     {
-        //Arrange
+        // Arrange
         const string paramName = "name";
 
         var request = BuildHttpRequest();

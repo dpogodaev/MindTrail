@@ -3,8 +3,10 @@ using MindTrail.WebApi.Builders;
 
 namespace MindTrail.WebApi.Handlers.Exceptions;
 
+// TODO: handler<T>?
+
 /// <summary>
-/// Provides an extension method to handle <see cref="PersonNameTooLongException"/> 
+/// Provides an extension method to handle <see cref="PersonNameTooLongException"/>
 /// by converting it into a structured problem details response (RFC 7807).
 /// </summary>
 public static class PersonNameTooLongExceptionHandler

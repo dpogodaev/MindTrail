@@ -70,8 +70,8 @@ public class ConfigurationHelperTests
             {
                 Property1 = "Property1 from appsettings.json",
                 Property2 = "Property2 from appsettings.json",
-                Property3 = "Property3 from appsettings.json"
-            }
+                Property3 = "Property3 from appsettings.json",
+            },
         });
 
         WriteToJsonFile($"appsettings.{runtimeEnvironment}", new
@@ -79,8 +79,8 @@ public class ConfigurationHelperTests
             TestSection = new
             {
                 Property2 = $"Property2 from appsettings.{runtimeEnvironment}.json",
-                Property3 = $"Property3 from appsettings.{runtimeEnvironment}.json"
-            }
+                Property3 = $"Property3 from appsettings.{runtimeEnvironment}.json",
+            },
         });
 
         Environment.SetEnvironmentVariable("TESTSECTION__PROPERTY3", "Property3 from EnvironmentVariable");

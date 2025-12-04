@@ -9,11 +9,11 @@ namespace MindTrail.Common.Tests.SystemTests;
 /// <summary>
 /// Tests for <see cref="JsonSerializer"/> class.
 /// </summary>
-public class JsonHelperTests
+public class JsonSerializerTests
 {
     private readonly JsonSerializerOptions _options = new()
     {
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
     };
 
     #region DeserializeAsync
@@ -21,6 +21,7 @@ public class JsonHelperTests
     /// <summary>
     /// Test for <see cref="JsonSerializer.DeserializeAsync{TValue}(Stream,JsonSerializerOptions?,System.Threading.CancellationToken)"/> method.
     /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     [Fact]
     public async Task DeserializeAsync_ShouldDeserializeCamelCaseJsonCorrectly()
     {
@@ -38,6 +39,7 @@ public class JsonHelperTests
     /// <summary>
     /// Test for <see cref="JsonSerializer.DeserializeAsync{TValue}(Stream,JsonSerializerOptions?,System.Threading.CancellationToken)"/> method.
     /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     [Fact]
     public async Task DeserializeAsync_ShouldDeserializePascalCaseJsonCorrectly()
     {
@@ -55,6 +57,7 @@ public class JsonHelperTests
     /// <summary>
     /// Test for <see cref="JsonSerializer.DeserializeAsync{TValue}(Stream,JsonSerializerOptions?,System.Threading.CancellationToken)"/> method.
     /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     [Fact]
     public async Task DeserializeAsync_ShouldHandleNullValuesCorrectly()
     {
@@ -72,22 +75,15 @@ public class JsonHelperTests
 
     #endregion
 
-    #region Private classes
-
-    private record TestObject
-    {
-        public int Id { get; init; }
-        public string Name { get; init; }
-    }
-
-    #endregion
-
-    #region Private methods
-
     private static MemoryStream GetStream(string json)
     {
         return new MemoryStream(Encoding.UTF8.GetBytes(json));
     }
 
-    #endregion
+    private record TestObject
+    {
+        public int Id { get; init; }
+
+        public string Name { get; init; }
+    }
 }

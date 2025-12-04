@@ -13,21 +13,15 @@ namespace MindTrail.Cli.Commands;
 /// <param name="line">Command line.</param>
 /// <param name="name">Command name.</param>
 /// <param name="options">Command options.</param>
-public class HelpCommand(string line, string name, Dictionary<string, string> options) : Command(line, name, options)
+public class HelpCommand(string line, string name, Dictionary<string, string> options)
+    : Command(line, name, options)
 {
-    #region Command
-
     /// <inheritdoc cref="Command.Execute"/>
     public override void Execute(CommandControl control)
     {
         AddToHistory(control);
-
         DisplayHelpInfo();
     }
-
-    #endregion
-
-    #region Private methods
 
     private static void DisplayHelpInfo()
     {
@@ -36,7 +30,7 @@ public class HelpCommand(string line, string name, Dictionary<string, string> op
         Console.ForegroundColor = ColorConstants.OutputColor;
 
         Console.WriteLine();
-        Console.WriteLine($"Build information:");
+        Console.WriteLine("Build information:");
         Console.WriteLine($"  Version: {assembly.GetVersion()}");
         Console.WriteLine($"  Date: {assembly.GetAssemblyDate()}");
         Console.WriteLine($"  Name: {assembly.GetAssemblyProductName()}");
@@ -50,6 +44,4 @@ public class HelpCommand(string line, string name, Dictionary<string, string> op
 
         Console.ResetColor();
     }
-
-    #endregion
 }

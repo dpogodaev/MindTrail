@@ -3,9 +3,9 @@ using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.SwaggerGen;
 using MindTrail.WebAuth.Attributes;
 using MindTrail.WebAuth.Constants;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace MindTrail.WebApi.Filters;
 
@@ -14,23 +14,20 @@ namespace MindTrail.WebApi.Filters;
 /// </summary>
 public class SecurityRequirementOperationFilter : IOperationFilter
 {
-    #region IOperationFilter
-
     /// <inheritdoc cref="IOperationFilter.Apply"/>
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
         var isAuthAttributeUsed = IsAuthAttributeUsed(context);
         var isApiKeyAttributeUsed = IsApiKeyAttributeUsed(context);
 
-        if (!isAuthAttributeUsed && !isApiKeyAttributeUsed) return;
+        if (!isAuthAttributeUsed && !isApiKeyAttributeUsed)
+        {
+            return;
+        }
 
         AddSecurityRequirements(operation, isAuthAttributeUsed);
         AddOperationResponses(operation, isAuthAttributeUsed);
     }
-
-    #endregion
-
-    #region Private methods
 
     private static bool IsAuthAttributeUsed(OperationFilterContext context)
     {
@@ -58,7 +55,7 @@ public class SecurityRequirementOperationFilter : IOperationFilter
 
         if (isAuthAttributeUsed)
         {
-            //TODO: add security requirement (e.g. for 'Bearer').
+            // TODO: add security requirement (e.g. for 'Bearer').
         }
 
         operation.Security = securityRequirements;
@@ -71,8 +68,8 @@ public class SecurityRequirementOperationFilter : IOperationFilter
             Reference = new OpenApiReference
             {
                 Type = ReferenceType.SecurityScheme,
-                Id = ApiKeyConstants.ApiKeySchemeName
-            }
+                Id = ApiKeyConstants.ApiKeySchemeName,
+            },
         };
 
         securityRequirements.Add(new OpenApiSecurityRequirement { [apiKeyScheme] = new List<string>() });
@@ -97,6 +94,4 @@ public class SecurityRequirementOperationFilter : IOperationFilter
     {
         operation.Responses.Add("401", new OpenApiResponse { Description = "Unauthorized" });
     }
-
-    #endregion
 }

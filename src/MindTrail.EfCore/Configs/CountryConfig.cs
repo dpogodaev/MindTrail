@@ -252,7 +252,6 @@ public class CountryConfig : IEntityTypeConfiguration<Country>
             new Country { Id = 234, Name = "Wallis and Futuna", Code = "WF" },
             new Country { Id = 235, Name = "Åland Islands", Code = "AX" },
             new Country { Id = 236, Name = "Heard Island and McDonald Islands", Code = "HM" },
-            new Country { Id = 237, Name = "Côte d'Ivoire", Code = "CI" }
-        );
+            new Country { Id = 237, Name = "Côte d'Ivoire", Code = "CI" });
     }
 }

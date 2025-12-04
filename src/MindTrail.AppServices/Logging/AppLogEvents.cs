@@ -7,25 +7,20 @@ namespace MindTrail.AppServices.Logging;
 /// </summary>
 public class AppLogEvents
 {
-    private const int BaseEventId = 1100; // 1100-1099
+    public const int BaseEventId = 1100; // 1100-1099
 
-    #region CRUD
+    private static EventId CreateEventId(int id, string name) => new(id, name);
 
-    public static readonly EventId Read = CreateEvenId(1001, "Read");
-    public static readonly EventId ReadNotFound = CreateEvenId(1002, "ReadNotFound");
-    public static readonly EventId Create = CreateEvenId(1003, "Created");
-    public static readonly EventId Update = CreateEvenId(1004, "Updated");
-    public static readonly EventId UpdateNotFound = CreateEvenId(1005, "UpdateNotFound");
-    public static readonly EventId Delete = CreateEvenId(1006, "Deleted");
-    public static readonly EventId DeleteNotFound = CreateEvenId(1007, "DeleteNotFound");
+    private static EventId CreateEventIdRelativeToBase(int idOffset, string name) => new(BaseEventId + idOffset, name);
 
-    #endregion
-
-    #region Private methods
-
-    private static EventId CreateEvenId(int id, string name) => new(id, name);
-
-    private static EventId CreateEvenIdRelativeToBase(int idOffset, string name) => new(BaseEventId + idOffset, name);
-
-    #endregion
+    public static class Crud
+    {
+        public static readonly EventId Read = CreateEventId(1001, "Read");
+        public static readonly EventId ReadNotFound = CreateEventId(1002, "ReadNotFound");
+        public static readonly EventId Create = CreateEventId(1003, "Created");
+        public static readonly EventId Update = CreateEventId(1004, "Updated");
+        public static readonly EventId UpdateNotFound = CreateEventId(1005, "UpdateNotFound");
+        public static readonly EventId Delete = CreateEventId(1006, "Deleted");
+        public static readonly EventId DeleteNotFound = CreateEventId(1007, "DeleteNotFound");
+    }
 }

@@ -24,7 +24,8 @@ namespace MindTrail.WebApi.Controllers;
 [Route("api/mind-trail/v1/persons")]
 public class PersonController(
     ProblemDetailsProvider problemDetails,
-    IPersonAppService personService) : ControllerBase
+    IPersonAppService personService)
+    : ControllerBase
 {
     /// <summary>
     /// Creates a new person.
@@ -59,18 +60,6 @@ public class PersonController(
         }
     }
 
-    #region Private methods
-
-    private IActionResult BadRequest(ProblemDetailsBuilder builder)
-    {
-        return problemDetails.CreateBadRequest(builder);
-    }
-
-    private IActionResult Conflict(ProblemDetailsBuilder builder)
-    {
-        return problemDetails.CreateConflict(builder);
-    }
-
     private static AppModels.PersonCreationModel MapModelToDomainEntity(PersonCreationModel model)
     {
         return new AppModels.PersonCreationModel
@@ -89,9 +78,17 @@ public class PersonController(
             FullName = domainEntity.FullName,
             BirthYear = domainEntity.BirthYear,
             BirthCountryId = domainEntity.BirthCountryId,
-            BirthCountryName = domainEntity.BirthCountryName
+            BirthCountryName = domainEntity.BirthCountryName,
         };
     }
 
-    #endregion
+    private IActionResult BadRequest(ProblemDetailsBuilder builder)
+    {
+        return problemDetails.CreateBadRequest(builder);
+    }
+
+    private IActionResult Conflict(ProblemDetailsBuilder builder)
+    {
+        return problemDetails.CreateConflict(builder);
+    }
 }

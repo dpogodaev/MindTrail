@@ -17,12 +17,8 @@ internal static class WebHostConfig
         AddHostedServicesConfig(services);
     }
 
-    #region Private methods
-
     private static void AddHostedServicesConfig(IServiceCollection services)
     {
         services.AddHostedService<AppLifetimeHostedService>();
     }
-
-    #endregion
 }

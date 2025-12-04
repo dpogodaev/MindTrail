@@ -21,10 +21,10 @@ public class HttpLoggingConfigTests
     [Fact]
     public void ConfigureServices_HttpLoggingSectionIsNotSpecified_LogsWarningMsg()
     {
-        //Arrange
+        // Arrange
         var settings = new Dictionary<string, string>
         {
-            { "LoggingFeatures", string.Empty }
+            { "LoggingFeatures", string.Empty },
         };
 
         var mockStartupLogger = new FakeStartupLogger();
@@ -42,14 +42,10 @@ public class HttpLoggingConfigTests
 
     #endregion
 
-    #region Private methods
-
     private static IConfiguration BuildConfiguration(Dictionary<string, string> settings = null)
     {
         return new ConfigurationBuilder()
             .AddInMemoryCollection(settings ?? new Dictionary<string, string>())
             .Build();
     }
-
-    #endregion
 }

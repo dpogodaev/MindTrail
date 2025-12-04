@@ -8,17 +8,17 @@ namespace MindTrail.Cli.Commands;
 public class CommandControl
 {
     /// <summary>
-    /// Indicates if to exit the application.
+    /// Gets or sets a value indicating whether indicates if to exit the application.
     /// </summary>
     public bool ShouldExit { get; set; }
 
     /// <summary>
-    /// Command execution counter.
+    /// Gets or sets command execution counter.
     /// </summary>
     public int ExecutionCounter { get; set; }
 
     /// <summary>
-    /// Command execution history.
+    /// Gets command execution history.
     /// </summary>
     public List<string> ExecutionHistory { get; } = [];
 }

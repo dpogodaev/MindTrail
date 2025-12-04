@@ -20,7 +20,7 @@ namespace MindTrail.EfCoreMssql.Migrations
                     BirthYear = table.Column<int>(type: "int", nullable: true),
                     BirthCountryId = table.Column<int>(type: "int", nullable: true),
                     CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                 },
                 constraints: table =>
                 {

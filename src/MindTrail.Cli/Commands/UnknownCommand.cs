@@ -14,8 +14,6 @@ namespace MindTrail.Cli.Commands;
 public class UnknownCommand(string line, string name, Dictionary<string, string> options)
     : Command(line, name, options)
 {
-    #region Command
-
     /// <inheritdoc cref="Command.Execute"/>
     public override void Execute(CommandControl control)
     {
@@ -23,6 +21,4 @@ public class UnknownCommand(string line, string name, Dictionary<string, string>
         Console.WriteLine("Could not execute because the specified command was not found. See 'help'.");
         Console.ResetColor();
     }
-
-    #endregion
 }

@@ -11,46 +11,34 @@ namespace MindTrail.EfCore.Entities;
 public class Person : IPersistentEntity, IHasCreationTime, IHasModificationTime
 {
     /// <summary>
-    /// Unique identifier (primary key).
+    /// Gets unique identifier (primary key).
     /// </summary>
     public Guid Id { get; init; }
 
     /// <summary>
-    /// Full name.
+    /// Gets or sets full name.
     /// </summary>
     public required string FullName { get; set; }
 
     /// <summary>
-    /// Year of birth.
+    /// Gets or sets year of birth.
     /// </summary>
     public int? BirthYear { get; set; }
 
     /// <summary>
-    /// ID of the country of birth.
+    /// Gets or sets iD of the country of birth.
     /// </summary>
     public int? BirthCountryId { get; set; }
 
-    #region Relashanship
-
     /// <summary>
-    /// Country of birth.
+    /// Gets or sets country of birth.
     /// </summary>
     [ForeignKey(nameof(BirthCountryId))]
     public Country? BirthCountry { get; set; }
 
-    #endregion
-
-    #region Audit properties
-
-    /// <summary>
-    /// Creation time of this entity.
-    /// </summary>
+    /// <inheritdoc cref="IHasCreationTime.CreationTime"/>
     public DateTime CreationTime { get; set; }
 
-    /// <summary>
-    /// The last modified time for this entity.
-    /// </summary>
+    /// <inheritdoc cref="IHasModificationTime.LastModificationTime"/>
     public DateTime? LastModificationTime { get; set; }
-
-    #endregion
 }

@@ -20,7 +20,7 @@ public class ApiKeyValidatorTests
     [Fact]
     public void IsValid_SingleApiKeyIsValid_ReturnsTrue()
     {
-        //Arrange
+        // Arrange
         const string apiKey = "apiKey";
         var service = BuildService(apiKey);
 
@@ -37,7 +37,7 @@ public class ApiKeyValidatorTests
     [Fact]
     public void IsValid_SingleApiKeyIsNotValid_ReturnsFalse()
     {
-        //Arrange
+        // Arrange
         const string apiKey = "123";
         var service = BuildService(apiKey);
 
@@ -56,13 +56,13 @@ public class ApiKeyValidatorTests
     [InlineData(1)]
     public void IsValid_OneOfAdditionalKeysIsValid_ReturnsTrue(int apiKeyIndex)
     {
-        //Arrange
+        // Arrange
         const string apiKey = "apiKey";
 
         var additionalApiKeys = new Dictionary<string, string>
         {
             { "user1", "apiKey1" },
-            { "user2", "apiKey2" }
+            { "user2", "apiKey2" },
         };
 
         var service = BuildService(apiKey, additionalApiKeys);
@@ -80,13 +80,13 @@ public class ApiKeyValidatorTests
     [Fact]
     public void IsValid_ApiKeyAndAllAdditionalKeysAreNotValid_ReturnsFalse()
     {
-        //Arrange
+        // Arrange
         const string apiKey = "apiKey";
 
         var additionalApiKeys = new Dictionary<string, string>
         {
             { "user1", "apiKey1" },
-            { "user2", "apiKey2" }
+            { "user2", "apiKey2" },
         };
 
         var service = BuildService(apiKey, additionalApiKeys);
@@ -100,44 +100,6 @@ public class ApiKeyValidatorTests
 
     #endregion
 
-    #region IsNotValid
-
-    /// <summary>
-    /// Test for <see cref="ApiKeyValidator.IsNotValid"/> method.
-    /// </summary>
-    [Fact]
-    public void IsNotValid_SingleApiKeyIsValid_ReturnsFalse()
-    {
-        //Arrange
-        const string apiKey = "apiKey";
-        var service = BuildService(apiKey);
-
-        // Act
-        var result = service.IsNotValid(apiKey);
-
-        // Assert
-        Assert.False(result);
-    }
-
-    /// <summary>
-    /// Test for <see cref="ApiKeyValidator.IsNotValid"/> method.
-    /// </summary>
-    [Fact]
-    public void IsNotValid_SingleApiKeyIsNotValid_ReturnsTrue()
-    {
-        //Arrange
-        const string apiKey = "123";
-        var service = BuildService(apiKey);
-
-        // Act
-        var result = service.IsNotValid("not-valid-apikey");
-
-        // Assert
-        Assert.True(result);
-    }
-
-    #endregion
-
     #region Private methods
 
     private static ApiKeyValidator BuildService(string apiKey, Dictionary<string, string> additionalApiKeys = null)
@@ -146,7 +108,7 @@ public class ApiKeyValidatorTests
         {
             ApiKey = apiKey,
             HeaderName = ApiKeyConstants.ApiKeyHeaderName,
-            AdditionalApiKeys = additionalApiKeys
+            AdditionalApiKeys = additionalApiKeys,
         });
     }
 

@@ -6,22 +6,22 @@
 public record BuildInfoDto
 {
     /// <summary>
-    /// Version number.
+    /// Gets the version number.
     /// </summary>
     public required string Version { get; init; }
 
     /// <summary>
-    /// Build date (UTC).
+    /// Gets the build date (UTC).
     /// </summary>
     public string? BuildDate { get; init; }
 
     /// <summary>
-    /// Build configuration (Debug or Release).
+    /// Gets the build configuration (<c>"Debug"</c> or <c>"Release"</c>).
     /// </summary>
     public string? Configuration { get; init; }
 
     /// <summary>
-    /// Application name.
+    /// Gets the application name.
     /// </summary>
     public string? AppName { get; init; }
 }

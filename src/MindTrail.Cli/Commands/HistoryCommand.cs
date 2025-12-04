@@ -11,10 +11,9 @@ namespace MindTrail.Cli.Commands;
 /// <param name="line">Command line.</param>
 /// <param name="name">Command name.</param>
 /// <param name="options">Command options.</param>
-public class HistoryCommand(string line, string name, Dictionary<string, string> options) : Command(line, name, options)
+public class HistoryCommand(string line, string name, Dictionary<string, string> options)
+    : Command(line, name, options)
 {
-    #region Command
-
     /// <inheritdoc cref="Command.Execute"/>
     public override void Execute(CommandControl control)
     {
@@ -22,10 +21,11 @@ public class HistoryCommand(string line, string name, Dictionary<string, string>
 
         Console.WriteLine($"Execution counter: {control.ExecutionCounter}");
         Console.WriteLine("Execution history:");
-        foreach (var execution in control.ExecutionHistory) Console.WriteLine(execution);
+        foreach (var execution in control.ExecutionHistory)
+        {
+            Console.WriteLine(execution);
+        }
 
         Console.ResetColor();
     }
-
-    #endregion
 }

@@ -28,11 +28,13 @@ public class DomainServicesArchTests
     public void DomainServices_ShouldFollowDependencyRules()
     {
         // Arrange
-        var policyDefinition = PolicyHelper.BuildPolicyDefinition(CurrentNamespace,
+        var policyDefinition = PolicyHelper.BuildPolicyDefinition(
+            CurrentNamespace,
             "Component dependency policy",
             $"Enforces the dependencies of the {nameof(DomainServices)} component");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.EfCore,
@@ -41,7 +43,8 @@ public class DomainServicesArchTests
             "DomainServices_ShouldNotDependOn_DataAccessLayer",
             "Domain services should not have any dependencies on the data access layer");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.Cli,
@@ -50,7 +53,8 @@ public class DomainServicesArchTests
             "DomainServices_ShouldNotDependOn_PresentationLayer",
             "Domain services should not have any dependencies on the presentation layer");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.HostConfiguration,
@@ -59,14 +63,16 @@ public class DomainServicesArchTests
             "DomainServices_ShouldNotDependOn_InfrastructureLayer",
             "Domain services should not have any dependencies on the infrastructure layer");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.AppServices),
             "DomainServices_ShouldNotDependOn_AppServices",
             "Domain services should not have any dependencies on application services");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependenciesOtherThan(
                     CreateAllowedDependenciesList([
@@ -92,8 +98,9 @@ public class DomainServicesArchTests
     [TestMethod]
     public void DomainServices_ShouldFollowNamingConventions()
     {
-        //Arrange
-        var policyDefinition = PolicyHelper.BuildPolicyDefinition(CurrentNamespace,
+        // Arrange
+        var policyDefinition = PolicyHelper.BuildPolicyDefinition(
+            CurrentNamespace,
             "Type naming policy",
             $"Enforces naming conventions for types in the {nameof(DomainServices)} component");
 
@@ -113,8 +120,6 @@ public class DomainServicesArchTests
         }
     }
 
-    #region Private methods
-
     private static string[] CreateAllowedDependenciesList(IEnumerable<string> allowedComponents)
     {
         var allowedDependenciesList = new List<string> { CurrentNamespace };
@@ -123,6 +128,4 @@ public class DomainServicesArchTests
 
         return allowedDependenciesList.ToArray();
     }
-
-    #endregion
 }

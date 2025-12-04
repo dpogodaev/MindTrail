@@ -11,7 +11,7 @@ namespace MindTrail.EfCore.Interfaces.Entities;
 public interface IHasCreationTime
 {
     /// <summary>
-    /// Creation time of this entity.
+    /// Gets or sets the creation time of this entity.
     /// </summary>
     DateTime CreationTime { get; set; }
 }

@@ -20,7 +20,7 @@ namespace MindTrail.EfCorePostgreSql.Migrations
                     BirthYear = table.Column<int>(type: "integer", nullable: true),
                     BirthCountryId = table.Column<int>(type: "integer", nullable: true),
                     CreationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    LastModificationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    LastModificationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                 },
                 constraints: table =>
                 {

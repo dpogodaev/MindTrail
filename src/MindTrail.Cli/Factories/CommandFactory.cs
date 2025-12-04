@@ -38,14 +38,14 @@ public class CommandFactory(IServiceScope scope)
         var parsedCommandLine = commandLine.ToLower();
 
         var name = CommandHelper.GetCommandName(parsedCommandLine);
-        var options = CommandHelper.GetCommandOptions(parsedCommandLine.Replace(name, ""), false);
+        var options = CommandHelper.GetCommandOptions(parsedCommandLine.Replace(name, string.Empty), false);
 
         return name switch
         {
             HelpCommandName => new HelpCommand(parsedCommandLine, name, options),
             ExitCommandName => new ExitCommand(parsedCommandLine, name, options),
             HistoryCommandName => new HistoryCommand(parsedCommandLine, name, options),
-            _ => new UnknownCommand(parsedCommandLine, name, options)
+            _ => new UnknownCommand(parsedCommandLine, name, options),
         };
     }
 }

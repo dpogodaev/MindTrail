@@ -59,7 +59,7 @@ public class CommandHelper
         }
 
         var commandLineWithoutCommandName = withCommandName
-            ? commandLine.Replace(GetCommandName(commandLine), "")
+            ? commandLine.Replace(GetCommandName(commandLine), string.Empty)
             : commandLine;
 
         var parsedCommandLine = commandLineWithoutCommandName.Replace("\"", "'").Trim() + defaultEndMarker;
@@ -68,7 +68,11 @@ public class CommandHelper
         {
             if (commandSymbol == startMarker)
             {
-                if (isValue) AddOption(); // when option without value
+                if (isValue)
+                {
+                    AddOption(); // when option without value
+                }
+
                 isStartMarker = true;
                 continue;
             }
@@ -94,7 +98,10 @@ public class CommandHelper
 
             if (isValue)
             {
-                if (commandSymbol == ' ' && value.Length == 0) continue;
+                if (commandSymbol == ' ' && value.Length == 0)
+                {
+                    continue;
+                }
 
                 if (commandSymbol == '\'' && value.Length == 0)
                 {

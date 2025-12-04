@@ -19,7 +19,8 @@ namespace MindTrail.WebApi.Handlers;
 /// The <see cref="ProblemDetails.Detail"/> contains detailed information about the exception and provided only for the development environment.<br/>
 /// The <see cref="ProblemDetails.Extensions"/> contains the trace ID.
 /// </remarks>
-public sealed class CustomExceptionHandler(IHostEnvironment environment) : IExceptionHandler
+public sealed class CustomExceptionHandler(IHostEnvironment environment)
+    : IExceptionHandler
 {
     /// <inheritdoc cref="IExceptionHandler.TryHandleAsync"/>
     public async ValueTask<bool> TryHandleAsync(
@@ -32,7 +33,7 @@ public sealed class CustomExceptionHandler(IHostEnvironment environment) : IExce
             Status = StatusCodes.Status500InternalServerError,
             Title = withDetailedInfo ? $"An error occured: {exception.Message}" : "An error occured",
             Detail = withDetailedInfo ? exception.ToString() : null,
-            Extensions = { ["traceId"] = Activity.Current?.Id ?? httpContext.TraceIdentifier }
+            Extensions = { ["traceId"] = Activity.Current?.Id ?? httpContext.TraceIdentifier },
         };
 
         await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);

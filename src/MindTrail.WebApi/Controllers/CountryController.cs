@@ -17,7 +17,8 @@ namespace MindTrail.WebApi.Controllers;
 [ApiController]
 [ApiKeyRequired]
 [Route("api/mind-trail/v1/countries")]
-public class CountryController(ICountryAppService countryService) : ControllerBase
+public class CountryController(ICountryAppService countryService)
+    : ControllerBase
 {
     /// <summary>
     /// Returns a list of countries.
@@ -30,13 +31,11 @@ public class CountryController(ICountryAppService countryService) : ControllerBa
     public async Task<IActionResult> GetCountries([FromQuery] CountryFilterModel filter)
     {
         var result = MapDomainEntityToDto(
-            await countryService.GetCountriesAsReadOnlyAsync(
+            await countryService.GetCountriesAsync(
                 MapModelToDomainEntity(filter)));
 
         return Ok(result);
     }
-
-    #region Private methods
 
     private static CountryFilter MapModelToDomainEntity(CountryFilterModel model)
     {
@@ -55,7 +54,7 @@ public class CountryController(ICountryAppService countryService) : ControllerBa
             Items = domainEntity.Items.Select(MapDomainEntityToDto),
             PageNumber = domainEntity.PageNumber,
             PageSize = domainEntity.PageSize,
-            TotalCount = domainEntity.TotalCount
+            TotalCount = domainEntity.TotalCount,
         };
     }
 
@@ -65,9 +64,7 @@ public class CountryController(ICountryAppService countryService) : ControllerBa
         {
             Id = domainEntity.Id,
             Code = domainEntity.Code,
-            Name = domainEntity.Name
+            Name = domainEntity.Name,
         };
     }
-
-    #endregion
 }

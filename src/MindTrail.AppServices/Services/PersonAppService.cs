@@ -16,10 +16,9 @@ namespace MindTrail.AppServices.Services;
 public class PersonAppService(
     ILogger<PersonAppService> logger,
     IUnitOfWork unitOfWork,
-    IPersonService personService) : IPersonAppService
+    IPersonService personService)
+    : IPersonAppService
 {
-    #region IPersonAppService
-
     /// <inheritdoc cref="IPersonAppService.CreatePersonAsync"/>
     public async Task<Person> CreatePersonAsync(PersonCreationModel model)
     {
@@ -29,22 +28,20 @@ public class PersonAppService(
 
             var createdPerson = await personService.CreatePersonAsync(MapModelToDomainEntity(model));
 
-            logger.LogDebug(AppLogEvents.Create, "{Title} {PersonId} {Details}",
+            logger.LogDebug(
+                AppLogEvents.Crud.Create, "{Title} {PersonId} {Details}",
                 "The person was created", createdPerson.Id, createdPerson.Serialize());
 
             return createdPerson;
         }
         catch (Exception e)
         {
-            logger.Log(e.GetLogLevel(), AppLogEvents.Create, e, "{Title} {Details}",
+            logger.Log(
+                e.GetLogLevel(), AppLogEvents.Crud.Create, e, "{Title} {Details}",
                 "Failed to create a person", model.Serialize());
             throw;
         }
     }
-
-    #endregion
-
-    #region Private methods
 
     private static Person MapModelToDomainEntity(PersonCreationModel model)
     {
@@ -52,9 +49,7 @@ public class PersonAppService(
         {
             FullName = model.FullName,
             BirthYear = model.BirthYear,
-            BirthCountryId = model.BirthCountryId
+            BirthCountryId = model.BirthCountryId,
         };
     }
-
-    #endregion
 }

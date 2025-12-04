@@ -8,19 +8,14 @@ using EfRepositories = MindTrail.EfCore.Interfaces.Repositories;
 
 namespace MindTrail.EfCore.Adapters.Repositories;
 
-public class CountryRepositoryAdapter(EfRepositories.ICountryRepository repository) : ICountryRepository
+public class CountryRepositoryAdapter(EfRepositories.ICountryRepository repository)
+    : ICountryRepository
 {
-    #region ICountryRepository
-
     public async Task<PagedResult<Country>> GetCountriesAsReadOnlyAsync(CountryFilter filter)
     {
         return MapToDomainEntities(
             await repository.GetCountriesAsReadOnlyAsync(filter));
     }
-
-    #endregion
-
-    #region Private methods
 
     private static PagedResult<Country> MapToDomainEntities(PagedResult<EfEntities.Country> efEntities)
     {
@@ -29,7 +24,7 @@ public class CountryRepositoryAdapter(EfRepositories.ICountryRepository reposito
             Items = efEntities.Items.Select(MapToDomainEntity),
             PageNumber = efEntities.PageNumber,
             PageSize = efEntities.PageSize,
-            TotalCount = efEntities.TotalCount
+            TotalCount = efEntities.TotalCount,
         };
     }
 
@@ -39,9 +34,7 @@ public class CountryRepositoryAdapter(EfRepositories.ICountryRepository reposito
         {
             Id = efEntity.Id,
             Name = efEntity.Name,
-            Code = efEntity.Code
+            Code = efEntity.Code,
         };
     }
-
-    #endregion
 }

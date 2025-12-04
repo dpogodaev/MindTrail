@@ -16,7 +16,8 @@ public static class SerializationExtensions
     /// Serialized string value if the <paramref name="source"/> is not <c>null</c>;
     /// <c><see cref="string.Empty"/></c> otherwise.
     /// </returns>
-    public static string Serialize<T>(this T? source) where T : class
+    public static string Serialize<T>(this T? source)
+        where T : class
     {
         return source != null
             ? JsonSerializer.Serialize(source)

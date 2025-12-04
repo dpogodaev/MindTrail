@@ -3,12 +3,11 @@ using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using Swashbuckle.AspNetCore.SwaggerUI;
 using MindTrail.WebApi.Filters;
 using MindTrail.WebAuth.Constants;
 using MindTrail.WebHost.Settings;
-using System.Text.Json;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace MindTrail.WebHost.Configs.Common;
 
@@ -17,7 +16,7 @@ namespace MindTrail.WebHost.Configs.Common;
 /// </summary>
 internal static class SwaggerConfig
 {
-    private static SwaggerSettings _swaggerSettings;
+    private static SwaggerSettings? _swaggerSettings;
 
     /// <summary>
     /// Adds a configuration for Swagger.
@@ -33,7 +32,7 @@ internal static class SwaggerConfig
             options.SwaggerDoc(settings.DocumentName, new OpenApiInfo
             {
                 Title = settings.AppTitle,
-                Version = settings.DocumentVersion
+                Version = settings.DocumentVersion,
             });
 
             options.UseAllOfToExtendReferenceSchemas();
@@ -62,24 +61,19 @@ internal static class SwaggerConfig
         options.DefaultModelsExpandDepth(_swaggerSettings.DefaultModelsExpandDepth);
     }
 
-    #region Private methods
-
     private static void AddSecurityDefinitionForApiKey(this SwaggerGenOptions options)
     {
         options.AddSecurityDefinition(ApiKeyConstants.ApiKeySchemeName, new OpenApiSecurityScheme
-            {
-                Name = ApiKeyConstants.ApiKeyHeaderName,
-                Scheme = ApiKeyConstants.ApiKeySchemeName,
-                Type = SecuritySchemeType.ApiKey,
-                In = ParameterLocation.Header
-            }
-        );
+        {
+            Name = ApiKeyConstants.ApiKeyHeaderName,
+            Scheme = ApiKeyConstants.ApiKeySchemeName,
+            Type = SecuritySchemeType.ApiKey,
+            In = ParameterLocation.Header,
+        });
     }
 
     private static string GetXmlFilePath(string componentName)
     {
         return $"{Path.Combine(AppDomain.CurrentDomain.BaseDirectory, componentName)}.xml";
     }
-
-    #endregion
 }

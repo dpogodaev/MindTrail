@@ -28,18 +28,21 @@ public class EfCoreArchTests
     public void EfCore_ShouldFollowDependencyRules()
     {
         // Arrange
-        var policyDefinition = PolicyHelper.BuildPolicyDefinition(CurrentNamespace,
+        var policyDefinition = PolicyHelper.BuildPolicyDefinition(
+            CurrentNamespace,
             "Component dependency policy",
             $"Enforces the dependencies of the {nameof(AppServices)} component");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.AppServices),
             "EfCore_ShouldNotDependOn_AppServices",
             "Abstraction above the data layer (EF) should not have any dependencies on the application services");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.Cli,
@@ -48,7 +51,8 @@ public class EfCoreArchTests
             "EfCore_ShouldNotDependOn_PresentationLayer",
             "Abstraction above the data layer (EF) should not have any dependencies on the presentation layer");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.HostConfiguration,
@@ -57,7 +61,8 @@ public class EfCoreArchTests
             "EfCore_ShouldNotDependOn_InfrastructureLayer",
             "Abstraction above the data layer (EF) should not have any dependencies on the infrastructure layer");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.EfCoreMssql,
@@ -65,7 +70,8 @@ public class EfCoreArchTests
             "EfCore_ShouldNotDependOn_ImplementationOfDataAccess",
             "Abstraction above the data layer (EF) should not have any dependencies on the implementation of data access");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependenciesOtherThan(
                     CreateAllowedDependenciesList([
@@ -92,8 +98,9 @@ public class EfCoreArchTests
     [TestMethod]
     public void EfCore_ShouldFollowNamingConventions()
     {
-        //Arrange
-        var policyDefinition = PolicyHelper.BuildPolicyDefinition(CurrentNamespace,
+        // Arrange
+        var policyDefinition = PolicyHelper.BuildPolicyDefinition(
+            CurrentNamespace,
             "Type naming policy",
             $"Enforces naming conventions for types in the {nameof(EfCore)} component");
 
@@ -113,8 +120,6 @@ public class EfCoreArchTests
         }
     }
 
-    #region Private methods
-
     private static string[] CreateAllowedDependenciesList(IEnumerable<string> allowedComponents)
     {
         var allowedDependenciesList = new List<string> { CurrentNamespace };
@@ -123,6 +128,4 @@ public class EfCoreArchTests
 
         return allowedDependenciesList.ToArray();
     }
-
-    #endregion
 }

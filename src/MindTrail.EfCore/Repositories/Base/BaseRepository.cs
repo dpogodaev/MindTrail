@@ -11,23 +11,13 @@ namespace MindTrail.EfCore.Repositories.Base;
 /// <summary>
 /// Database repository with implementation of CRUD operations.
 /// </summary>
-public abstract class BaseRepository
+/// <param name="dbContext">Application database context.</param>
+public abstract class BaseRepository(AppDbContext dbContext)
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="BaseRepository"/> class with database context provided.
-    /// </summary>
-    /// <param name="dbContext">Application database context.</param>
-    protected BaseRepository(AppDbContext dbContext)
-    {
-        DbContext = dbContext;
-    }
-
     /// <summary>
     /// Provides access to database entities and saving changes to the database.
     /// </summary>
-    protected readonly AppDbContext DbContext;
-
-    #region CRUD operations
+    protected readonly AppDbContext DbContext = dbContext;
 
     /// <summary>
     /// Returns a paged result from the specified query with the specified pagination parameters.
@@ -38,7 +28,8 @@ public abstract class BaseRepository
     /// <typeparam name="TEntity">The type of the entities in the query.</typeparam>
     /// <returns>A <see cref="PagedResult{TEntity}"/> containing the paged items and information about pagination.</returns>
     protected static async Task<PagedResult<TEntity>> GetPagedResult<TEntity>(
-        IQueryable<TEntity> query, int pageNumber, int pageSize) where TEntity : class, IPersistentEntity
+        IQueryable<TEntity> query, int pageNumber, int pageSize)
+        where TEntity : class, IPersistentEntity
     {
         var totalCount = await query.CountAsync();
         var skip = (pageNumber - 1) * pageSize;
@@ -48,8 +39,23 @@ public abstract class BaseRepository
             Items = await query.Skip(skip).Take(pageSize).ToListAsync(),
             PageNumber = pageNumber,
             PageSize = pageSize,
-            TotalCount = totalCount
+            TotalCount = totalCount,
         };
+    }
+
+    /// <summary>
+    /// Prepares a persistent entity before adding it to the database.
+    /// </summary>
+    /// <remarks>
+    /// If necessary, sets the <see cref="IHasCreationTime.CreationTime"/> and <see cref="IHasTenantId.TenantId"/>.
+    /// </remarks>
+    /// <param name="entity">Persistent entity from the database.</param>
+    /// <exception cref="ArgumentNullException">Thrown when persistent entity is not specified.</exception>
+    protected static void SetAuditPropertiesToCreateEntity(IPersistentEntity entity)
+    {
+        ArgumentNullException.ThrowIfNull(entity);
+
+        SetCreationTime(entity);
     }
 
     /// <summary>
@@ -57,7 +63,8 @@ public abstract class BaseRepository
     /// </summary>
     /// <typeparam name="TEntity">Type of persistent entity.</typeparam>
     /// <returns>List of all entities.</returns>
-    protected DbSet<TEntity> GetEntities<TEntity>() where TEntity : class, IPersistentEntity
+    protected DbSet<TEntity> GetEntities<TEntity>()
+        where TEntity : class, IPersistentEntity
     {
         return DbContext.Set<TEntity>();
     }
@@ -68,7 +75,8 @@ public abstract class BaseRepository
     /// <param name="entity">Persistent entity.</param>
     /// <typeparam name="TEntity">Type of persistent entity.</typeparam>
     /// <returns>Created entity.</returns>
-    protected async Task<TEntity> CreateEntityAsync<TEntity>(TEntity entity) where TEntity : IPersistentEntity
+    protected async Task<TEntity> CreateEntityAsync<TEntity>(TEntity entity)
+        where TEntity : IPersistentEntity
     {
         SetAuditPropertiesToCreateEntity(entity);
 
@@ -85,7 +93,8 @@ public abstract class BaseRepository
     /// <param name="entity">Persistent entity.</param>
     /// <typeparam name="TEntity">Type of persistent entity.</typeparam>
     /// <remarks>Supports tracked and untracked entities.</remarks>
-    protected async Task UpdateEntity<TEntity>(TEntity entity) where TEntity : IPersistentEntity
+    protected async Task UpdateEntity<TEntity>(TEntity entity)
+        where TEntity : IPersistentEntity
     {
         if (DbContext.Entry(entity).State == EntityState.Detached)
         {
@@ -103,7 +112,8 @@ public abstract class BaseRepository
     /// </summary>
     /// <param name="entity">Persistent tracked entity.</param>
     /// <typeparam name="TEntity">Type of persistent entity.</typeparam>
-    protected async Task DeleteEntity<TEntity>(TEntity entity) where TEntity : IPersistentEntity
+    protected async Task DeleteEntity<TEntity>(TEntity entity)
+        where TEntity : IPersistentEntity
     {
         SetAuditPropertiesToDeleteEntity(entity);
 
@@ -113,25 +123,6 @@ public abstract class BaseRepository
         }
 
         await SaveChangesIfAutoSaveEnabledAsync();
-    }
-
-    #endregion
-
-    #region Setting audit properties
-
-    /// <summary>
-    /// Prepares a persistent entity before adding it to the database.
-    /// </summary>
-    /// <remarks>
-    /// If necessary, sets the <see cref="IHasCreationTime.CreationTime"/> and <see cref="IHasTenantId.TenantId"/>.
-    /// </remarks>
-    /// <param name="entity">Persistent entity from the database.</param>
-    /// <exception cref="ArgumentNullException">Thrown when persistent entity is not specified.</exception>
-    protected static void SetAuditPropertiesToCreateEntity(IPersistentEntity entity)
-    {
-        ArgumentNullException.ThrowIfNull(entity);
-
-        SetCreationTime(entity);
     }
 
     /// <summary>
@@ -167,9 +158,24 @@ public abstract class BaseRepository
         SetDeletionTime(entity);
     }
 
-    #endregion
+    private static void SetCreationTime(IPersistentEntity entity)
+    {
+        if (entity is IHasCreationTime e)
+        {
+            e.CreationTime = DateTime.UtcNow;
+        }
+    }
 
-    #region Private methods
+    private static void SetDeletionTime(IPersistentEntity entity)
+    {
+        if (entity is not IHasDeletionTime e)
+        {
+            return;
+        }
+
+        e.DeletionTime = DateTime.UtcNow;
+        e.IsDeleted = true;
+    }
 
     private async Task SaveChangesIfAutoSaveEnabledAsync()
     {
@@ -210,17 +216,12 @@ public abstract class BaseRepository
         }
     }
 
-    private static void SetCreationTime(IPersistentEntity entity)
-    {
-        if (entity is IHasCreationTime e)
-        {
-            e.CreationTime = DateTime.UtcNow;
-        }
-    }
-
     private void SetModificationTime(IPersistentEntity entity)
     {
-        if (entity is not IHasModificationTime e) return;
+        if (entity is not IHasModificationTime e)
+        {
+            return;
+        }
 
         if (IsModified(entity))
         {
@@ -228,18 +229,8 @@ public abstract class BaseRepository
         }
     }
 
-    private static void SetDeletionTime(IPersistentEntity entity)
-    {
-        if (entity is not IHasDeletionTime e) return;
-
-        e.DeletionTime = DateTime.UtcNow;
-        e.IsDeleted = true;
-    }
-
     private bool IsModified(IPersistentEntity entity)
     {
         return DbContext.Entry(entity).State == EntityState.Modified;
     }
-
-    #endregion
 }

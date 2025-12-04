@@ -9,22 +9,23 @@ namespace MindTrail.Cli.Interfaces;
 public interface ICommand
 {
     /// <summary>
-    /// Command line.
+    /// Gets the command line.
     /// </summary>
     public string Line { get; }
 
     /// <summary>
-    /// Command name.
+    /// Gets the name of the command.
     /// </summary>
     string Name { get; }
 
     /// <summary>
-    /// Command options.
+    /// Gets the command options.
     /// </summary>
     Dictionary<string, string> Options { get; }
 
     /// <summary>
     /// Executes the command.
     /// </summary>
+    /// <param name="control">Command execution controller.</param>
     void Execute(CommandControl control);
 }

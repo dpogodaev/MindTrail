@@ -31,8 +31,8 @@ public static class EfCoreConfig
     /// <param name="services">Used to register application services.</param>
     /// <param name="configuration">The application configuration.</param>
     /// <param name="logger">The startup logger. Optional.</param>
-    public static void AddEfCoreConfig(this IServiceCollection services,
-        IConfiguration configuration, IStartupLogger logger = null)
+    public static void AddEfCoreConfig(
+        this IServiceCollection services, IConfiguration configuration, IStartupLogger logger = null)
     {
         AddRepositories(services);
         AddDatabaseProvider(services, configuration, logger);
@@ -66,16 +66,14 @@ public static class EfCoreConfig
         }
     }
 
-    #region Private methods
-
     private static void AddRepositories(IServiceCollection services)
     {
         services.AddTransient<IPersonRepository, PersonRepository>();
         services.AddTransient<ICountryRepository, CountryRepository>();
     }
 
-    private static void AddDatabaseProvider(this IServiceCollection services,
-        IConfiguration configuration, IStartupLogger logger = null)
+    private static void AddDatabaseProvider(
+        this IServiceCollection services, IConfiguration configuration, IStartupLogger logger = null)
     {
         var databaseSettings = configuration.BindSection<EfCoreSettings>(EfCoreConfigSection);
 
@@ -103,6 +101,4 @@ public static class EfCoreConfig
             $"Unsupported database provider: '{databaseSettings.DatabaseProvider}'. " +
             $"Supported providers are: '{SqlServerProviderName}', '{PostgreSqlProviderName}'.");
     }
-
-    #endregion
 }

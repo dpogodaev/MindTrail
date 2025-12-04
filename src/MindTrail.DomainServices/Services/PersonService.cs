@@ -8,11 +8,10 @@ using MindTrail.DomainServices.Interfaces.Storages.Repositories;
 namespace MindTrail.DomainServices.Services;
 
 /// <inheritdoc/>
-public class PersonService(IPersonRepository personRepository) : IPersonService
+public class PersonService(IPersonRepository personRepository)
+    : IPersonService
 {
     private const int MaxPersonNameLength = 64;
-
-    #region IPersonService
 
     /// <inheritdoc cref="IPersonService.CreatePersonAsync"/>
     public async Task<Person> CreatePersonAsync(Person personToCreate)
@@ -20,16 +19,6 @@ public class PersonService(IPersonRepository personRepository) : IPersonService
         await ValidatePersonAndThrowAsync(personToCreate);
 
         return await personRepository.CreatePersonAsync(personToCreate);
-    }
-
-    #endregion
-
-    #region Private methods
-
-    private async Task ValidatePersonAndThrowAsync(Person person)
-    {
-        ValidatePersonNameLengthAndThrow(person);
-        await ValidatePersonDuplicatesAndThrowAsync(person);
     }
 
     private static void ValidatePersonNameLengthAndThrow(Person person)
@@ -40,19 +29,26 @@ public class PersonService(IPersonRepository personRepository) : IPersonService
         }
     }
 
+    private async Task ValidatePersonAndThrowAsync(Person person)
+    {
+        ValidatePersonNameLengthAndThrow(person);
+        await ValidatePersonDuplicatesAndThrowAsync(person);
+    }
+
     private async Task ValidatePersonDuplicatesAndThrowAsync(Person person)
     {
         var duplicateRules = await personRepository.GetPersonsAsReadOnlyAsync(
             new PersonFilter
             {
                 FullName = person.FullName,
-                BirthYear = person.BirthYear
+                BirthYear = person.BirthYear,
             });
 
-        if (duplicateRules.TotalCount == 0) return;
+        if (duplicateRules.TotalCount == 0)
+        {
+            return;
+        }
 
         throw new PersonDuplicateException(person.FullName, person.BirthYear);
     }
-
-    #endregion
 }

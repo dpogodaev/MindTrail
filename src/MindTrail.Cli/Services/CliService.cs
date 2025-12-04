@@ -13,10 +13,9 @@ namespace MindTrail.Cli.Services;
 /// Service that implements the command line interface.
 /// </summary>
 /// <param name="scopeFactory">Used to create application services within a scope.</param>
-public class CliService(IServiceScopeFactory scopeFactory) : IHostedService
+public class CliService(IServiceScopeFactory scopeFactory)
+    : IHostedService
 {
-    #region IHostedService
-
     /// <inheritdoc cref="IHostedService.StartAsync"/>
     public Task StartAsync(CancellationToken cancellationToken)
     {
@@ -48,10 +47,6 @@ public class CliService(IServiceScopeFactory scopeFactory) : IHostedService
         throw new NotImplementedException();
     }
 
-    #endregion
-
-    #region Private methods
-
     private static string GetUserCommand()
     {
         Console.ForegroundColor = ColorConstants.InputColor;
@@ -61,6 +56,4 @@ public class CliService(IServiceScopeFactory scopeFactory) : IHostedService
 
         return command;
     }
-
-    #endregion
 }

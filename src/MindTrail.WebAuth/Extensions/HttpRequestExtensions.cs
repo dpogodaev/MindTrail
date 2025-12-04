@@ -16,7 +16,10 @@ public static class HttpRequestExtensions
     /// <returns>The parameter value if the parameter is found; <c>null</c> otherwise.</returns>
     public static string GetQueryParameter(this HttpRequest httpRequest, string name)
     {
-        if (!httpRequest.Query.TryGetValue(name, out var value)) return null;
+        if (!httpRequest.Query.TryGetValue(name, out var value))
+        {
+            return null;
+        }
 
         return value.Count != 0 ? value.First() : null;
     }
@@ -35,7 +38,7 @@ public static class HttpRequestExtensions
     }
 
     /// <summary>
-    /// Returns the value of the header key. 
+    /// Returns the value of the header key.
     /// </summary>
     /// <param name="httpRequest">HTTP request.</param>
     /// <param name="key">Header key.</param>

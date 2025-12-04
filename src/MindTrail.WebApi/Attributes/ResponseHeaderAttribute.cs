@@ -10,15 +10,16 @@ namespace MindTrail.WebApi.Attributes;
 public class ResponseHeaderAttribute : Attribute
 {
     /// <summary>
-    /// Initializes a new instance of <see cref="ResponseHeaderAttribute"/> class.
+    /// Initializes a new instance of the <see cref="ResponseHeaderAttribute"/> class.
     /// </summary>
     /// <param name="name">Response header name.</param>
-    public ResponseHeaderAttribute(string name) : this(name, string.Empty)
+    public ResponseHeaderAttribute(string name)
+        : this(name, string.Empty)
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of <see cref="ResponseHeaderAttribute"/> class.
+    /// Initializes a new instance of the <see cref="ResponseHeaderAttribute"/> class.
     /// </summary>
     /// <param name="name">Response header name.</param>
     /// <param name="description">Response header description.</param>
@@ -31,22 +32,22 @@ public class ResponseHeaderAttribute : Attribute
     }
 
     /// <summary>
-    /// Response header name.
+    /// Gets the name of the response header.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    /// HTTP status code.
+    /// Gets the HTTP status code.
     /// </summary>
     public int StatusCode { get; init; }
 
     /// <summary>
-    /// Type of the response header value.
+    /// Gets the type of the response header value.
     /// </summary>
     public string Type { get; init; }
 
     /// <summary>
-    /// Response header description.
+    /// Gets the description of the response header.
     /// </summary>
     public string Description { get; init; }
 }

@@ -28,11 +28,13 @@ public class CliHostArchTests
     public void CliHost_ShouldFollowDependencyRules()
     {
         // Arrange
-        var policyDefinition = PolicyHelper.BuildPolicyDefinition(CurrentNamespace,
+        var policyDefinition = PolicyHelper.BuildPolicyDefinition(
+            CurrentNamespace,
             "Component dependency policy",
             $"Enforces the dependencies of the {nameof(CliHost)} component");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.EfCore,
@@ -41,7 +43,8 @@ public class CliHostArchTests
             "CliHost_ShouldNotDependOn_DomainLayer",
             "The CLI host should not have any dependencies on the application (domain) layer");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.EfCore,
@@ -50,7 +53,8 @@ public class CliHostArchTests
             "CliHost_ShouldNotDependOn_DataAccessLayer",
             "The CLI host should not have any dependencies on the data access layer");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.WebApi,
@@ -58,7 +62,8 @@ public class CliHostArchTests
             "CliHost_ShouldNotDependOn_WebComponents",
             $"The CLI host should not depend on web-based presentation components such as {nameof(WebApi)}");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependenciesOtherThan(
                     CreateAllowedDependenciesList([
@@ -66,8 +71,7 @@ public class CliHostArchTests
                         ComponentNamespaces.HostConfiguration
                     ])),
             "CliHost_ShouldOnlyDependOn_CliAndHostConfiguration",
-            $"The CLI host can only depend on the components implementing its interface (e.g., {nameof(Cli)}) " +
-            $"and the application configurator ({nameof(HostConfiguration)})");
+            $"The CLI host can only depend on the components implementing its interface (e.g., {nameof(Cli)}) and the application configurator ({nameof(HostConfiguration)})");
 
         // Act
         var results = policyDefinition.Evaluate().Results;
@@ -85,8 +89,9 @@ public class CliHostArchTests
     [TestMethod]
     public void CliHost_ShouldFollowNamingConventions()
     {
-        //Arrange
-        var policyDefinition = PolicyHelper.BuildPolicyDefinition(CurrentNamespace,
+        // Arrange
+        var policyDefinition = PolicyHelper.BuildPolicyDefinition(
+            CurrentNamespace,
             "Type naming policy",
             $"Enforces naming conventions for types in the {nameof(CliHost)} component");
 

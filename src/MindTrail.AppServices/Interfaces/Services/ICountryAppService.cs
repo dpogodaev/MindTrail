@@ -6,5 +6,5 @@ namespace MindTrail.AppServices.Interfaces.Services;
 
 public interface ICountryAppService
 {
-    Task<PagedResult<Country>> GetCountriesAsReadOnlyAsync(CountryFilter filter);
+    Task<PagedResult<Country>> GetCountriesAsync(CountryFilter filter);
 }

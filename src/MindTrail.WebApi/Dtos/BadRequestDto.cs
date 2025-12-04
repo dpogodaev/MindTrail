@@ -6,17 +6,17 @@
 public record BadRequestDto
 {
     /// <summary>
-    /// Name of a property with an invalid value.
+    /// Gets the name of a property with an invalid value.
     /// </summary>
     public string? PropertyName { get; init; }
 
     /// <summary>
-    /// Invalid property value.
+    /// Gets an invalid property value.
     /// </summary>
     public string? PropertyValue { get; init; }
 
     /// <summary>
-    /// Description of the reason for the client's error.
+    /// Gets a description of the reason for the client's error.
     /// </summary>
     public required string Description { get; init; }
 }

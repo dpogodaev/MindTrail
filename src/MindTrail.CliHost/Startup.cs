@@ -18,8 +18,8 @@ internal static class Startup
     /// <param name="builder">The builder used to configure application services.</param>
     /// <param name="configuration">The application configuration.</param>
     /// <param name="logger">The startup logger. Optional.</param>
-    public static void ConfigureServices(this IHostApplicationBuilder builder,
-        IConfiguration configuration, IStartupLogger logger = null)
+    public static void ConfigureServices(
+        this IHostApplicationBuilder builder, IConfiguration configuration, IStartupLogger logger = null)
     {
         builder.Services.AddCommonConfig();
         builder.Services.AddDomainServicesConfig(configuration, logger);
@@ -36,8 +36,9 @@ internal static class Startup
     /// <param name="host">The application host.</param>
     /// <param name="configuration">The application configuration.</param>
     /// <param name="logger">The startup logger. Optional.</param>
-    public static async Task ApplyAutoMigrationAsync(this IHost host,
-        IConfiguration configuration, IStartupLogger logger)
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+    public static async Task ApplyAutoMigrationAsync(
+        this IHost host, IConfiguration configuration, IStartupLogger logger)
     {
         await host.ApplyMigrationAsync(configuration, logger);
     }

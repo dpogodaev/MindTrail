@@ -8,14 +8,17 @@ namespace MindTrail.EfCore.Context;
 /// Application database context.
 /// </summary>
 /// <param name="options">Configuration options for the database context (connection, provider, etc.).</param>
-public abstract class AppDbContext(DbContextOptions options) : DbContext(options)
+public abstract class AppDbContext(DbContextOptions options)
+    : DbContext(options)
 {
     /// <summary>
-    /// Indicates if changes should be saved automatically after entity operations.
+    /// Gets or sets a value indicating whether indicates if changes should be saved automatically after entity operations.
     /// </summary>
     public bool IsAutoSaveEnabled { get; set; }
 
-    #region DbContext
+    public DbSet<Country> Countries { get; set; }
+
+    public DbSet<Person> Persons { get; set; }
 
     /// <summary>
     /// Applies shared (base) configuration for the EF Core model
@@ -28,13 +31,4 @@ public abstract class AppDbContext(DbContextOptions options) : DbContext(options
         modelBuilder.ApplyConfiguration(new CountryConfig());
         modelBuilder.ApplyConfiguration(new PersonConfig());
     }
-
-    #endregion
-
-    #region Database entities (table names)
-
-    public DbSet<Country> Countries { get; set; }
-    public DbSet<Person> Persons { get; set; }
-
-    #endregion
 }

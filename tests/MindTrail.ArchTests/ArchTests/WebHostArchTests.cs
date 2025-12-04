@@ -29,11 +29,13 @@ public class WebHostArchTests
     public void WebHost_ShouldFollowDependencyRules()
     {
         // Arrange
-        var policyDefinition = PolicyHelper.BuildPolicyDefinition(CurrentNamespace,
+        var policyDefinition = PolicyHelper.BuildPolicyDefinition(
+            CurrentNamespace,
             "Component dependency policy",
             $"Enforces the dependencies of the {nameof(WebHost)} component");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.EfCore,
@@ -42,7 +44,8 @@ public class WebHostArchTests
             "WebHost_ShouldNotDependOn_DomainLayer",
             "The Web host should not have any dependencies on the application (domain) layer");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.EfCore,
@@ -51,14 +54,16 @@ public class WebHostArchTests
             "WebHost_ShouldNotDependOn_DataAccessLayer",
             "The Web host should not have any dependencies on the data access layer");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.Cli),
             "WebHost_ShouldNotDependOn_CliComponents",
             $"The Web host should not depend on command-line-based presentation components such as {nameof(Cli)}");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependenciesOtherThan(
                     CreateAllowedDependenciesList([
@@ -67,9 +72,7 @@ public class WebHostArchTests
                         ComponentNamespaces.HostConfiguration
                     ])),
             "WebHost_ShouldOnlyDependOn_WebAndHostConfiguration",
-            $"The Web host can only depend on the components implementing its interface, " +
-            $"such as {nameof(WebApi)} and {nameof(WebAuth)}, " +
-            $"and the application configurator ({nameof(HostConfiguration)})");
+            $"The Web host can only depend on the components implementing its interface, such as {nameof(WebApi)} and {nameof(WebAuth)}, and the application configurator ({nameof(HostConfiguration)})");
 
         // Act
         var results = policyDefinition.Evaluate().Results;
@@ -87,8 +90,9 @@ public class WebHostArchTests
     [TestMethod]
     public void WebHost_ShouldFollowNamingConventions()
     {
-        //Arrange
-        var policyDefinition = PolicyHelper.BuildPolicyDefinition(CurrentNamespace,
+        // Arrange
+        var policyDefinition = PolicyHelper.BuildPolicyDefinition(
+            CurrentNamespace,
             "Type naming policy",
             $"Enforces naming conventions for types in the {nameof(WebHost)} component");
 
@@ -106,8 +110,6 @@ public class WebHostArchTests
         }
     }
 
-    #region Private methods
-
     private static string[] CreateAllowedDependenciesList(IEnumerable<string> allowedComponents)
     {
         var allowedDependenciesList = new List<string> { CurrentNamespace };
@@ -116,6 +118,4 @@ public class WebHostArchTests
 
         return allowedDependenciesList.ToArray();
     }
-
-    #endregion
 }

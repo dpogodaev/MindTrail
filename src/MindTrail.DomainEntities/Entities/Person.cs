@@ -8,27 +8,27 @@ namespace MindTrail.DomainEntities.Entities;
 public class Person
 {
     /// <summary>
-    /// Unique identifier (primary key).
+    /// Gets a unique identifier (primary key).
     /// </summary>
     public Guid Id { get; init; }
 
     /// <summary>
-    /// Full name.
+    /// Gets or sets the full name.
     /// </summary>
     public required string FullName { get; set; }
 
     /// <summary>
-    /// Year of birth.
+    /// Gets or sets the year of birth.
     /// </summary>
     public int? BirthYear { get; set; }
 
     /// <summary>
-    /// ID of the country of birth.
+    /// Gets or sets the ID of the country in which the person was born.
     /// </summary>
     public int? BirthCountryId { get; set; }
 
     /// <summary>
-    /// Country of birth.
+    /// Gets or sets the name of the country where the person was born.
     /// </summary>
     public string? BirthCountryName { get; set; }
 }

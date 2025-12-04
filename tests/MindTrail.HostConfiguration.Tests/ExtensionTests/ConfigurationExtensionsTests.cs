@@ -18,12 +18,12 @@ public class ConfigurationExtensionsTests
     [Fact]
     public void SectionExists_SpecifiedSectionExists_ReturnsTrue()
     {
-        //Arrange
+        // Arrange
         const string sectionName = "TestSection";
 
         var configuration = BuildConfiguration(new Dictionary<string, string>
         {
-            { $"{sectionName}:Property1", "Test" }
+            { $"{sectionName}:Property1", "Test" },
         });
 
         // Act
@@ -39,7 +39,7 @@ public class ConfigurationExtensionsTests
     [Fact]
     public void SectionExists_SpecifiedSectionDoesNotExist_ReturnsFalse()
     {
-        //Arrange
+        // Arrange
         const string sectionName = "TestSection";
 
         var configuration = BuildConfiguration();
@@ -61,12 +61,12 @@ public class ConfigurationExtensionsTests
     [Fact]
     public void PropertyExists_SpecifiedPropertyExists_ReturnsTrue()
     {
-        //Arrange
+        // Arrange
         const string propertyName = "TestProperty";
 
         var configuration = BuildConfiguration(new Dictionary<string, string>
         {
-            { propertyName, "Test" }
+            { propertyName, "Test" },
         });
 
         // Act
@@ -82,7 +82,7 @@ public class ConfigurationExtensionsTests
     [Fact]
     public void PropertyExists_SpecifiedPropertyDoesNotExist_ReturnsFalse()
     {
-        //Arrange
+        // Arrange
         const string propertyName = "TestProperty";
 
         var configuration = BuildConfiguration();
@@ -104,13 +104,13 @@ public class ConfigurationExtensionsTests
     [Fact]
     public void GetProperty_SpecifiedPropertyExists_ReturnsPropertyValue()
     {
-        //Arrange
+        // Arrange
         const string propertyName = "TestProperty";
         const string expectedPropertyValue = "Test";
 
         var configuration = BuildConfiguration(new Dictionary<string, string>
         {
-            { propertyName, expectedPropertyValue }
+            { propertyName, expectedPropertyValue },
         });
 
         // Act
@@ -126,7 +126,7 @@ public class ConfigurationExtensionsTests
     [Fact]
     public void GetProperty_SpecifiedPropertyDoesNotExist_ReturnsNull()
     {
-        //Arrange
+        // Arrange
         const string propertyName = "TestProperty";
 
         var configuration = BuildConfiguration();
@@ -148,13 +148,13 @@ public class ConfigurationExtensionsTests
     [Fact]
     public void TryGetProperty_SpecifiedPropertyExists_ReturnsTrue()
     {
-        //Arrange
+        // Arrange
         const string propertyName = "TestProperty";
         const string expectedPropertyValue = "Test";
 
         var configuration = BuildConfiguration(new Dictionary<string, string>
         {
-            { propertyName, expectedPropertyValue }
+            { propertyName, expectedPropertyValue },
         });
 
         // Act
@@ -171,7 +171,7 @@ public class ConfigurationExtensionsTests
     [Fact]
     public void TryGetProperty_SpecifiedPropertyDoesNotExist_ReturnsFalse()
     {
-        //Arrange
+        // Arrange
         const string propertyName = "TestProperty";
 
         var configuration = BuildConfiguration();
@@ -193,7 +193,7 @@ public class ConfigurationExtensionsTests
     [Fact]
     public void BindSection_SpecifiedSectionExists_BindsSectionToSpecifiedClass()
     {
-        //Arrange
+        // Arrange
         const string sectionName = "TestSection";
         const string property1Value = "1";
         const string property2Value = "2";
@@ -201,7 +201,7 @@ public class ConfigurationExtensionsTests
         var configuration = BuildConfiguration(new Dictionary<string, string>
         {
             { $"{sectionName}:{nameof(TestSection.Property1)}", property1Value },
-            { $"{sectionName}:{nameof(TestSection.Property2)}", property2Value }
+            { $"{sectionName}:{nameof(TestSection.Property2)}", property2Value },
         });
 
         // Act
@@ -219,7 +219,7 @@ public class ConfigurationExtensionsTests
     [Fact]
     public void BindSection_SpecifiedSectionDoesNotExist_ReturnsNull()
     {
-        //Arrange
+        // Arrange
         const string sectionName = "TestSection";
 
         var configuration = BuildConfiguration();
@@ -249,6 +249,7 @@ public class ConfigurationExtensionsTests
     private record TestSection
     {
         public string Property1 { get; set; }
+
         public string Property2 { get; set; }
     }
 

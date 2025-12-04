@@ -29,11 +29,13 @@ public class HostConfigurationArchTests
     public void HostConfiguration_ShouldFollowDependencyRules()
     {
         // Arrange
-        var policyDefinition = PolicyHelper.BuildPolicyDefinition(CurrentNamespace,
+        var policyDefinition = PolicyHelper.BuildPolicyDefinition(
+            CurrentNamespace,
             "Component dependency policy",
             $"Enforces the dependencies of the {nameof(HostConfiguration)} component");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.Cli,
@@ -42,7 +44,8 @@ public class HostConfigurationArchTests
             "HostConfiguration_ShouldNotDependOn_PresentationLayer",
             "The application configurator should not have any dependencies on the presentation layer");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.CliHost,
@@ -50,7 +53,8 @@ public class HostConfigurationArchTests
             "HostConfiguration_ShouldNotDependOn_PresentationLayerHostComponents",
             $"The application configurator should not depend on any presentation layer host components such as ${nameof(WebHost)} or ${nameof(CliHost)}");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependenciesOtherThan(
                     CreateAllowedDependenciesList([
@@ -81,8 +85,9 @@ public class HostConfigurationArchTests
     [TestMethod]
     public void HostConfiguration_ShouldFollowNamingConventions()
     {
-        //Arrange
-        var policyDefinition = PolicyHelper.BuildPolicyDefinition(CurrentNamespace,
+        // Arrange
+        var policyDefinition = PolicyHelper.BuildPolicyDefinition(
+            CurrentNamespace,
             "Type naming policy",
             $"Enforces naming conventions for types in the {nameof(HostConfiguration)} component");
 
@@ -103,8 +108,6 @@ public class HostConfigurationArchTests
         }
     }
 
-    #region Private methods
-
     private static string[] CreateAllowedDependenciesList(IEnumerable<string> allowedComponents)
     {
         var allowedDependenciesList = new List<string> { CurrentNamespace };
@@ -113,6 +116,4 @@ public class HostConfigurationArchTests
 
         return allowedDependenciesList.ToArray();
     }
-
-    #endregion
 }

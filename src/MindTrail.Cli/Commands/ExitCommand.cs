@@ -14,8 +14,6 @@ namespace MindTrail.Cli.Commands;
 public class ExitCommand(string line, string name, Dictionary<string, string> options)
     : Command(line, name, options)
 {
-    #region Command
-
     /// <inheritdoc cref="Command.Execute"/>
     public override void Execute(CommandControl control)
     {
@@ -25,6 +23,4 @@ public class ExitCommand(string line, string name, Dictionary<string, string> op
         Console.WriteLine("Exit...");
         Console.ResetColor();
     }
-
-    #endregion
 }

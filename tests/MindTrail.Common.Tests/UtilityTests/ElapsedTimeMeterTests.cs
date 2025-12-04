@@ -48,7 +48,7 @@ public class ElapsedTimeMeterTests
     [Fact]
     public void Start_TimerIsNotActive_StartsTimer()
     {
-        //Arrange
+        // Arrange
         var timer = new ElapsedTimeMeter();
 
         // Act
@@ -67,7 +67,7 @@ public class ElapsedTimeMeterTests
     [Fact]
     public void Start_TimerIsActive_ThrowsException()
     {
-        //Arrange
+        // Arrange
         var timer = new ElapsedTimeMeter(true);
 
         // Act
@@ -89,7 +89,7 @@ public class ElapsedTimeMeterTests
     [Fact]
     public void Stop_TimerIsActive_StopsTimer()
     {
-        //Arrange
+        // Arrange
         var timer = new ElapsedTimeMeter(true);
 
         DoSomethingInMs(1);
@@ -114,7 +114,7 @@ public class ElapsedTimeMeterTests
     [Fact]
     public void Stop_TimerIsNotActive_ThrowsException()
     {
-        //Arrange
+        // Arrange
         var timer = new ElapsedTimeMeter();
 
         // Act
@@ -136,7 +136,7 @@ public class ElapsedTimeMeterTests
     [Fact]
     public void Restart_TimerIsActive_RestartsTimer()
     {
-        //Arrange
+        // Arrange
         var timer = new ElapsedTimeMeter(true);
 
         DoSomethingInSeconds(1);
@@ -176,7 +176,7 @@ public class ElapsedTimeMeterTests
     [Fact]
     public void Restart_TimerIsNotActive_ThrowsException()
     {
-        //Arrange
+        // Arrange
         var timer = new ElapsedTimeMeter();
 
         // Act
@@ -190,8 +190,6 @@ public class ElapsedTimeMeterTests
 
     #endregion
 
-    #region Private methods
-
     private static void DoSomethingInMs(int millisecondsNumber)
     {
         Thread.Sleep(millisecondsNumber);
@@ -201,6 +199,4 @@ public class ElapsedTimeMeterTests
     {
         Thread.Sleep(secondsNumber * 1000);
     }
-
-    #endregion
 }

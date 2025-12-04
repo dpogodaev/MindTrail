@@ -6,9 +6,10 @@ using MindTrail.DomainServices.Interfaces.Storages.Repositories;
 
 namespace MindTrail.AppServices.Services;
 
-public class CountryAppService(ICountryRepository countryRepository) : ICountryAppService
+public class CountryAppService(ICountryRepository countryRepository)
+    : ICountryAppService
 {
-    public async Task<PagedResult<Country>> GetCountriesAsReadOnlyAsync(CountryFilter filter)
+    public async Task<PagedResult<Country>> GetCountriesAsync(CountryFilter filter)
     {
         return await countryRepository.GetCountriesAsReadOnlyAsync(filter);
     }

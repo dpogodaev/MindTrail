@@ -18,8 +18,8 @@ public static class AuthNExtensions
     /// <param name="authenticationScheme">Name of the authentication scheme.</param>
     /// <param name="configureOptions">Used to configure the scheme options.</param>
     /// <remarks>It is applied when using the attribute <see cref="ApiKeyRequiredAttribute"/>.</remarks>
-    public static void AddApiKey(this AuthenticationBuilder builder,
-        string authenticationScheme, Action<ApiKeyAuthNOptions> configureOptions)
+    public static void AddApiKey(
+        this AuthenticationBuilder builder, string authenticationScheme, Action<ApiKeyAuthNOptions> configureOptions)
     {
         builder.AddScheme<ApiKeyAuthNOptions, ApiKeyAuthNHandler>(authenticationScheme, configureOptions);
     }

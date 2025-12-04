@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -16,26 +15,17 @@ namespace MindTrail.WebAuth.Handlers;
 /// Handler of authentication using the API key.
 /// </summary>
 /// <remarks>It is applied when using the attribute <see cref="AuthorizeAttribute"/>.</remarks>
-public class ApiKeyAuthNHandler : AuthenticationHandler<ApiKeyAuthNOptions>
+public class ApiKeyAuthNHandler(
+    IOptionsMonitor<ApiKeyAuthNOptions> options,
+    ILoggerFactory logger,
+    UrlEncoder encoder,
+    IApiKeyValidator apiKeyValidator)
+    : AuthenticationHandler<ApiKeyAuthNOptions>(options, logger, encoder)
 {
-    private readonly IApiKeyValidator _apiKeyValidator;
-
-    /// <summary>
-    /// Initializes a new instance of <see cref="ApiKeyAuthNHandler"/> class.
-    /// </summary>
-    public ApiKeyAuthNHandler(
-        IOptionsMonitor<ApiKeyAuthNOptions> options,
-        ILoggerFactory logger,
-        UrlEncoder encoder,
-        IApiKeyValidator apiKeyValidator)
-        : base(options, logger, encoder)
-    {
-        _apiKeyValidator = apiKeyValidator;
-    }
-
     /// <summary>
     /// Handles custom authentication by API key.
     /// </summary>
+    /// <returns>An <see cref="AuthenticateResult"/> indicating the result of the authentication attempt.</returns>
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
     {
         var apiKey = Request.GetHeaderKeyValue(Options.ApiKeyHeaderName);
@@ -45,7 +35,7 @@ public class ApiKeyAuthNHandler : AuthenticationHandler<ApiKeyAuthNOptions>
             return Task.FromResult(AuthenticateResult.NoResult());
         }
 
-        if (_apiKeyValidator.IsNotValid(apiKey))
+        if (!apiKeyValidator.IsValid(apiKey))
         {
             const string msg = "The API key value is not valid";
 
@@ -58,8 +48,6 @@ public class ApiKeyAuthNHandler : AuthenticationHandler<ApiKeyAuthNOptions>
             new AuthenticationTicket(BuildApiKeyClaim(), Scheme.Name)));
     }
 
-    #region Private methods
-
     private ClaimsPrincipal BuildApiKeyClaim()
     {
         var claimsIdentity = new ClaimsIdentity(Scheme.Name);
@@ -70,6 +58,4 @@ public class ApiKeyAuthNHandler : AuthenticationHandler<ApiKeyAuthNOptions>
 
         return new ClaimsPrincipal(claimsIdentity);
     }
-
-    #endregion
 }

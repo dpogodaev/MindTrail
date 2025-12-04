@@ -61,11 +61,11 @@ public class CommandHelperTests
         // Arrange
         var expectedOptions = new Dictionary<string, string>
         {
-            { "t", "" },
+            { "t", string.Empty },
             { "p", "10" },
             { "opt1", "100" },
             { "opt2", "a b c" },
-            { "opt3", "d e f" }
+            { "opt3", "d e f" },
         };
 
         // Act

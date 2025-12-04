@@ -9,6 +9,8 @@ public interface IPersonRepository
 {
     Task<Person> GetPersonByIdAsync(Guid id);
 
+    Task<Person> GetPersonByIdAsReadOnlyAsync(Guid id);
+
     Task<PagedResult<Person>> GetPersonsAsync(PersonFilter filter);
 
     Task<PagedResult<Person>> GetPersonsAsReadOnlyAsync(PersonFilter filter);

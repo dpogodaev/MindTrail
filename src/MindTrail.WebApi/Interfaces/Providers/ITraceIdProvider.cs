@@ -6,7 +6,7 @@
 public interface ITraceIdProvider
 {
     /// <summary>
-    /// Trace ID.
+    /// Gets the trace ID.
     /// </summary>
     string? TraceId { get; }
 }

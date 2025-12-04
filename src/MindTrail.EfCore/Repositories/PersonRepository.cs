@@ -16,13 +16,20 @@ namespace MindTrail.EfCore.Repositories;
 /// <inheritdoc cref="IPersonRepository"/>
 /// </summary>
 /// <param name="dbContext">Application database context.</param>
-public class PersonRepository(AppDbContext dbContext) : BaseRepository(dbContext), IPersonRepository
+public class PersonRepository(AppDbContext dbContext)
+    : BaseRepository(dbContext), IPersonRepository
 {
-    #region IPersonRepository
-
     public async Task<Person> GetPersonByIdAsync(Guid id)
     {
         return await DbContext.Persons
+            .Include(x => x.BirthCountry)
+            .FirstOrDefaultAsync(x => x.Id == id) ?? throw new PersonNotFoundException(id);
+    }
+
+    public async Task<Person> GetPersonByIdAsReadOnlyAsync(Guid id)
+    {
+        return await DbContext.Persons
+            .AsNoTracking()
             .Include(x => x.BirthCountry)
             .FirstOrDefaultAsync(x => x.Id == id) ?? throw new PersonNotFoundException(id);
     }
@@ -77,10 +84,6 @@ public class PersonRepository(AppDbContext dbContext) : BaseRepository(dbContext
         return dbPerson;
     }
 
-    #endregion
-
-    #region Private methods
-
     private static async Task<PagedResult<Person>> GetAllPersonsImpl(PersonFilter filter, IQueryable<Person> query)
     {
         if (!string.IsNullOrWhiteSpace(filter.FullName))
@@ -103,6 +106,4 @@ public class PersonRepository(AppDbContext dbContext) : BaseRepository(dbContext
         target.BirthCountryId = source.BirthCountryId;
         target.BirthCountry = source.BirthCountry;
     }
-
-    #endregion
 }

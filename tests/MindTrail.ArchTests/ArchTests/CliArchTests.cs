@@ -28,12 +28,14 @@ public class CliArchTests
     [TestMethod]
     public void Cli_ShouldFollowDependencyRules()
     {
-        //Arrange
-        var policyDefinition = PolicyHelper.BuildPolicyDefinition(CurrentNamespace,
+        // Arrange
+        var policyDefinition = PolicyHelper.BuildPolicyDefinition(
+            CurrentNamespace,
             "Component dependency policy",
             $"Enforces the dependencies of the {nameof(Cli)} component");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.DomainEntities,
@@ -42,7 +44,8 @@ public class CliArchTests
             "Cli_ShouldNotDependOn_DomainLayer",
             "The CLI should not have any dependencies on the application (domain) layer");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.EfCore,
@@ -51,7 +54,8 @@ public class CliArchTests
             "Cli_ShouldNotDependOn_DataAccessLayer",
             "The CLI should not have any dependencies on the data access layer");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.HostConfiguration,
@@ -60,7 +64,8 @@ public class CliArchTests
             "Cli_ShouldNotDependOn_InfrastructureLayer",
             "The CLI should not have any dependencies on the infrastructure layer");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.WebApi,
@@ -68,7 +73,8 @@ public class CliArchTests
             "Cli_ShouldNotDependOn_WebComponents",
             $"The CLI should not depend on web-based presentation components such as {nameof(WebApi)}");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependenciesOtherThan(
                     CreateAllowedDependenciesList([
@@ -94,7 +100,8 @@ public class CliArchTests
     public void Cli_ShouldFollowNamingConventions()
     {
         // Arrange
-        var policyDefinition = PolicyHelper.BuildPolicyDefinition(CurrentNamespace,
+        var policyDefinition = PolicyHelper.BuildPolicyDefinition(
+            CurrentNamespace,
             "Type naming policy",
             $"Enforces naming conventions for types in the {nameof(Cli)} component");
 
@@ -116,8 +123,6 @@ public class CliArchTests
         }
     }
 
-    #region Private methods
-
     private static string[] CreateAllowedDependenciesList(IEnumerable<string> allowedComponents)
     {
         var allowedDependenciesList = new List<string> { CurrentNamespace };
@@ -126,6 +131,4 @@ public class CliArchTests
 
         return allowedDependenciesList.ToArray();
     }
-
-    #endregion
 }

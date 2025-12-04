@@ -28,8 +28,8 @@ internal static class WebAuthConfig
     /// <param name="services">Used to register application services.</param>
     /// <param name="configuration">The application configuration.</param>
     /// <param name="logger">The startup logger. Optional.</param>
-    public static void AddWebAuthConfig(this IServiceCollection services,
-        IConfiguration configuration, IStartupLogger logger = null)
+    public static void AddWebAuthConfig(
+        this IServiceCollection services, IConfiguration configuration, IStartupLogger? logger = null)
     {
         AddAuthNConfig(services);
         AddAuthZConfig(services);
@@ -39,12 +39,11 @@ internal static class WebAuthConfig
         AddValidators(services);
     }
 
-    #region Private methods
-
     private static void AddAuthNConfig(IServiceCollection services)
     {
         services.AddAuthentication(DefaultAuthenticationScheme)
-            .AddApiKey(ApiKeyConstants.ApiKeySchemeName,
+            .AddApiKey(
+                ApiKeyConstants.ApiKeySchemeName,
                 options =>
                 {
                     options.ApiKeyHeaderName = ApiKeyConstants.ApiKeyHeaderName;
@@ -57,8 +56,8 @@ internal static class WebAuthConfig
         services.AddAuthorization();
     }
 
-    private static void AddSettings(IServiceCollection services, IConfiguration configuration,
-        IStartupLogger logger = null)
+    private static void AddSettings(
+        IServiceCollection services, IConfiguration configuration, IStartupLogger? logger = null)
     {
         if (!configuration.TryGetProperty(ApiKeyConfigParam, out var apiKey))
         {
@@ -71,7 +70,7 @@ internal static class WebAuthConfig
         {
             ApiKey = apiKey,
             HeaderName = ApiKeyConstants.ApiKeyHeaderName,
-            AdditionalApiKeys = additionalApiKeys
+            AdditionalApiKeys = additionalApiKeys,
         });
     }
 
@@ -84,6 +83,4 @@ internal static class WebAuthConfig
     {
         services.AddTransient<ApiKeyAuthZFilter>();
     }
-
-    #endregion
 }

@@ -28,11 +28,13 @@ public class CommonArchTests
     public void Common_ShouldFollowDependencyRules()
     {
         // Arrange
-        var policyDefinition = PolicyHelper.BuildPolicyDefinition(CurrentNamespace,
+        var policyDefinition = PolicyHelper.BuildPolicyDefinition(
+            CurrentNamespace,
             "Component dependency policy",
             $"Enforces the dependencies of the {nameof(Common)} component");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependenciesOtherThan(
                     CreateAllowedDependenciesList()),
@@ -56,7 +58,8 @@ public class CommonArchTests
     public void Common_ShouldFollowNamingConventions()
     {
         // Arrange
-        var policyDefinition = PolicyHelper.BuildPolicyDefinition(CurrentNamespace,
+        var policyDefinition = PolicyHelper.BuildPolicyDefinition(
+            CurrentNamespace,
             "Type naming policy",
             $"Enforces naming conventions for types in the {nameof(Common)} component");
 
@@ -74,8 +77,6 @@ public class CommonArchTests
         }
     }
 
-    #region Private methods
-
     private static string[] CreateAllowedDependenciesList()
     {
         var allowedDependenciesList = new List<string> { CurrentNamespace };
@@ -83,6 +84,4 @@ public class CommonArchTests
 
         return allowedDependenciesList.ToArray();
     }
-
-    #endregion
 }

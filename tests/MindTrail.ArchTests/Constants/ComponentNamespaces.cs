@@ -5,8 +5,7 @@
 /// </summary>
 public record ComponentNamespaces
 {
-    private const string Solution = nameof(MindTrail);
-
+    public const string Solution = nameof(MindTrail);
     public const string Common = $"{Solution}.{nameof(MindTrail.Common)}";
     public const string DomainEntities = $"{Solution}.{nameof(MindTrail.DomainEntities)}";
     public const string DomainServices = $"{Solution}.{nameof(MindTrail.DomainServices)}";

@@ -15,7 +15,7 @@ using MindTrail.HostConfiguration.Settings;
 namespace MindTrail.HostConfiguration.Configs.Components;
 
 /// <summary>
-/// Used to configure the component <see cref="MindTrail.EfCoreMssql"/>. 
+/// Used to configure the component <see cref="MindTrail.EfCoreMssql"/>.
 /// </summary>
 public static class EfCoreMssqlConfig
 {
@@ -28,8 +28,9 @@ public static class EfCoreMssqlConfig
     /// <param name="configuration">The application configuration.</param>
     /// <param name="logger">The startup logger. Optional.</param>
     /// <typeparam name="TContext">The type of the database context.</typeparam>
-    public static void AddEfCoreMssqlConfig<TContext>(this IServiceCollection services,
-        IConfiguration configuration, IStartupLogger logger = null) where TContext : AppDbContext
+    public static void AddEfCoreMssqlConfig<TContext>(
+        this IServiceCollection services, IConfiguration configuration, IStartupLogger logger = null)
+        where TContext : AppDbContext
     {
         var connectionString = configuration.GetConnectionString(ConnectionString);
 
@@ -67,7 +68,10 @@ public static class EfCoreMssqlConfig
 
         var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
 
-        if (string.IsNullOrEmpty(configuration.GetConnectionString(ConnectionString))) return;
+        if (string.IsNullOrEmpty(configuration.GetConnectionString(ConnectionString)))
+        {
+            return;
+        }
 
         try
         {

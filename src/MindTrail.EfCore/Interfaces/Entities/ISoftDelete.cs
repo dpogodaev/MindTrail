@@ -7,7 +7,7 @@
 public interface ISoftDelete
 {
     /// <summary>
-    /// Used to mark an entity as 'Deleted'. 
+    /// Gets or sets a value indicating whether used to mark an entity as 'Deleted'.
     /// </summary>
     bool IsDeleted { get; set; }
 }

@@ -19,6 +19,7 @@ public static class LoggerProvider
     /// <summary>
     /// Indicates if the logger provider is configured.
     /// </summary>
+    /// <returns><c>true</c> if the logger provider is configured; <c>false</c> otherwise.</returns>
     public static bool IsConfigured() => _isConfigured;
 
     /// <summary>
@@ -56,6 +57,8 @@ public static class LoggerProvider
     /// <summary>
     /// Returns instance of the <see cref="IStartupLogger"/> class.
     /// </summary>
+    /// <returns>The startup logger.</returns>
+    /// <exception cref="Exception">Thrown when the logger provider is not configured.</exception>
     public static IStartupLogger GetStartupLogger()
     {
         if (!_isConfigured)
@@ -73,6 +76,7 @@ public static class LoggerProvider
     /// <remarks>
     /// Adds the use of the logger provider for working with <see cref="Microsoft.Extensions.Logging.ILogger{TCategoryName}"/> objects.
     /// </remarks>
+    /// <exception cref="Exception">Thrown when the logger provider is not configured.</exception>
     public static void UseLoggerProviderForDI(this IHostBuilder builder)
     {
         if (!_isConfigured)
@@ -90,6 +94,7 @@ public static class LoggerProvider
     /// <remarks>
     /// Adds the use of the logger provider for working with <see cref="Microsoft.Extensions.Logging.ILogger{TCategoryName}"/> objects.
     /// </remarks>
+    /// <exception cref="Exception">Thrown when the logger provider is not configured.</exception>
     public static void UseLoggerProviderForDI(this IServiceCollection services)
     {
         if (!_isConfigured)
@@ -109,8 +114,6 @@ public static class LoggerProvider
         NLogConfig.SetInstanceId(id);
     }
 
-    #region Private methods
-
     private static IConfiguration BuildDefaultConfiguration(bool isWebHost)
     {
         var runtimeEnvironment = ConfigurationHelper.DetermineRuntimeEnvironment(isWebHost);
@@ -118,6 +121,4 @@ public static class LoggerProvider
 
         return builtConfiguration;
     }
-
-    #endregion
 }

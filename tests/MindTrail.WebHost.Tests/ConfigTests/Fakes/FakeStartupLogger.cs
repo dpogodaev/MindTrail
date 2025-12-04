@@ -9,7 +9,25 @@ namespace MindTrail.WebHost.Tests.ConfigTests.Fakes;
 /// </summary>
 public class FakeStartupLogger : IStartupLogger
 {
-    #region IStartupLogger
+    /// <summary>
+    /// Gets a list of debug messages.
+    /// </summary>
+    public List<string> DebugMsgList { get; } = [];
+
+    /// <summary>
+    /// Gets a list of info messages.
+    /// </summary>
+    public List<string> InfoMsgList { get; } = [];
+
+    /// <summary>
+    /// Gets a list of warning messages.
+    /// </summary>
+    public List<string> WarnMsgList { get; } = [];
+
+    /// <summary>
+    /// Gets a list of error messages.
+    /// </summary>
+    public List<string> ErrorMsgList { get; } = [];
 
     /// <inheritdoc cref="IStartupLogger.Debug"/>
     public void Debug(string msg)
@@ -34,26 +52,4 @@ public class FakeStartupLogger : IStartupLogger
     {
         ErrorMsgList.Add(msg);
     }
-
-    #endregion
-
-    /// <summary>
-    /// List of debug messages.
-    /// </summary>
-    public List<string> DebugMsgList { get; } = [];
-
-    /// <summary>
-    /// List of info messages.
-    /// </summary>
-    public List<string> InfoMsgList { get; } = [];
-
-    /// <summary>
-    /// List of warning messages.
-    /// </summary>
-    public List<string> WarnMsgList { get; } = [];
-
-    /// <summary>
-    /// List of error messages.
-    /// </summary>
-    public List<string> ErrorMsgList { get; } = [];
 }

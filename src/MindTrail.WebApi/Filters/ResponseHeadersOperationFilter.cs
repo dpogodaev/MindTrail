@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MindTrail.WebApi.Attributes;
 using Microsoft.OpenApi.Models;
+using MindTrail.WebApi.Attributes;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace MindTrail.WebApi.Filters;
@@ -12,18 +12,22 @@ namespace MindTrail.WebApi.Filters;
 /// </summary>
 public class ResponseHeadersOperationFilter : IOperationFilter
 {
-    #region IOperationFilter
-
     /// <inheritdoc cref="IOperationFilter.Apply"/>
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
         var operationAttributes = GetCustomAttributes<ResponseHeaderAttribute>(context).ToArray();
-        if (operationAttributes.Length == 0) return;
+        if (operationAttributes.Length == 0)
+        {
+            return;
+        }
 
         foreach (var operationResponseCode in operation.Responses.Keys)
         {
             var relevantAttributes = GetActionAttributesWithCode(operationAttributes, operationResponseCode);
-            if (relevantAttributes.Length == 0) continue;
+            if (relevantAttributes.Length == 0)
+            {
+                continue;
+            }
 
             var operationResponse = GetActionResponseWithStatusCode(operation, operationResponseCode);
 
@@ -34,11 +38,8 @@ public class ResponseHeadersOperationFilter : IOperationFilter
         }
     }
 
-    #endregion
-
-    #region Private methods
-
-    private static IEnumerable<T> GetCustomAttributes<T>(OperationFilterContext context) where T : Attribute
+    private static IEnumerable<T> GetCustomAttributes<T>(OperationFilterContext context)
+        where T : Attribute
     {
         var attributes = context.MethodInfo?.DeclaringType?.GetCustomAttributes(true)
             .Union(context.MethodInfo.GetCustomAttributes(true))
@@ -66,9 +67,7 @@ public class ResponseHeadersOperationFilter : IOperationFilter
         response.Headers[header.Name] = new OpenApiHeader
         {
             Schema = new OpenApiSchema { Type = header.Type.ToLower() },
-            Description = header.Description
+            Description = header.Description,
         };
     }
-
-    #endregion
 }

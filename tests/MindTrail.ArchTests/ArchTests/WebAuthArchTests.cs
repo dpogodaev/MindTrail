@@ -21,12 +21,14 @@ public class WebAuthArchTests
     [TestMethod]
     public void WebAuth_ShouldFollowDependencyRules()
     {
-        //Arrange
-        var policyDefinition = PolicyHelper.BuildPolicyDefinition(CurrentNamespace,
+        // Arrange
+        var policyDefinition = PolicyHelper.BuildPolicyDefinition(
+            CurrentNamespace,
             "Component dependency policy",
             $"Enforces the dependencies of the {nameof(WebAuth)} component");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.EfCore,
@@ -35,7 +37,8 @@ public class WebAuthArchTests
             "WebAuth_ShouldNotDependOn_DomainLayer",
             "The Web API should not have any dependencies on the application (domain) layer");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.EfCore,
@@ -44,7 +47,8 @@ public class WebAuthArchTests
             "WebAuth_ShouldNotDependOn_DataAccessLayer",
             "The Web API should not have any dependencies on the data access layer");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.HostConfiguration,
@@ -53,7 +57,8 @@ public class WebAuthArchTests
             "WebAuth_ShouldNotDependOn_InfrastructureLayer",
             "The Web API should not have any dependencies on the infrastructure layer");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependenciesOtherThan(
                     CreateAllowedDependenciesList([
@@ -79,7 +84,8 @@ public class WebAuthArchTests
     public void WebAuth_ShouldFollowNamingConventions()
     {
         // Arrange
-        var policyDefinition = PolicyHelper.BuildPolicyDefinition(CurrentNamespace,
+        var policyDefinition = PolicyHelper.BuildPolicyDefinition(
+            CurrentNamespace,
             "Type naming policy",
             $"Enforces naming conventions for types in the {nameof(WebAuth)} component");
 
@@ -104,8 +110,6 @@ public class WebAuthArchTests
         }
     }
 
-    #region Private methods
-
     private static string[] CreateAllowedDependenciesList(IEnumerable<string> allowedComponents)
     {
         var allowedDependenciesList = new List<string> { CurrentNamespace };
@@ -123,6 +127,4 @@ public class WebAuthArchTests
             "Microsoft"
         ];
     }
-
-    #endregion
 }

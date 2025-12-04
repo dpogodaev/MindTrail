@@ -6,4 +6,5 @@ namespace MindTrail.DomainServices.Exceptions.Base;
 /// Handled exception.
 /// </summary>
 /// <param name="message">The error message that explains the reason for the exception.</param>
-public abstract class DomainException(string message) : Exception(message);
+public abstract class DomainException(string message)
+    : Exception(message);

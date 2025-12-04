@@ -29,7 +29,8 @@ public static class ConfigurationExtensions
     /// <c>null</c> otherwise.
     /// </returns>
     /// <remarks>Binding is performed by recursively matching property names with configuration keys.</remarks>
-    public static T BindSection<T>(this IConfiguration configuration, string key) where T : class
+    public static T BindSection<T>(this IConfiguration configuration, string key)
+        where T : class
     {
         return configuration.GetSection(key).Get<T>();
     }

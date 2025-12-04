@@ -557,17 +557,16 @@ public static class PolicyExtensions
         return policyDefinition.Add(Definition, name, description);
     }
 
-    #region Private methods
-
     private static void AddExceptionsToRule(this ConditionList conditions, string[] exceptionsToRule)
     {
-        if (exceptionsToRule == null) return;
+        if (exceptionsToRule == null)
+        {
+            return;
+        }
 
         foreach (var exceptionToRule in exceptionsToRule)
         {
             conditions.Or().HaveName(exceptionToRule);
         }
     }
-
-    #endregion
 }

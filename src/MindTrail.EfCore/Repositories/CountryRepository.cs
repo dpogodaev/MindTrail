@@ -15,10 +15,9 @@ namespace MindTrail.EfCore.Repositories;
 /// <inheritdoc cref="ICountryRepository"/>
 /// </summary>
 /// <param name="dbContext">Application database context.</param>
-public class CountryRepository(AppDbContext dbContext) : BaseRepository(dbContext), ICountryRepository
+public class CountryRepository(AppDbContext dbContext)
+    : BaseRepository(dbContext), ICountryRepository
 {
-    #region ICountryRepository
-
     public async Task<PagedResult<Country>> GetCountriesAsReadOnlyAsync(CountryFilter filter)
     {
         ArgumentNullException.ThrowIfNull(filter);
@@ -27,10 +26,6 @@ public class CountryRepository(AppDbContext dbContext) : BaseRepository(dbContex
 
         return await GetAllPersonsImpl(filter, query);
     }
-
-    #endregion
-
-    #region Private methods
 
     private static async Task<PagedResult<Country>> GetAllPersonsImpl(CountryFilter filter, IQueryable<Country> query)
     {
@@ -41,6 +36,4 @@ public class CountryRepository(AppDbContext dbContext) : BaseRepository(dbContex
 
         return await GetPagedResult(query, filter.PageNumber, filter.PageSize);
     }
-
-    #endregion
 }

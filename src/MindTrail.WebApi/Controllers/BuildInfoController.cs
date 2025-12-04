@@ -19,13 +19,14 @@ public class BuildInfoController : ControllerBase
     /// <summary>
     /// Returns the build information.
     /// </summary>
+    /// <returns>The build information.</returns>
     [HttpHead("info")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ResponseHeader("X-Version", "Version number")]
     [ResponseHeader("X-Build-Date", "Build date (UTC)")]
     [ResponseHeader("X-Configuration", "Build configuration (e.g. 'Debug' or 'Release')")]
     [ResponseHeader("X-App-Name", "Application name")]
-    public ActionResult HeadInfo()
+    public IActionResult HeadInfo()
     {
         var buildInfo = GetBuildInfo();
 
@@ -40,6 +41,7 @@ public class BuildInfoController : ControllerBase
     /// <summary>
     /// Returns the build information.
     /// </summary>
+    /// <returns>The build information.</returns>
     [HttpGet("info")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BuildInfoDto))]
     public IActionResult GetInfo()
@@ -62,8 +64,6 @@ public class BuildInfoController : ControllerBase
         return GetInfo();
     }
 
-    #region Private methods
-
     private static BuildInfoDto GetBuildInfo()
     {
         var assembly = Assembly.GetExecutingAssembly();
@@ -73,9 +73,7 @@ public class BuildInfoController : ControllerBase
             Version = assembly.GetVersion(),
             BuildDate = assembly.GetAssemblyDate(),
             Configuration = assembly.GetAssemblyConfiguration(),
-            AppName = assembly.GetAssemblyProductName()
+            AppName = assembly.GetAssemblyProductName(),
         };
     }
-
-    #endregion
 }

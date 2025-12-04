@@ -28,12 +28,15 @@ public class BuildInfoControllerTests(WebApplicationFactory<Program> app)
 
     private readonly JsonSerializerOptions _serializerOptions = new()
     {
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
     };
 
     /// <summary>
     /// Test for <see cref="BuildInfoController.HeadInfo"/> method.
     /// </summary>
+    /// <param name="method"> The HTTP method to use for the request (e.g., "HEAD" and "GET").</param>
+    /// <param name="url">The relative URL of the endpoint to call (e.g., "api/mind-trail/v1/info").</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     [Theory]
     [InlineData("HEAD", "api/mind-trail/v1/info")]
     public async Task HeadInfo_Call_ReturnsBuildInfoInResponseHeader(string method, string url)
@@ -53,6 +56,9 @@ public class BuildInfoControllerTests(WebApplicationFactory<Program> app)
     /// <summary>
     /// Test for <see cref="BuildInfoController.GetInfo"/> method.
     /// </summary>
+    /// <param name="method"> The HTTP method to use for the request (e.g., "HEAD" and "GET").</param>
+    /// <param name="url">The relative URL of the endpoint to call (e.g., "api/mind-trail/v1/info").</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     [Theory]
     [InlineData("GET", "api/mind-trail/v1/info")]
     public async Task GetInfo_Call_ReturnsBuildInfoInResponseBody(string method, string url)
@@ -73,7 +79,10 @@ public class BuildInfoControllerTests(WebApplicationFactory<Program> app)
         Assert.Equal(AppName, buildInfo.AppName);
     }
 
-    #region Private methods
+    private static string GetHeaderValue(HttpResponseHeaders headers, string headerName)
+    {
+        return headers.FirstOrDefault(x => x.Key == headerName).Value?.FirstOrDefault();
+    }
 
     private async Task<BuildInfoDto> GetBuildInfo(HttpResponseMessage response)
     {
@@ -82,17 +91,10 @@ public class BuildInfoControllerTests(WebApplicationFactory<Program> app)
         return await JsonSerializer.DeserializeAsync<BuildInfoDto>(contentStream, _serializerOptions);
     }
 
-    private static string GetHeaderValue(HttpResponseHeaders headers, string headerName)
-    {
-        return headers.FirstOrDefault(x => x.Key == headerName).Value?.FirstOrDefault();
-    }
-
     private void AddApiKey(HttpRequestMessage request)
     {
         var apiKey = _configuration.GetProperty("App:ApiKey");
 
         request.Headers.Add(ApiKeyConstants.ApiKeyHeaderName, apiKey);
     }
-
-    #endregion
 }

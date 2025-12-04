@@ -4,7 +4,7 @@ using MindTrail.WebApi.Builders;
 namespace MindTrail.WebApi.Handlers.Exceptions;
 
 /// <summary>
-/// Provides an extension method to handle <see cref="PersonDuplicateException"/> 
+/// Provides an extension method to handle <see cref="PersonDuplicateException"/>
 /// by converting it into a structured problem details response (RFC 7807).
 /// </summary>
 public static class PersonDuplicateExceptionHandler

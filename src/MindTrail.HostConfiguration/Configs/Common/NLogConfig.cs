@@ -2,12 +2,12 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using MindTrail.HostConfiguration.Extensions;
 using NLog;
 using NLog.Appsettings.Standard;
 using NLog.Config;
 using NLog.Extensions.Hosting;
 using NLog.Extensions.Logging;
-using MindTrail.HostConfiguration.Extensions;
 
 namespace MindTrail.HostConfiguration.Configs.Common;
 
@@ -16,9 +16,9 @@ namespace MindTrail.HostConfiguration.Configs.Common;
 /// </summary>
 /// <remarks>
 /// The sequence of method calls:
-/// 1) <see cref="AddNLogConfig"/>
-/// 2) <see cref="UseNLogForDI(IHostBuilder)"/> or <see cref="UseNLogForDI(IServiceCollection)"/>
-/// 3) <see cref="ShutdownNLog"/>
+/// <br/>1) <see cref="AddNLogConfig"/>
+/// <br/>2) <see cref="UseNLogForDI(IHostBuilder)"/> or <see cref="UseNLogForDI(IServiceCollection)"/>
+/// <br/>3) <see cref="ShutdownNLog"/>
 /// </remarks>
 public static class NLogConfig
 {
@@ -81,8 +81,6 @@ public static class NLogConfig
         ScopeContext.PushProperty("instanceId", id);
     }
 
-    #region Private methods
-
     private static string GetNLogConfigFileName(IConfiguration configuration)
     {
         var nlogConfigFileName = configuration.GetProperty(NLogConfigParam);
@@ -104,6 +102,4 @@ public static class NLogConfig
         // https://www.nuget.org/packages/NLog.Appsettings.Standard
         AppSettingsLayoutRenderer.AppSettings = configuration;
     }
-
-    #endregion
 }

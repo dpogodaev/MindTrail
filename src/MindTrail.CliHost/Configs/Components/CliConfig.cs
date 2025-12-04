@@ -17,12 +17,8 @@ internal static class CliConfig
         AddServices(services);
     }
 
-    #region Private methods
-
     private static void AddServices(IServiceCollection services)
     {
         services.AddHostedService<CliService>();
     }
-
-    #endregion
 }

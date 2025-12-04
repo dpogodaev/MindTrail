@@ -9,11 +9,16 @@ using EfRepositories = MindTrail.EfCore.Interfaces.Repositories;
 
 namespace MindTrail.EfCore.Adapters.Repositories;
 
-public class PersonRepositoryAdapter(EfRepositories.IPersonRepository repository) : IPersonRepository
+public class PersonRepositoryAdapter(EfRepositories.IPersonRepository repository)
+    : IPersonRepository
 {
-    #region IPersonRepository
-
     public async Task<Person> GetPersonByIdAsync(Guid id)
+    {
+        return MapToDomainEntity(
+            await repository.GetPersonByIdAsync(id));
+    }
+
+    public async Task<Person> GetPersonByIdAsReadOnlyAsync(Guid id)
     {
         return MapToDomainEntity(
             await repository.GetPersonByIdAsync(id));
@@ -51,10 +56,6 @@ public class PersonRepositoryAdapter(EfRepositories.IPersonRepository repository
             await repository.DeletePersonAsync(id));
     }
 
-    #endregion
-
-    #region Private methods
-
     private static PagedResult<Person> MapToDomainEntities(PagedResult<EfEntities.Person> efEntities)
     {
         return new PagedResult<Person>
@@ -62,7 +63,7 @@ public class PersonRepositoryAdapter(EfRepositories.IPersonRepository repository
             Items = efEntities.Items.Select(MapToDomainEntity),
             PageNumber = efEntities.PageNumber,
             PageSize = efEntities.PageSize,
-            TotalCount = efEntities.TotalCount
+            TotalCount = efEntities.TotalCount,
         };
     }
 
@@ -74,7 +75,7 @@ public class PersonRepositoryAdapter(EfRepositories.IPersonRepository repository
             FullName = efEntity.FullName,
             BirthYear = efEntity.BirthYear,
             BirthCountryId = efEntity.BirthCountryId,
-            BirthCountryName = efEntity.BirthCountry?.Name
+            BirthCountryName = efEntity.BirthCountry?.Name,
         };
     }
 
@@ -85,9 +86,7 @@ public class PersonRepositoryAdapter(EfRepositories.IPersonRepository repository
             Id = domainEntity.Id,
             FullName = domainEntity.FullName,
             BirthYear = domainEntity.BirthYear,
-            BirthCountryId = domainEntity.BirthCountryId
+            BirthCountryId = domainEntity.BirthCountryId,
         };
     }
-
-    #endregion
 }

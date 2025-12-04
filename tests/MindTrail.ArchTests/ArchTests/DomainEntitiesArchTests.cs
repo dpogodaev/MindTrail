@@ -28,11 +28,13 @@ public class DomainEntitiesArchTests
     public void DomainEntities_ShouldFollowDependencyRules()
     {
         // Arrange
-        var policyDefinition = PolicyHelper.BuildPolicyDefinition(CurrentNamespace,
+        var policyDefinition = PolicyHelper.BuildPolicyDefinition(
+            CurrentNamespace,
             "Component dependency policy",
             $"Enforces the dependencies of the {nameof(DomainEntities)} component");
 
-        policyDefinition.Add(types => types
+        policyDefinition.Add(
+            types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependenciesOtherThan(CreateAllowedDependenciesList()),
             "DomainEntities_ShouldNotDependOn_OtherComponent",
@@ -55,7 +57,8 @@ public class DomainEntitiesArchTests
     public void DomainEntities_ShouldFollowNamingConventions()
     {
         // Arrange
-        var policyDefinition = PolicyHelper.BuildPolicyDefinition(CurrentNamespace,
+        var policyDefinition = PolicyHelper.BuildPolicyDefinition(
+            CurrentNamespace,
             "Type naming policy",
             $"Enforces naming conventions for types in the {nameof(DomainEntities)} component");
 
@@ -72,8 +75,6 @@ public class DomainEntitiesArchTests
         }
     }
 
-    #region Private methods
-
     private static string[] CreateAllowedDependenciesList()
     {
         var allowedDependenciesList = new List<string> { CurrentNamespace };
@@ -81,6 +82,4 @@ public class DomainEntitiesArchTests
 
         return allowedDependenciesList.ToArray();
     }
-
-    #endregion
 }

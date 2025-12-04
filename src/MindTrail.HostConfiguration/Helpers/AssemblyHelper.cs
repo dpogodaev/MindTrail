@@ -25,15 +25,25 @@ public class AssemblyHelper
         {
             var assembly = assembliesToScan.Dequeue();
 
-            if (AssemblyDoesNotMatchPrefix(assembly.FullName)) continue;
+            if (AssemblyDoesNotMatchPrefix(assembly.FullName))
+            {
+                continue;
+            }
 
             assemblyNames.Add(assembly.FullName);
 
             var references = assembly.GetReferencedAssemblies();
             foreach (var reference in references)
             {
-                if (assemblyNames.Contains(reference.FullName)) continue;
-                if (AssemblyDoesNotMatchPrefix(reference.FullName)) continue;
+                if (assemblyNames.Contains(reference.FullName))
+                {
+                    continue;
+                }
+
+                if (AssemblyDoesNotMatchPrefix(reference.FullName))
+                {
+                    continue;
+                }
 
                 assembliesToScan.Enqueue(Assembly.Load(reference));
             }

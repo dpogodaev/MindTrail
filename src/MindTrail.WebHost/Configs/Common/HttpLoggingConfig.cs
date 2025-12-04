@@ -35,8 +35,8 @@ internal static class HttpLoggingConfig
     /// <remarks>
     /// Also need to add the use of the <see cref="HttpLoggingBuilderExtensions.UseHttpLogging"/> method.
     /// </remarks>
-    public static void AddHttpLoggingConfig(this IServiceCollection services,
-        IConfiguration configuration, IStartupLogger? logger = null)
+    public static void AddHttpLoggingConfig(
+        this IServiceCollection services, IConfiguration configuration, IStartupLogger? logger = null)
     {
         if (!configuration.SectionExists(HttpLoggingConfigSection))
         {
@@ -59,16 +59,11 @@ internal static class HttpLoggingConfig
             GetField(ResponsePropertiesAndHeaders, settings.ResponseHeaders,
                 HttpLoggingFields.ResponsePropertiesAndHeaders) |
             GetField(ResponseStatusCode, settings.ResponseStatusCode, HttpLoggingFields.ResponseStatusCode) |
-            GetField(ResponseBody, settings.ResponseBody, HttpLoggingFields.ResponseBody)
-        );
+            GetField(ResponseBody, settings.ResponseBody, HttpLoggingFields.ResponseBody));
     }
-
-    #region Private methods
 
     private static HttpLoggingFields GetField(bool defaultActivity, bool? isFieldActive, HttpLoggingFields field)
     {
         return isFieldActive ?? defaultActivity ? field : HttpLoggingFields.None;
     }
-
-    #endregion
 }

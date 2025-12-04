@@ -11,7 +11,8 @@ namespace MindTrail.WebHost.Services.Hosted;
 /// Used to handle events related to the application lifetime.
 /// </summary>
 /// <param name="logger">The logger.</param>
-public class AppLifetimeHostedService(ILogger<AppLifetimeHostedService> logger) : IHostedService
+public class AppLifetimeHostedService(ILogger<AppLifetimeHostedService> logger)
+    : IHostedService
 {
     static AppLifetimeHostedService()
     {
@@ -19,11 +20,9 @@ public class AppLifetimeHostedService(ILogger<AppLifetimeHostedService> logger) 
     }
 
     /// <summary>
-    /// Instance ID.
+    /// Gets the instance ID.
     /// </summary>
     public static string InstanceId { get; }
-
-    #region IHostedService
 
     /// <inheritdoc cref="IHostedService.StartAsync"/>
     public Task StartAsync(CancellationToken cancellationToken)
@@ -44,6 +43,4 @@ public class AppLifetimeHostedService(ILogger<AppLifetimeHostedService> logger) 
 
         return Task.CompletedTask;
     }
-
-    #endregion
 }

@@ -18,13 +18,9 @@ public static class CommonConfig
         AddProviders(services);
     }
 
-    #region Private methods
-
     private static void AddProviders(IServiceCollection services)
     {
         services.AddTransient<ICurrentTimeProvider, CurrentTimeProvider>();
         services.AddTransient<IElapsedTimeMeterProvider, ElapsedTimeMeterProvider>();
     }
-
-    #endregion
 }

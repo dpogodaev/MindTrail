@@ -1,6 +1,6 @@
 ﻿using System;
-using NLog;
 using MindTrail.HostConfiguration.Interfaces;
+using NLog;
 
 namespace MindTrail.HostConfiguration.Logging;
 
@@ -8,8 +8,6 @@ namespace MindTrail.HostConfiguration.Logging;
 public class StartupLogger : IStartupLogger
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-
-    #region IStartupLogger
 
     /// <inheritdoc cref="IStartupLogger.Debug"/>
     public void Debug(string msg)
@@ -28,18 +26,17 @@ public class StartupLogger : IStartupLogger
 
         if (elapsedTimeInMs != null && totalElapsedTimeInMs == null)
         {
-            _logger.Info("{Title}: elapsedTime={ElapsedTimeInMs}", msg, elapsedTimeInMs);
+            _logger.Info("{Title} {ElapsedTimeInMs}", msg, elapsedTimeInMs);
             return;
         }
 
         if (elapsedTimeInMs == null)
         {
-            _logger.Info("{Title}: totalElapsedTimeInMs={TotalElapsedTimeInMs}", msg, totalElapsedTimeInMs);
+            _logger.Info("{Title} {TotalElapsedTimeInMs}", msg, totalElapsedTimeInMs);
             return;
         }
 
-        _logger.Info("{Title}: elapsedTime={ElapsedTimeInMs} totalElapsedTimeInMs={TotalElapsedTimeInMs}",
-            msg, elapsedTimeInMs, totalElapsedTimeInMs);
+        _logger.Info("{Title} {ElapsedTimeInMs} {TotalElapsedTimeInMs}", msg, elapsedTimeInMs, totalElapsedTimeInMs);
     }
 
     /// <inheritdoc cref="IStartupLogger.Warn"/>
@@ -53,6 +50,4 @@ public class StartupLogger : IStartupLogger
     {
         _logger.Error("{Title}", msg);
     }
-
-    #endregion
 }

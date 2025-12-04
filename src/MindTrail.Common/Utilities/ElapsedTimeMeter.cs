@@ -12,7 +12,7 @@ public class ElapsedTimeMeter : IElapsedTimeMeter
     private long _totalElapsedTimeInMs;
 
     /// <summary>
-    /// Initializes a new instance of <see cref="ElapsedTimeMeter"/> class.
+    /// Initializes a new instance of the <see cref="ElapsedTimeMeter"/> class.
     /// </summary>
     /// <param name="autoStartupEnabled">Indicates if the time meter should be started automatically. Optional.</param>
     public ElapsedTimeMeter(bool autoStartupEnabled = false)
@@ -22,8 +22,6 @@ public class ElapsedTimeMeter : IElapsedTimeMeter
             Start();
         }
     }
-
-    #region IElapsedTimeMeter
 
     /// <inheritdoc cref="IElapsedTimeMeter.IsActive"/>
     public bool IsActive { get; private set; }
@@ -75,14 +73,8 @@ public class ElapsedTimeMeter : IElapsedTimeMeter
         _stopwatch.Start();
     }
 
-    #endregion
-
-    #region Private methods
-
     private long GetElapsedTimeInMs()
     {
         return _stopwatch.ElapsedMilliseconds;
     }
-
-    #endregion
 }

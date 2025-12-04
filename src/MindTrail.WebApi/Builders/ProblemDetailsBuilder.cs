@@ -6,7 +6,8 @@ using MindTrail.DomainServices.Exceptions.Base;
 
 namespace MindTrail.WebApi.Builders;
 
-//TODO
+// TODO: Refine comments.
+
 /// <summary>
 /// Builds a <see cref="ProblemDetails"/> response from a <see cref="DomainException"/>,
 /// including optional parameters, validation errors, trace ID and error codes.
@@ -19,6 +20,11 @@ public class ProblemDetailsBuilder(DomainException e)
     private string? _title;
     private string? _traceId;
     private string? _errorCode;
+
+    /// <summary>
+    /// Gets the provided exception.
+    /// </summary>
+    public DomainException Exception { get; } = e;
 
     /// <summary>
     /// Builds a <see cref="ProblemDetails"/> response based on the provided exception with the specified status.
@@ -38,11 +44,6 @@ public class ProblemDetailsBuilder(DomainException e)
 
         return problemDetails;
     }
-
-    /// <summary>
-    /// The provided exception.
-    /// </summary>
-    public DomainException Exception { get; } = e;
 
     public ProblemDetailsBuilder AddTitle(string title)
     {
@@ -64,7 +65,7 @@ public class ProblemDetailsBuilder(DomainException e)
 
     public ProblemDetailsBuilder AddValidationErrorDescription(string invalidPropName, string errorDescription)
     {
-        _validationErrors[invalidPropName] = [errorDescription]; //TODO: invalid prop
+        _validationErrors[invalidPropName] = [errorDescription]; // TODO: invalid prop
         return this;
     }
 
@@ -76,37 +77,13 @@ public class ProblemDetailsBuilder(DomainException e)
 
     public ProblemDetailsBuilder AddParameter(string name, int? value)
     {
-        if (value == null) return this;
+        if (value == null)
+        {
+            return this;
+        }
 
         _parameters[name] = value.Value.ToString();
         return this;
-    }
-
-    #region Private methods
-
-    /// <summary>
-    /// Adds the key-value pairs as extensions to the error response.
-    /// </summary>
-    /// <param name="problemDetails">Information about an HTTP error response.</param>
-    /// <param name="parameters">Key-value pairs to add.</param>
-    private void AddParameters(ProblemDetails problemDetails)
-    {
-        if (_parameters.Count <= 0) return;
-
-        foreach (var param in _parameters)
-        {
-            problemDetails.Extensions[param.Key] = param.Value;
-        }
-    }
-
-    /// <summary>
-    /// Adds the error code as extensions to the error response.
-    /// </summary>
-    /// <param name="problemDetails">Information about an HTTP error response.</param>
-    /// <param name="errorCode">The error code to add.</param>
-    private void AddErrorCode(ProblemDetails problemDetails)
-    {
-        problemDetails.Extensions["errorCode"] = _errorCode;
     }
 
     /// <summary>
@@ -122,19 +99,42 @@ public class ProblemDetailsBuilder(DomainException e)
             StatusCodes.Status400BadRequest => "https://tools.ietf.org/html/rfc7231#section-6.5.1",
             StatusCodes.Status404NotFound => "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.4",
             StatusCodes.Status409Conflict => "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.8",
-            _ => throw new ArgumentOutOfRangeException(nameof(statusCode), $"Unsupported status code: {statusCode}")
+            _ => throw new ArgumentOutOfRangeException(nameof(statusCode), $"Unsupported status code: {statusCode}"),
         };
+    }
+
+    /// <summary>
+    /// Adds the key-value pairs as extensions to the error response.
+    /// </summary>
+    /// <param name="problemDetails">Information about an HTTP error response.</param>
+    private void AddParameters(ProblemDetails problemDetails)
+    {
+        if (_parameters.Count <= 0)
+        {
+            return;
+        }
+
+        foreach (var param in _parameters)
+        {
+            problemDetails.Extensions[param.Key] = param.Value;
+        }
+    }
+
+    /// <summary>
+    /// Adds the error code as extensions to the error response.
+    /// </summary>
+    /// <param name="problemDetails">Information about an HTTP error response.</param>
+    private void AddErrorCode(ProblemDetails problemDetails)
+    {
+        problemDetails.Extensions["errorCode"] = _errorCode;
     }
 
     /// <summary>
     /// Adds the trace ID as extensions to the error response.
     /// </summary>
     /// <param name="problemDetails">Information about an HTTP error response.</param>
-    /// <param name="traceId">The trace ID to add.</param>
     private void AddTraceId(ProblemDetails problemDetails)
     {
         problemDetails.Extensions["traceId"] = _traceId;
     }
-
-    #endregion
 }

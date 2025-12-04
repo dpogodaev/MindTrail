@@ -17,19 +17,15 @@ public static class AppServicesConfig
     /// <param name="services">Used to register application services.</param>
     /// <param name="configuration">The application configuration.</param>
     /// <param name="logger">The startup logger. Optional.</param>
-    public static void AddAppServicesConfig(this IServiceCollection services,
-        IConfiguration configuration, IStartupLogger logger = null)
+    public static void AddAppServicesConfig(
+        this IServiceCollection services, IConfiguration configuration, IStartupLogger logger = null)
     {
         AddAppServices(services);
     }
-
-    #region Private methods
 
     private static void AddAppServices(IServiceCollection services)
     {
         services.AddScoped<ICountryAppService, CountryAppService>();
         services.AddScoped<IPersonAppService, PersonAppService>();
     }
-
-    #endregion
 }
