@@ -13,12 +13,18 @@ public class AssemblyHelper
     /// </summary>
     /// <param name="namePrefix">Prefix of the assembly name for filtering.</param>
     /// <returns>List of application assembly names</returns>
-    public static IEnumerable<string> GetAssemblyNames(string namePrefix = null)
+    public static IEnumerable<string> GetAssemblyNames(string? namePrefix = null)
     {
         var assemblyNames = new HashSet<string>();
         var assembliesToScan = new Queue<Assembly>();
 
         var rootAssembly = Assembly.GetEntryAssembly();
+
+        if (rootAssembly == null)
+        {
+            return assemblyNames;
+        }
+
         assembliesToScan.Enqueue(rootAssembly);
 
         while (assembliesToScan.Count != 0)
@@ -30,7 +36,7 @@ public class AssemblyHelper
                 continue;
             }
 
-            assemblyNames.Add(assembly.FullName);
+            assemblyNames.Add(assembly.FullName!);
 
             var references = assembly.GetReferencedAssemblies();
             foreach (var reference in references)
@@ -49,9 +55,9 @@ public class AssemblyHelper
             }
         }
 
-        bool AssemblyDoesNotMatchPrefix(string assemblyName)
+        bool AssemblyDoesNotMatchPrefix(string? assemblyName)
         {
-            return !string.IsNullOrEmpty(namePrefix) && assemblyName.StartsWith(namePrefix) == false;
+            return !string.IsNullOrEmpty(namePrefix) && assemblyName?.StartsWith(namePrefix) == false;
         }
 
         return assemblyNames;

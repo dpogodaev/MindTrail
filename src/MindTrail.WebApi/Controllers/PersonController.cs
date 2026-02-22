@@ -6,10 +6,8 @@ using MindTrail.AppServices.Interfaces.Services;
 using MindTrail.DomainEntities.Entities;
 using MindTrail.DomainServices.Exceptions;
 using MindTrail.DomainServices.Exceptions.Base;
-using MindTrail.WebApi.Builders;
 using MindTrail.WebApi.Dtos;
-using MindTrail.WebApi.Handlers.Exceptions;
-using MindTrail.WebApi.Providers;
+using MindTrail.WebApi.Interfaces.Providers;
 using MindTrail.WebApi.RequestModels;
 using MindTrail.WebAuth.Attributes;
 using AppModels = MindTrail.AppServices.Models;
@@ -23,7 +21,7 @@ namespace MindTrail.WebApi.Controllers;
 [ApiKeyRequired]
 [Route("api/mind-trail/v1/persons")]
 public class PersonController(
-    ProblemDetailsProvider problemDetails,
+    IHttpErrorResultProvider errorProvider,
     IPersonAppService personService)
     : ControllerBase
 {
@@ -52,9 +50,9 @@ public class PersonController(
             switch (ex)
             {
                 case PersonNameTooLongException e:
-                    return BadRequest(e.Handle(nameof(model.FullName)));
+                    return errorProvider.ToBadRequest(e, nameof(model.FullName));
                 case PersonDuplicateException e:
-                    return Conflict(e.Handle());
+                    return errorProvider.ToConflict(e);
                 default: throw;
             }
         }
@@ -80,15 +78,5 @@ public class PersonController(
             BirthCountryId = domainEntity.BirthCountryId,
             BirthCountryName = domainEntity.BirthCountryName,
         };
-    }
-
-    private IActionResult BadRequest(ProblemDetailsBuilder builder)
-    {
-        return problemDetails.CreateBadRequest(builder);
-    }
-
-    private IActionResult Conflict(ProblemDetailsBuilder builder)
-    {
-        return problemDetails.CreateConflict(builder);
     }
 }

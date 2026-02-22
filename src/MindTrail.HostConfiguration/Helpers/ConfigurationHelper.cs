@@ -19,9 +19,13 @@ public static class ConfigurationHelper
     /// </remarks>
     public static string DetermineRuntimeEnvironment(bool isWebHost)
     {
-        return isWebHost
+        var runtimeEnvironment = isWebHost
             ? Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
             : Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT");
+
+        return string.IsNullOrEmpty(runtimeEnvironment)
+            ? throw new InvalidOperationException("The runtime environment is not specified.")
+            : runtimeEnvironment;
     }
 
     /// <summary>

@@ -22,7 +22,9 @@ internal static class Startup
     /// <param name="configuration">The application configuration.</param>
     /// <param name="logger">The startup logger. Optional.</param>
     public static void ConfigureServices(
-        this IHostApplicationBuilder builder, IConfiguration configuration, IStartupLogger? logger = null)
+        this IHostApplicationBuilder builder,
+        IConfiguration configuration,
+        IStartupLogger? logger = null)
     {
         builder.Services.AddCommonConfig();
         builder.Services.AddDomainServicesConfig(configuration, logger);

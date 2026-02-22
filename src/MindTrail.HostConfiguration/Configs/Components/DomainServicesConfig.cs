@@ -20,7 +20,9 @@ public static class DomainServicesConfig
     /// <param name="configuration">The application configuration.</param>
     /// <param name="logger">The startup logger. Optional.</param>
     public static void AddDomainServicesConfig(
-        this IServiceCollection services, IConfiguration configuration, IStartupLogger logger = null)
+        this IServiceCollection services,
+        IConfiguration configuration,
+        IStartupLogger? logger = null)
     {
         AddServices(services);
         AddRepositories(services);

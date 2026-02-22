@@ -48,7 +48,7 @@ internal static class HttpLoggingConfig
         var settings = configuration.BindSection<HttpLoggingSettings>(HttpLoggingConfigSection);
 
         services.AddHttpLogging(opt => opt.LoggingFields =
-            GetField(RequestPropertiesAndHeaders, settings.RequestHeaders,
+            GetField(RequestPropertiesAndHeaders, settings!.RequestHeaders,
                 HttpLoggingFields.RequestPropertiesAndHeaders) |
             GetField(RequestProtocol, settings.RequestProtocol, HttpLoggingFields.RequestProtocol) |
             GetField(RequestScheme, settings.RequestScheme, HttpLoggingFields.RequestScheme) |

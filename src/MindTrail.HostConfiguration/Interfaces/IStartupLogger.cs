@@ -32,5 +32,5 @@ public interface IStartupLogger
     /// </summary>
     /// <param name="msg">A <see langword="string" /> to be written.</param>
     /// <param name="e">An exception to be logged. Optional.</param>
-    void Error(string msg, Exception e = null);
+    void Error(string msg, Exception? e = null);
 }

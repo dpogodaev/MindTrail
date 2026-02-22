@@ -29,7 +29,7 @@ public static class ConfigurationExtensions
     /// <c>null</c> otherwise.
     /// </returns>
     /// <remarks>Binding is performed by recursively matching property names with configuration keys.</remarks>
-    public static T BindSection<T>(this IConfiguration configuration, string key)
+    public static T? BindSection<T>(this IConfiguration configuration, string key)
         where T : class
     {
         return configuration.GetSection(key).Get<T>();
@@ -59,9 +59,9 @@ public static class ConfigurationExtensions
     /// <c>true</c> if the configuration parameter exists and is not equal to null or an empty string;
     /// <c>false</c> otherwise.
     /// </returns>
-    public static bool TryGetProperty(this IConfiguration configuration, string key, out string value)
+    public static bool TryGetProperty(this IConfiguration configuration, string key, out string? value)
     {
-        value = GetProperty(configuration, key);
+        value = configuration.GetProperty(key);
 
         return !string.IsNullOrEmpty(value);
     }
@@ -72,7 +72,7 @@ public static class ConfigurationExtensions
     /// <param name="configuration">Represents a set of key/value application configuration properties.</param>
     /// <param name="key">The key of the configuration property. The colon is used as a separator.</param>
     /// <returns>Parameter value in <c>string</c> format if the configuration parameter exists; <c>null</c> otherwise.</returns>
-    public static string GetProperty(this IConfiguration configuration, string key)
+    public static string? GetProperty(this IConfiguration configuration, string key)
     {
         return configuration[key];
     }

@@ -3,12 +3,12 @@
 /// <summary>
 /// Entity Framework Core settings.
 /// </summary>
-public class EfCoreSettings
+public record EfCoreSettings
 {
     /// <summary>
     /// Database provider ("SQLServer" or "PostgreSQL"). Case-insensitive.
     /// </summary>
-    public string DatabaseProvider { get; set; }
+    public required string DatabaseProvider { get; init; }
 
     /// <summary>
     /// Indicates if migration should be applied to databases automatically.

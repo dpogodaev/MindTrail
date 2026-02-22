@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using MindTrail.WebHost.Abstractions.Providers;
 using MindTrail.WebHost.Services.Hosted;
 
 namespace MindTrail.WebHost.Configs.Components;
@@ -14,7 +15,14 @@ internal static class WebHostConfig
     /// <param name="services">Used to register application services.</param>
     public static void AddWebHostConfig(this IServiceCollection services)
     {
+        AddProviders(services);
         AddHostedServicesConfig(services);
+    }
+
+    private static void AddProviders(IServiceCollection services)
+    {
+        services.AddSingleton<ErrorCodeProvider>();
+        services.AddSingleton<ProblemInstanceProvider>();
     }
 
     private static void AddHostedServicesConfig(IServiceCollection services)

@@ -31,9 +31,16 @@ public sealed class CustomExceptionHandler(IHostEnvironment environment)
         {
             Type = exception.GetType().Name,
             Status = StatusCodes.Status500InternalServerError,
-            Title = withDetailedInfo ? $"An error occured: {exception.Message}" : "An error occured",
-            Detail = withDetailedInfo ? exception.ToString() : null,
-            Extensions = { ["traceId"] = Activity.Current?.Id ?? httpContext.TraceIdentifier },
+            Title = withDetailedInfo
+                ? $"An error occured: {exception.Message}"
+                : "An error occured",
+            Detail = withDetailedInfo
+                ? exception.ToString()
+                : null,
+            Extensions =
+            {
+                ["traceId"] = Activity.Current?.Id ?? httpContext.TraceIdentifier,
+            },
         };
 
         await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);

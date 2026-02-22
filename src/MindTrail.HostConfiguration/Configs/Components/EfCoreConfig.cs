@@ -32,7 +32,9 @@ public static class EfCoreConfig
     /// <param name="configuration">The application configuration.</param>
     /// <param name="logger">The startup logger. Optional.</param>
     public static void AddEfCoreConfig(
-        this IServiceCollection services, IConfiguration configuration, IStartupLogger logger = null)
+        this IServiceCollection services,
+        IConfiguration configuration,
+        IStartupLogger? logger = null)
     {
         AddRepositories(services);
         AddDatabaseProvider(services, configuration, logger);
@@ -48,9 +50,17 @@ public static class EfCoreConfig
     /// <exception cref="Exception">Thrown when <see cref="MssqlDbContext"/> is not configured.</exception>
     /// <exception cref="Exception">Thrown when <see cref="PostgreSqlDbContext"/> is not configured.</exception>
     public static async Task ApplyMigrationAsync(
-        this IHost host, IConfiguration configuration, IStartupLogger logger = null)
+        this IHost host,
+        IConfiguration configuration,
+        IStartupLogger? logger = null)
     {
         var databaseSettings = configuration.BindSection<EfCoreSettings>(EfCoreConfigSection);
+
+        if (databaseSettings == null)
+        {
+            throw new InvalidOperationException(
+                $"The configuration section '{EfCoreConfigSection}' is not specified.");
+        }
 
         switch (databaseSettings.DatabaseProvider.ToLower())
         {
@@ -73,21 +83,29 @@ public static class EfCoreConfig
     }
 
     private static void AddDatabaseProvider(
-        this IServiceCollection services, IConfiguration configuration, IStartupLogger logger = null)
+        this IServiceCollection services,
+        IConfiguration configuration,
+        IStartupLogger? logger = null)
     {
         var databaseSettings = configuration.BindSection<EfCoreSettings>(EfCoreConfigSection);
+
+        if (databaseSettings == null)
+        {
+            throw new InvalidOperationException(
+                $"The configuration section '{EfCoreConfigSection}' is not specified.");
+        }
 
         switch (databaseSettings.DatabaseProvider.ToLower())
         {
             case SqlServerProviderName:
                 services.AddEfCoreMssqlConfig<MssqlDbContext>(configuration, logger);
                 services.AddScoped<IUnitOfWork, AppUnitOfWork<MssqlDbContext>>(sp =>
-                    new AppUnitOfWork<MssqlDbContext>(sp.GetService<MssqlDbContext>()));
+                    new AppUnitOfWork<MssqlDbContext>(sp.GetRequiredService<MssqlDbContext>()));
                 break;
             case PostgreSqlProviderName:
                 services.AddEfCorePostgreSqlConfig<PostgreSqlDbContext>(configuration, logger);
                 services.AddScoped<IUnitOfWork, AppUnitOfWork<PostgreSqlDbContext>>(sp =>
-                    new AppUnitOfWork<PostgreSqlDbContext>(sp.GetService<PostgreSqlDbContext>()));
+                    new AppUnitOfWork<PostgreSqlDbContext>(sp.GetRequiredService<PostgreSqlDbContext>()));
                 break;
             default:
                 HandleUnsupportedDatabaseProvider(databaseSettings);

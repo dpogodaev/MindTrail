@@ -7,7 +7,8 @@ namespace MindTrail.DomainServices.Exceptions;
 /// </summary>
 public sealed class PersonNameTooLongException(string fullName, int maxLength)
     : DomainException(
-        $"The maximum length of the person's name is {maxLength} characters (the current value is {fullName.Length})")
+        $"The maximum length of the person's name is {maxLength} characters " +
+        $"(the current value is {fullName.Length}).")
 {
     /// <summary>
     /// Gets maximum API key length.

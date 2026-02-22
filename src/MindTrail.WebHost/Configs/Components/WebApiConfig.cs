@@ -1,10 +1,12 @@
 ﻿using System.Text.Json.Serialization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MindTrail.DomainServices.Exceptions.Base;
 using MindTrail.HostConfiguration.Interfaces;
 using MindTrail.WebApi.Handlers;
+using MindTrail.WebApi.Interfaces.Handlers;
 using MindTrail.WebApi.Interfaces.Providers;
-using MindTrail.WebApi.Providers;
+using MindTrail.WebHost.Abstractions.Providers;
 using MindTrail.WebHost.Configs.Common;
 using MindTrail.WebHost.Providers;
 using MindTrail.WebHost.Settings;
@@ -25,7 +27,9 @@ internal static class WebApiConfig
     public static void AddWebApiConfig(
         this IServiceCollection services, IConfiguration configuration, IStartupLogger? logger = null)
     {
-        services.AddProviders();
+        AddProviders(services);
+        AddHandlers(services);
+
         services.AddHealthChecks();
         services.AddProblemDetails();
         services.AddExceptionHandler<CustomExceptionHandler>();
@@ -42,10 +46,16 @@ internal static class WebApiConfig
         });
     }
 
-    private static void AddProviders(this IServiceCollection services)
+    private static void AddProviders(IServiceCollection services)
     {
         services.AddScoped<ITraceIdProvider, TraceIdProvider>();
-        services.AddScoped<IErrorCodeProvider, ErrorCodeProvider>();
-        services.AddScoped<IProblemDetailsProvider, ProblemDetailsProvider>();
+        services.AddScoped<IHttpErrorResultProvider, HttpErrorResultProvider>();
+    }
+
+    private static void AddHandlers(IServiceCollection services)
+    {
+        services.AddScoped<IDomainExceptionHandler<DomainException>, SimpleExceptionHandler>();
+        services.AddScoped<IDomainExceptionHandler<DomainException>, PersonDuplicateExceptionHandler>();
+        services.AddScoped<IDomainExceptionHandler<DomainException>, PersonNameTooLongExceptionHandler>();
     }
 }

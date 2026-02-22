@@ -7,7 +7,7 @@ namespace MindTrail.DomainServices.Exceptions;
 /// </summary>
 /// <param name="personId">Person ID.</param>
 public sealed class PersonNotFoundException(Guid personId)
-    : Exception($"The person with identifier '{personId}' was not found")
+    : Exception($"The person with identifier '{personId}' was not found.")
 {
     /// <summary>
     /// Person ID.
