@@ -1,8 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using MindTrail.AppServices.Interfaces.Services;
-using MindTrail.AppServices.Services;
-using MindTrail.HostConfiguration.Interfaces;
+﻿using Microsoft.Extensions.DependencyInjection;
+using MindTrail.Application.Abstractions.Repositories;
+using MindTrail.Application.Services;
+using MindTrail.ApplicationContracts.Interfaces.Services;
+using MindTrail.HostConfiguration.Abstractions.Adapters.Repositories;
+using MindTrail.HostConfiguration.Logging.Services;
 
 namespace MindTrail.HostConfiguration.Configs.Components;
 
@@ -15,19 +16,25 @@ public static class AppServicesConfig
     /// Adds a configuration for application services.
     /// </summary>
     /// <param name="services">Used to register application services.</param>
-    /// <param name="configuration">The application configuration.</param>
-    /// <param name="logger">The startup logger. Optional.</param>
     public static void AddAppServicesConfig(
-        this IServiceCollection services,
-        IConfiguration configuration,
-        IStartupLogger? logger = null)
+        this IServiceCollection services)
     {
-        AddAppServices(services);
+        services.AddAdapters();
+        services.AddAppServices();
     }
 
-    private static void AddAppServices(IServiceCollection services)
+    private static void AddAdapters(this IServiceCollection services)
     {
-        services.AddScoped<ICountryAppService, CountryAppService>();
-        services.AddScoped<IPersonAppService, PersonAppService>();
+        services
+            .AddScoped<IUnitOfWork, UnitOfWorkAdapter>()
+            .AddScoped<ICountryReadRepository, CountryReadRepositoryAdapter>();
+    }
+
+    private static void AddAppServices(this IServiceCollection services)
+    {
+        services
+            .AddScoped<ICountryAppService, CountryAppService>()
+            .AddScoped<IPersonAppService, PersonAppService>()
+            .Decorate<IPersonAppService, PersonAppServiceLogging>();
     }
 }

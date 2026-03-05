@@ -2,20 +2,19 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MindTrail.AppServices.Interfaces.Services;
-using MindTrail.DomainEntities.Entities;
-using MindTrail.DomainServices.Exceptions;
-using MindTrail.DomainServices.Exceptions.Base;
-using MindTrail.WebApi.Dtos;
-using MindTrail.WebApi.Interfaces.Providers;
+using MindTrail.ApplicationContracts.Dtos;
+using MindTrail.ApplicationContracts.Interfaces.Services;
+using MindTrail.DomainShared.Exceptions;
+using MindTrail.DomainShared.Exceptions.Base;
+using MindTrail.WebApi.Abstractions.Providers;
+using MindTrail.WebApi.Mapping;
 using MindTrail.WebApi.RequestModels;
 using MindTrail.WebAuth.Attributes;
-using AppModels = MindTrail.AppServices.Models;
 
 namespace MindTrail.WebApi.Controllers;
 
 /// <summary>
-/// Used to perform basic operations with persons.
+/// Manages operations with persons.
 /// </summary>
 [ApiController]
 [ApiKeyRequired]
@@ -39,9 +38,7 @@ public class PersonController(
     {
         try
         {
-            var createdPerson = MapDomainEntityToDto(
-                await personService.CreatePersonAsync(
-                    MapModelToDomainEntity(model)));
+            var createdPerson = await personService.CreatePersonAsync(model.ToAppModel());
 
             return CreatedAtAction(nameof(CreatePerson), createdPerson);
         }
@@ -49,34 +46,16 @@ public class PersonController(
         {
             switch (ex)
             {
+                case BirthYearOutOfRangeException e:
+                    return errorProvider.ToBadRequest(e, nameof(model.BirthYear));
                 case PersonNameTooLongException e:
                     return errorProvider.ToBadRequest(e, nameof(model.FullName));
                 case PersonDuplicateException e:
                     return errorProvider.ToConflict(e);
+                case CountryNotFoundException e:
+                    return errorProvider.ToConflict(e);
                 default: throw;
             }
         }
-    }
-
-    private static AppModels.PersonCreationModel MapModelToDomainEntity(PersonCreationModel model)
-    {
-        return new AppModels.PersonCreationModel
-        {
-            FullName = model.FullName,
-            BirthYear = model.BirthYear,
-            BirthCountryId = model.BirthCountryId,
-        };
-    }
-
-    private static PersonDto MapDomainEntityToDto(Person domainEntity)
-    {
-        return new PersonDto
-        {
-            Id = domainEntity.Id,
-            FullName = domainEntity.FullName,
-            BirthYear = domainEntity.BirthYear,
-            BirthCountryId = domainEntity.BirthCountryId,
-            BirthCountryName = domainEntity.BirthCountryName,
-        };
     }
 }

@@ -36,9 +36,9 @@ public class EfCorePostgreSqlArchTests
             types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
-                    ComponentNamespaces.DomainEntities,
-                    ComponentNamespaces.DomainServices,
-                    ComponentNamespaces.AppServices),
+                    ComponentNamespaces.Domain,
+                    ComponentNamespaces.Application,
+                    ComponentNamespaces.ApplicationContracts),
             "EfCorePostgreSql_ShouldNotDependOn_DomainLayer",
             "The PostgreSQL data access implementation should not have any dependencies on the application (domain) layer");
 

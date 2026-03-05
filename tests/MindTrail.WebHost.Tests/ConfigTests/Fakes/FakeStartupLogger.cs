@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MindTrail.HostConfiguration.Interfaces;
+using MindTrail.HostConfiguration.Interfaces.Logging;
 
 namespace MindTrail.WebHost.Tests.ConfigTests.Fakes;
 

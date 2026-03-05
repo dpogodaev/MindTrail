@@ -24,7 +24,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MindTrail.AppServices\MindTrail.AppServices.csproj" />
+        <ProjectReference Include="..\MindTrail.DomainShared\MindTrail.DomainShared.csproj" />
+        <ProjectReference Include="..\MindTrail.ApplicationContracts\MindTrail.ApplicationContracts.csproj" />
         <ProjectReference Include="..\MindTrail.Common\MindTrail.Common.csproj" />
         <ProjectReference Include="..\MindTrail.WebAuth\MindTrail.WebAuth.csproj" />
     </ItemGroup>

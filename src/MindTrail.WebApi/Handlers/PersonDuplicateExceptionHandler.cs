@@ -1,11 +1,11 @@
-﻿using MindTrail.DomainServices.Exceptions;
+﻿using MindTrail.DomainShared.Exceptions;
 using MindTrail.WebApi.Abstractions.Builders;
 using MindTrail.WebApi.Abstractions.Factories;
 using MindTrail.WebApi.Handlers.Base;
 
 namespace MindTrail.WebApi.Handlers;
 
-public class PersonDuplicateExceptionHandler(
+public sealed class PersonDuplicateExceptionHandler(
     IProblemDetailsBuilderFactory problemDetailsBuilderFactory)
     : DomainExceptionHandler<PersonDuplicateException>(problemDetailsBuilderFactory)
 {
@@ -16,6 +16,6 @@ public class PersonDuplicateExceptionHandler(
         return ProblemDetailsBuilderFactory.Create(e)
             .AddTitle("Duplicate person")
             .AddParameter("fullName", e.FullName)
-            .AddParameter("birthYear", e.BirthYear);
+            .AddParameter("birthYear", (int?)e.BirthYear);
     }
 }

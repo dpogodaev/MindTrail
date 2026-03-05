@@ -1,39 +1,75 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using MindTrail.DomainEntities.Entities;
-using MindTrail.DomainServices.Filters;
 using MindTrail.EfCore.Context;
+using MindTrail.EfCore.Entities;
+using MindTrail.EfCore.Filters;
 using MindTrail.EfCore.Interfaces.Repositories;
 using MindTrail.EfCore.Repositories.Base;
-using Country = MindTrail.EfCore.Entities.Country;
 
 namespace MindTrail.EfCore.Repositories;
 
-/// <summary>
-/// <inheritdoc cref="ICountryRepository"/>
-/// </summary>
-/// <param name="dbContext">Application database context.</param>
 public class CountryRepository(AppDbContext dbContext)
     : BaseRepository(dbContext), ICountryRepository
 {
-    public async Task<PagedResult<Country>> GetCountriesAsReadOnlyAsync(CountryFilter filter)
+    public async Task<bool> ExistsByIdAsync(int id)
+    {
+        return await GetEntities<Country>()
+            .AnyAsync(x => x.Id == id);
+    }
+
+    public IQueryable<Country> GetCountriesAsReadOnly(CountryFilter filter)
     {
         ArgumentNullException.ThrowIfNull(filter);
 
-        var query = DbContext.Countries.AsNoTracking();
+        var query = GetEntities<Country>();
 
-        return await GetAllPersonsImpl(filter, query);
+        query = ApplySearch(query, filter.Search);
+        query = ApplySorting(query, filter.Sorting);
+        query = ApplyPaging(query, filter.PageNumber, filter.PageSize);
+
+        return query.AsNoTracking();
     }
 
-    private static async Task<PagedResult<Country>> GetAllPersonsImpl(CountryFilter filter, IQueryable<Country> query)
+    private static IQueryable<Country> ApplySearch(
+        IQueryable<Country> query,
+        string? search)
     {
-        if (!string.IsNullOrWhiteSpace(filter.Name))
+        if (string.IsNullOrWhiteSpace(search))
         {
-            query = query.Where(p => p.Name.Contains(filter.Name));
+            return query;
         }
 
-        return await GetPagedResult(query, filter.PageNumber, filter.PageSize);
+        return query.Where(x =>
+            x.Name.Contains(search) ||
+            x.Code.Contains(search));
+    }
+
+    private IQueryable<Country> ApplySorting(
+        IQueryable<Country> query,
+        string? sorting)
+    {
+        var (propName, isDescending) = GetSortingOptions(sorting);
+
+        if (propName != null)
+        {
+            if (propName.Equals(nameof(Country.Name), StringComparison.InvariantCultureIgnoreCase))
+            {
+                return isDescending
+                    ? query.OrderByDescending(x => x.Name)
+                    : query.OrderBy(x => x.Name);
+            }
+
+            if (propName.Equals(nameof(Country.Code), StringComparison.InvariantCultureIgnoreCase))
+            {
+                return isDescending
+                    ? query.OrderByDescending(x => x.Code)
+                    : query.OrderBy(x => x.Code);
+            }
+        }
+
+        return query.OrderBy(x => x.Id);
     }
 }

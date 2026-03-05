@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MindTrail.HostConfiguration.Configs.Common;
 using MindTrail.HostConfiguration.Helpers;
-using MindTrail.HostConfiguration.Interfaces;
+using MindTrail.HostConfiguration.Interfaces.Logging;
 using MindTrail.HostConfiguration.Logging;
 
 namespace MindTrail.HostConfiguration.Providers;

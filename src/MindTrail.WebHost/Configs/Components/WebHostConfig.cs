@@ -21,6 +21,7 @@ internal static class WebHostConfig
 
     private static void AddProviders(IServiceCollection services)
     {
+        services.AddSingleton<TraceIdProvider>();
         services.AddSingleton<ErrorCodeProvider>();
         services.AddSingleton<ProblemInstanceProvider>();
     }

@@ -12,20 +12,18 @@ public static class ConfigurationHelper
     /// Determines the runtime environment.
     /// </summary>
     /// <param name="isWebHost">Indicates if it is a web host.</param>
-    /// <returns>The name of the runtime environment.</returns>
+    /// <returns>
+    /// The name of the runtime environment, or <c>null</c> if the corresponding environment variable is not set.
+    /// </returns>
     /// <remarks>
     /// ASP.NET Core uses an environment variable called 'ASPNETCORE_ENVIRONMENT' to identify the runtime environment.
     /// Default host uses the environment variables with prefixed with 'DOTNET_'.
     /// </remarks>
-    public static string DetermineRuntimeEnvironment(bool isWebHost)
+    public static string? DetermineRuntimeEnvironment(bool isWebHost)
     {
-        var runtimeEnvironment = isWebHost
+        return isWebHost
             ? Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
             : Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT");
-
-        return string.IsNullOrEmpty(runtimeEnvironment)
-            ? throw new InvalidOperationException("The runtime environment is not specified.")
-            : runtimeEnvironment;
     }
 
     /// <summary>
@@ -34,13 +32,23 @@ public static class ConfigurationHelper
     /// </summary>
     /// <param name="runtimeEnvironment">Name of the runtime environment.</param>
     /// <returns>The application configuration.</returns>
-    /// <exception cref="Exception">Thrown when file "appsettings.json" was not found.</exception>
-    public static IConfiguration BuildAppConfiguration(string runtimeEnvironment)
+    /// <exception cref="Exception">Thrown when file appsettings.json was not found.</exception>
+    public static IConfiguration BuildAppConfiguration(string? runtimeEnvironment)
     {
-        return new ConfigurationBuilder()
+        var configurationBuilder = new ConfigurationBuilder();
+
+        configurationBuilder
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            .AddJsonFile($"appsettings.{runtimeEnvironment}.json", optional: true, reloadOnChange: true)
-            .AddEnvironmentVariables()
-            .Build();
+            .AddEnvironmentVariables();
+
+        if (!string.IsNullOrEmpty(runtimeEnvironment))
+        {
+            configurationBuilder
+                .AddJsonFile($"appsettings.{runtimeEnvironment}.json", optional: true, reloadOnChange: true);
+        }
+
+        configurationBuilder.AddEnvironmentVariables();
+
+        return configurationBuilder.Build();
     }
 }

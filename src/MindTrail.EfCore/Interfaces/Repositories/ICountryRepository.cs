@@ -1,14 +1,13 @@
-﻿using System.Threading.Tasks;
-using MindTrail.DomainEntities.Entities;
-using MindTrail.DomainServices.Filters;
-using Country = MindTrail.EfCore.Entities.Country;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using MindTrail.EfCore.Entities;
+using MindTrail.EfCore.Filters;
 
 namespace MindTrail.EfCore.Interfaces.Repositories;
 
-/// <summary>
-/// Database repository for <see cref="EfCore.Entities.Country"/> entities.
-/// </summary>
 public interface ICountryRepository
 {
-    Task<PagedResult<Country>> GetCountriesAsReadOnlyAsync(CountryFilter filter);
+    Task<bool> ExistsByIdAsync(int countryId);
+
+    IQueryable<Country> GetCountriesAsReadOnly(CountryFilter filter);
 }

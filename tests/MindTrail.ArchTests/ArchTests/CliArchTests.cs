@@ -38,11 +38,19 @@ public class CliArchTests
             types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
-                    ComponentNamespaces.DomainEntities,
-                    ComponentNamespaces.DomainServices,
-                    ComponentNamespaces.AppServices),
+                    ComponentNamespaces.Domain,
+                    ComponentNamespaces.DomainShared),
             "Cli_ShouldNotDependOn_DomainLayer",
-            "The CLI should not have any dependencies on the application (domain) layer");
+            "The CLI should not have any dependencies on the domain layer");
+
+        policyDefinition.Add(
+            types => types
+                .That().ResideInNamespace(CurrentNamespace)
+                .ShouldNot().HaveDependencyOnAny(
+                    ComponentNamespaces.Application,
+                    ComponentNamespaces.ApplicationContracts),
+            "Cli_ShouldNotDependOn_ApplicationLayer",
+            "The CLI should not have any dependencies on the application layer");
 
         policyDefinition.Add(
             types => types
@@ -81,7 +89,7 @@ public class CliArchTests
                         ComponentNamespaces.Common
                     ])),
             "Cli_ShouldOnlyDependOn_CommonLogic",
-            $"The CLI can only depend on the shared logic ({nameof(Common)})");
+            "The CLI can only depend on common utilities");
 
         // Act
         var results = policyDefinition.Evaluate().Results;

@@ -1,24 +1,39 @@
-﻿namespace MindTrail.WebApi.RequestModels;
+﻿using MindTrail.ApplicationContracts.Dtos;
+
+namespace MindTrail.WebApi.RequestModels;
 
 /// <summary>
-/// Request model containing filtering and pagination parameters to get a collection of countries.
+/// Model for querying a list of countries.
 /// </summary>
 public record CountryFilterModel
 {
     /// <summary>
-    /// Gets or sets a filter for the country name. Optional.
-    /// </summary>
-    public string? Name { get; set; }
-
-    /// <summary>
-    /// Gets or sets the page number. Optional.
+    /// Gets the page number.
     /// The default value is <c>1</c>.
     /// </summary>
-    public int PageNumber { get; set; } = 1;
+    public uint PageNumber { get; init; } = 1;
 
     /// <summary>
-    /// Gets or sets the page size. Optional.
+    /// Gets the page size.
     /// The default value is <c>10</c>.
     /// </summary>
-    public int PageSize { get; set; } = 10;
+    public uint PageSize { get; init; } = 10;
+
+    /// <summary>
+    /// Gets the search text used to filter countries by partial match.
+    /// </summary>
+    /// <remarks>
+    /// If <c>null</c> or empty, no text filtering is applied.
+    /// </remarks>
+    public string? Search { get; init; }
+
+    /// <summary>
+    /// Gets the sorting order of the result list in SQL ORDER BY format,
+    /// e.g.: <c>Name ASC</c>, <c>Code DESC</c> (case insensitive).
+    /// </summary>
+    /// <remarks>
+    /// Supports fields: <see cref="CountryDto.Code"/>, <see cref="CountryDto.Name"/>.
+    /// Default sorting is ASC by <see cref="CountryDto.Id"/>.
+    /// </remarks>
+    public string? Sorting { get; init; }
 }

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MindTrail.HostConfiguration.Extensions;
-using MindTrail.HostConfiguration.Interfaces;
+using MindTrail.HostConfiguration.Interfaces.Logging;
 using MindTrail.WebHost.Settings;
 
 namespace MindTrail.WebHost.Configs.Common;

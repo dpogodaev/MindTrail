@@ -1,14 +1,15 @@
 ﻿using System.Text.Json.Serialization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MindTrail.DomainServices.Exceptions.Base;
-using MindTrail.HostConfiguration.Interfaces;
+using MindTrail.DomainShared.Exceptions.Base;
+using MindTrail.HostConfiguration.Interfaces.Logging;
+using MindTrail.WebApi.Abstractions.Factories;
+using MindTrail.WebApi.Abstractions.Providers;
 using MindTrail.WebApi.Handlers;
 using MindTrail.WebApi.Interfaces.Handlers;
-using MindTrail.WebApi.Interfaces.Providers;
+using MindTrail.WebHost.Abstractions.Factories;
 using MindTrail.WebHost.Abstractions.Providers;
 using MindTrail.WebHost.Configs.Common;
-using MindTrail.WebHost.Providers;
 using MindTrail.WebHost.Settings;
 
 namespace MindTrail.WebHost.Configs.Components;
@@ -27,6 +28,7 @@ internal static class WebApiConfig
     public static void AddWebApiConfig(
         this IServiceCollection services, IConfiguration configuration, IStartupLogger? logger = null)
     {
+        AddFactories(services);
         AddProviders(services);
         AddHandlers(services);
 
@@ -46,9 +48,13 @@ internal static class WebApiConfig
         });
     }
 
+    private static void AddFactories(IServiceCollection services)
+    {
+        services.AddSingleton<IProblemDetailsBuilderFactory, ProblemDetailsBuilderFactory>();
+    }
+
     private static void AddProviders(IServiceCollection services)
     {
-        services.AddScoped<ITraceIdProvider, TraceIdProvider>();
         services.AddScoped<IHttpErrorResultProvider, HttpErrorResultProvider>();
     }
 
@@ -57,5 +63,6 @@ internal static class WebApiConfig
         services.AddScoped<IDomainExceptionHandler<DomainException>, SimpleExceptionHandler>();
         services.AddScoped<IDomainExceptionHandler<DomainException>, PersonDuplicateExceptionHandler>();
         services.AddScoped<IDomainExceptionHandler<DomainException>, PersonNameTooLongExceptionHandler>();
+        services.AddScoped<IDomainExceptionHandler<DomainException>, BirthYearOutOfRangeExceptionHandler>();
     }
 }

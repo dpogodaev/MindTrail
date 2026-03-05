@@ -6,10 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MindTrail.EfCore.Context;
-using MindTrail.EfCore.Interfaces.Context;
-using MindTrail.EfCoreMssql.Context;
 using MindTrail.HostConfiguration.Extensions;
-using MindTrail.HostConfiguration.Interfaces;
+using MindTrail.HostConfiguration.Interfaces.Logging;
 using MindTrail.HostConfiguration.Settings;
 
 namespace MindTrail.HostConfiguration.Configs.Components;

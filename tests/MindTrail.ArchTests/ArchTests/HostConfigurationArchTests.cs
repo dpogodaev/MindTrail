@@ -59,15 +59,16 @@ public class HostConfigurationArchTests
                 .ShouldNot().HaveDependenciesOtherThan(
                     CreateAllowedDependenciesList([
                         ComponentNamespaces.Common,
-                        ComponentNamespaces.DomainEntities,
-                        ComponentNamespaces.DomainServices,
-                        ComponentNamespaces.AppServices,
+                        ComponentNamespaces.Domain,
+                        ComponentNamespaces.DomainShared,
+                        ComponentNamespaces.Application,
+                        ComponentNamespaces.ApplicationContracts,
                         ComponentNamespaces.EfCore,
                         ComponentNamespaces.EfCoreMssql,
                         ComponentNamespaces.EfCorePostgreSql
                     ])),
             "HostConfiguration_ShouldOnlyDependOn_DomainLayerAndDataAccessLayer",
-            "The application configurator can only depend on application (domain) layer and data access layer");
+            "The application configurator can only depend on the domain layer, application layer, and data access layer");
 
         // Act
         var results = policyDefinition.Evaluate().Results;

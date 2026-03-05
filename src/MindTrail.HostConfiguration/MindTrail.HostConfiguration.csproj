@@ -24,17 +24,17 @@
         <PackageReference Include="NLog.Extensions.Hosting" Version="5.3.11"/>
         <PackageReference Include="NLog.Schema" Version="5.3.2"/>
         <PackageReference Include="NLog.Targets.Loki" Version="2.2.0"/>
+        <PackageReference Include="Scrutor.DecorateOnly" Version="6.1.0"/>
         <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MindTrail.AppServices\MindTrail.AppServices.csproj"/>
+        <ProjectReference Include="..\MindTrail.Application\MindTrail.Application.csproj" />
         <ProjectReference Include="..\MindTrail.Common\MindTrail.Common.csproj"/>
-        <ProjectReference Include="..\MindTrail.DomainEntities\MindTrail.DomainEntities.csproj"/>
-        <ProjectReference Include="..\MindTrail.DomainServices\MindTrail.DomainServices.csproj"/>
+        <ProjectReference Include="..\MindTrail.Domain\MindTrail.Domain.csproj" />
         <ProjectReference Include="..\MindTrail.EfCoreMssql\MindTrail.EfCoreMssql.csproj"/>
         <ProjectReference Include="..\MindTrail.EfCorePostgreSql\MindTrail.EfCorePostgreSql.csproj"/>
         <ProjectReference Include="..\MindTrail.EfCore\MindTrail.EfCore.csproj"/>

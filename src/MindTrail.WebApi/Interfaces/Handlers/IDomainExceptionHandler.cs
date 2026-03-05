@@ -1,4 +1,4 @@
-﻿using MindTrail.DomainServices.Exceptions.Base;
+﻿using MindTrail.DomainShared.Exceptions.Base;
 using MindTrail.WebApi.Abstractions.Builders;
 
 namespace MindTrail.WebApi.Interfaces.Handlers;

@@ -16,7 +16,7 @@ public record PersonCreationModel
     /// <summary>
     /// Gets or sets the year of birth.
     /// </summary>
-    public int? BirthYear { get; set; }
+    public uint? BirthYear { get; set; }
 
     /// <summary>
     /// Gets or sets the ID of the country in which the person was born.

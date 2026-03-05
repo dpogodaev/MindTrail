@@ -21,4 +21,8 @@
       </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\MindTrail.DomainShared\MindTrail.DomainShared.csproj" />
+    </ItemGroup>
+
 </Project>

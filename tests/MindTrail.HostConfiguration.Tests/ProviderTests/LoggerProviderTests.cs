@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using MindTrail.HostConfiguration.Interfaces;
+using MindTrail.HostConfiguration.Interfaces.Logging;
 using MindTrail.HostConfiguration.Providers;
 using Xunit;
 

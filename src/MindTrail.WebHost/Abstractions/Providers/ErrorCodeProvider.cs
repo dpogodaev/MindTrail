@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using MindTrail.DomainServices.Exceptions;
-using MindTrail.DomainServices.Exceptions.Base;
+using MindTrail.DomainShared.Exceptions;
+using MindTrail.DomainShared.Exceptions.Base;
 
 namespace MindTrail.WebHost.Abstractions.Providers;
 

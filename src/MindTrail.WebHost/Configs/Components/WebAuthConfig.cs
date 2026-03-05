@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MindTrail.HostConfiguration.Extensions;
-using MindTrail.HostConfiguration.Interfaces;
+using MindTrail.HostConfiguration.Interfaces.Logging;
 using MindTrail.WebAuth.Constants;
 using MindTrail.WebAuth.Extensions;
 using MindTrail.WebAuth.Filters;

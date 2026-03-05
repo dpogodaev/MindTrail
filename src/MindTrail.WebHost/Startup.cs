@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using MindTrail.HostConfiguration.Configs.Components;
-using MindTrail.HostConfiguration.Interfaces;
+using MindTrail.HostConfiguration.Interfaces.Logging;
 using MindTrail.WebHost.Configs.Common;
 using MindTrail.WebHost.Configs.Components;
 using MindTrail.WebHost.Middlewares;
@@ -27,8 +27,8 @@ internal static class Startup
         IStartupLogger? logger = null)
     {
         builder.Services.AddCommonConfig();
-        builder.Services.AddDomainServicesConfig(configuration, logger);
-        builder.Services.AddAppServicesConfig(configuration, logger);
+        builder.Services.AddDomainServicesConfig();
+        builder.Services.AddAppServicesConfig();
         builder.Services.AddEfCoreConfig(configuration, logger);
 
         builder.Services.AddWebHostConfig();

@@ -1,11 +1,11 @@
-﻿using MindTrail.DomainServices.Exceptions;
+﻿using MindTrail.DomainShared.Exceptions;
 using MindTrail.WebApi.Abstractions.Builders;
 using MindTrail.WebApi.Abstractions.Factories;
 using MindTrail.WebApi.Handlers.Base;
 
 namespace MindTrail.WebApi.Handlers;
 
-public class PersonNameTooLongExceptionHandler(
+public sealed class PersonNameTooLongExceptionHandler(
     IProblemDetailsBuilderFactory problemDetailsBuilderFactory)
     : DomainExceptionHandler<PersonNameTooLongException>(problemDetailsBuilderFactory)
 {

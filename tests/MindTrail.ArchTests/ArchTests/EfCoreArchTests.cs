@@ -31,15 +31,16 @@ public class EfCoreArchTests
         var policyDefinition = PolicyHelper.BuildPolicyDefinition(
             CurrentNamespace,
             "Component dependency policy",
-            $"Enforces the dependencies of the {nameof(AppServices)} component");
+            $"Enforces the dependencies of the {nameof(EfCore)} component");
 
         policyDefinition.Add(
             types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
-                    ComponentNamespaces.AppServices),
-            "EfCore_ShouldNotDependOn_AppServices",
-            "Abstraction above the data layer (EF) should not have any dependencies on the application services");
+                    ComponentNamespaces.Application,
+                    ComponentNamespaces.ApplicationContracts),
+            "EfCore_ShouldNotDependOn_Application",
+            "Abstraction above the data layer (EF) should not have any dependencies on the application layer");
 
         policyDefinition.Add(
             types => types
@@ -76,11 +77,10 @@ public class EfCoreArchTests
                 .ShouldNot().HaveDependenciesOtherThan(
                     CreateAllowedDependenciesList([
                         ComponentNamespaces.Common,
-                        ComponentNamespaces.DomainEntities,
-                        ComponentNamespaces.DomainServices
+                        ComponentNamespaces.DomainShared
                     ])),
             "EfCore_ShouldOnlyDependOn_DomainEntitiesAndServices",
-            "Abstraction above the data layer (EF) can only depend on domain entities and services");
+            "Abstraction above the data layer (EF) can only depend on shared types of the domain layer");
 
         // Act
         var results = policyDefinition.Evaluate().Results;

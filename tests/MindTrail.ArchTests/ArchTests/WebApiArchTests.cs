@@ -38,11 +38,9 @@ public class WebApiArchTests
             types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
-                    ComponentNamespaces.EfCore,
-                    ComponentNamespaces.EfCoreMssql,
-                    ComponentNamespaces.EfCorePostgreSql),
-            "WebApi_ShouldNotDependOn_DomainLayer",
-            "The Web API should not have any dependencies on the application (domain) layer");
+                    ComponentNamespaces.Domain),
+            "WebApi_ShouldNotDependOn_Domain",
+            "The Web API should not have any dependencies on the domain component");
 
         policyDefinition.Add(
             types => types
@@ -78,10 +76,12 @@ public class WebApiArchTests
                 .ShouldNot().HaveDependenciesOtherThan(
                     CreateAllowedDependenciesList([
                         ComponentNamespaces.Common,
+                        ComponentNamespaces.DomainShared,
+                        ComponentNamespaces.ApplicationContracts,
                         ComponentNamespaces.WebAuth
                     ])),
             "WebApi_ShouldOnlyDependOn_WebComponentsAndCommonLogic",
-            $"The Web API can only depend on the shared logic ({nameof(Common)}) and on components that also implement the web interface, such as {nameof(WebAuth)}");
+            $"The Web API can only depend on common utilities, shared domain types, application contracts and on components that also implement the web interface, such as {nameof(WebAuth)}");
 
         // Act
         var results = policyDefinition.Evaluate().Results;

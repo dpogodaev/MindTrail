@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MindTrail.DomainServices.Exceptions.Base;
+using MindTrail.DomainShared.Exceptions.Base;
 using MindTrail.WebApi.Abstractions.Builders;
 
 namespace MindTrail.WebHost.Abstractions.Builders;
@@ -29,32 +29,21 @@ public class ProblemDetailsBuilder(DomainException e)
         [StatusCodes.Status409Conflict] = "https://tools.ietf.org/doc/html/rfc9110#section-15.5.10",
     };
 
-    private readonly Dictionary<string, string> _parameters = new();
+    private readonly Dictionary<string, object> _parameters = new();
     private readonly Dictionary<string, string[]> _validationErrors = new();
 
     private string? _title;
+    private string? _detail;
     private string? _traceId;
     private string? _instance;
 
-    /// <summary>
-    /// Gets source domain exception.
-    /// </summary>
+    /// <inheritdoc cref="IProblemDetailsBuilder.Exception"/>
     public DomainException Exception { get; } = e;
 
-    /// <summary>
-    /// Gets an application-specific error code.
-    /// </summary>
+    /// <inheritdoc cref="IProblemDetailsBuilder.ErrorCode"/>
     public string? ErrorCode { get; private set; }
 
-    /// <summary>
-    /// Creates final <see cref="ProblemDetails"/> with specified HTTP status code.<br/>
-    /// Automatically applies all added title, trace ID, error code, parameters, and validation errors.
-    /// </summary>
-    /// <param name="statusCode">
-    /// HTTP status code: <c>400</c> (BadRequest), <c>404</c> (NotFound), <c>409</c> (Conflict).
-    /// </param>
-    /// <returns>Ready <see cref="ProblemDetails"/> for HTTP response.</returns>
-    /// <exception cref="ArgumentOutOfRangeException">The specified status code is not supported.</exception>
+    /// <inheritdoc cref="IProblemDetailsBuilder.Build"/>
     public ProblemDetails Build(int statusCode)
     {
         var problemDetails = CreateProblemDetails(statusCode);
@@ -70,13 +59,7 @@ public class ProblemDetailsBuilder(DomainException e)
         return problemDetails;
     }
 
-    /// <summary>
-    /// Adds a title for <see cref="ProblemDetails"/>.<br/>
-    /// Default title is applied automatically based on HTTP status code.
-    /// </summary>
-    /// <param name="title">Short problem type description.</param>
-    /// <returns>Current builder for fluent API.</returns>
-    /// <exception cref="ArgumentException">The title has a <c>null</c> or empty value.</exception>
+    /// <inheritdoc cref="IProblemDetailsBuilder.AddTitle"/>
     public IProblemDetailsBuilder AddTitle(string title)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(title, nameof(title));
@@ -86,11 +69,20 @@ public class ProblemDetailsBuilder(DomainException e)
         return this;
     }
 
-    /// <summary>
-    /// Adds a trace ID to <see cref="ProblemDetails.Extensions"/> with key <c>"traceId"</c>.
-    /// </summary>
-    /// <param name="traceId">Trace ID. Ignored if <c>null</c> or empty.</param>
-    /// <returns>Current builder for fluent API.</returns>
+    /// <inheritdoc cref="IProblemDetailsBuilder.AddDetail"/>
+    public IProblemDetailsBuilder AddDetail(string? detail)
+    {
+        if (string.IsNullOrEmpty(detail))
+        {
+            return this;
+        }
+
+        _detail = detail;
+
+        return this;
+    }
+
+    /// <inheritdoc cref="IProblemDetailsBuilder.AddTraceId"/>
     public IProblemDetailsBuilder AddTraceId(string? traceId)
     {
         if (string.IsNullOrEmpty(traceId))
@@ -103,11 +95,7 @@ public class ProblemDetailsBuilder(DomainException e)
         return this;
     }
 
-    /// <summary>
-    /// Adds the application-specific error code to <see cref="ProblemDetails.Extensions"/> with key <c>"errorCode"</c>.
-    /// </summary>
-    /// <param name="code">Application-specific error code. Ignored if <c>null</c> or empty.</param>
-    /// <returns>Current builder for fluent API.</returns>
+    /// <inheritdoc cref="IProblemDetailsBuilder.AddErrorCode"/>
     public IProblemDetailsBuilder AddErrorCode(string? code)
     {
         if (string.IsNullOrEmpty(code))
@@ -120,6 +108,7 @@ public class ProblemDetailsBuilder(DomainException e)
         return this;
     }
 
+    /// <inheritdoc cref="IProblemDetailsBuilder.AddInstance"/>
     public IProblemDetailsBuilder AddInstance(string? instance)
     {
         if (string.IsNullOrEmpty(instance))
@@ -132,14 +121,7 @@ public class ProblemDetailsBuilder(DomainException e)
         return this;
     }
 
-    /// <summary>
-    /// Adds validation error for property.
-    /// </summary>
-    /// <param name="invalidPropName">Property name. Ignored if <c>null</c> or empty.</param>
-    /// <param name="errorDescription">
-    /// Short message for UI. Default value is <c>"Invalid value"</c>.
-    /// </param>
-    /// <returns>Current builder for fluent API.</returns>
+    /// <inheritdoc cref="IProblemDetailsBuilder.AddValidationErrorDescription"/>
     public IProblemDetailsBuilder AddValidationErrorDescription(
         string? invalidPropName,
         string? errorDescription = null)
@@ -154,18 +136,12 @@ public class ProblemDetailsBuilder(DomainException e)
             errorDescription = DefaultValidationErrorDescription;
         }
 
-        _validationErrors[FirstCharToLowerCase(invalidPropName)] = [errorDescription];
+        _validationErrors[FirstCharToLowerCase(invalidPropName)] = [errorDescription.TrimEnd('.')];
 
         return this;
     }
 
-    /// <summary>
-    /// Adds string parameter to extensions["parameterName"] = "value".
-    /// </summary>
-    /// <param name="name">Parameter name (e.g., "currentLength").</param>
-    /// <param name="value">Parameter value.</param>
-    /// <returns>Current builder for fluent API.</returns>
-    /// <exception cref="ArgumentException">If name is null or whitespace.</exception>
+    /// <inheritdoc cref="IProblemDetailsBuilder.AddParameter(string, string?)"/>
     public IProblemDetailsBuilder AddParameter(string name, string? value)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name, nameof(name));
@@ -180,13 +156,7 @@ public class ProblemDetailsBuilder(DomainException e)
         return this;
     }
 
-    /// <summary>
-    /// Adds integer parameter to extensions["parameterName"] = 123.
-    /// </summary>
-    /// <param name="name">Parameter name.</param>
-    /// <param name="value">Parameter value.</param>
-    /// <returns>Current builder for fluent API.</returns>
-    /// <exception cref="ArgumentException">If name is null or whitespace.</exception>
+    /// <inheritdoc cref="IProblemDetailsBuilder.AddParameter(string, int?)"/>
     public IProblemDetailsBuilder AddParameter(string name, int? value)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name, nameof(name));
@@ -196,18 +166,12 @@ public class ProblemDetailsBuilder(DomainException e)
             return this;
         }
 
-        _parameters[name] = value.Value.ToString();
+        _parameters[name] = value.Value;
 
         return this;
     }
 
-    /// <summary>
-    /// Adds date in RFC 3339 format to extensions["parameterName"] = "2026-02-23T11:02:00.000Z".
-    /// </summary>
-    /// <param name="name">Parameter name.</param>
-    /// <param name="value">Date value.</param>
-    /// <returns>Current builder for fluent API.</returns>
-    /// <exception cref="ArgumentException">If name is null or whitespace.</exception>
+    /// <inheritdoc cref="IProblemDetailsBuilder.AddParameter(string, DateTime?)"/>
     public IProblemDetailsBuilder AddParameter(string name, DateTime? value)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name, nameof(name));
@@ -262,7 +226,9 @@ public class ProblemDetailsBuilder(DomainException e)
 
     private void SetDetail(ProblemDetails problemDetails)
     {
-        var detail = Exception.Message;
+        var detail = string.IsNullOrEmpty(_detail)
+            ? Exception.Message
+            : _detail;
 
         if (!string.IsNullOrEmpty(detail))
         {
@@ -280,13 +246,21 @@ public class ProblemDetailsBuilder(DomainException e)
 
     private void SetTitle(ProblemDetails problemDetails)
     {
-        if (string.IsNullOrEmpty(_title))
+        if (!string.IsNullOrEmpty(_title))
         {
-            SetDefaultTitle(problemDetails);
+            problemDetails.Title = _title.TrimEnd('.');
+            return;
         }
-        else
+
+        if (!string.IsNullOrEmpty(_detail))
         {
-            problemDetails.Title = _title;
+            problemDetails.Title = _detail.TrimEnd('.');
+            return;
+        }
+
+        if (DefaultTitle.TryGetValue(problemDetails.Status!.Value, out var title))
+        {
+            problemDetails.Title = title;
         }
     }
 

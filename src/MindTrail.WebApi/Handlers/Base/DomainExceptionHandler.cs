@@ -1,5 +1,5 @@
 ﻿using System;
-using MindTrail.DomainServices.Exceptions.Base;
+using MindTrail.DomainShared.Exceptions.Base;
 using MindTrail.WebApi.Abstractions.Builders;
 using MindTrail.WebApi.Abstractions.Factories;
 using MindTrail.WebApi.Interfaces.Handlers;

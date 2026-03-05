@@ -2,13 +2,11 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using MindTrail.DomainEntities.Entities;
-using MindTrail.DomainServices.Exceptions;
-using MindTrail.DomainServices.Filters;
 using MindTrail.EfCore.Context;
+using MindTrail.EfCore.Entities;
+using MindTrail.EfCore.Filters;
 using MindTrail.EfCore.Interfaces.Repositories;
 using MindTrail.EfCore.Repositories.Base;
-using Person = MindTrail.EfCore.Entities.Person;
 
 namespace MindTrail.EfCore.Repositories;
 
@@ -19,37 +17,30 @@ namespace MindTrail.EfCore.Repositories;
 public class PersonRepository(AppDbContext dbContext)
     : BaseRepository(dbContext), IPersonRepository
 {
-    public async Task<Person> GetPersonByIdAsync(Guid id)
+    public async Task<Person?> GetPersonByIdAsync(Guid id)
     {
         return await DbContext.Persons
             .Include(x => x.BirthCountry)
-            .FirstOrDefaultAsync(x => x.Id == id) ?? throw new PersonNotFoundException(id);
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<Person> GetPersonByIdAsReadOnlyAsync(Guid id)
-    {
-        return await DbContext.Persons
-            .AsNoTracking()
-            .Include(x => x.BirthCountry)
-            .FirstOrDefaultAsync(x => x.Id == id) ?? throw new PersonNotFoundException(id);
-    }
-
-    public async Task<PagedResult<Person>> GetPersonsAsync(PersonFilter filter)
+    public IQueryable<Person> GetPersons(PersonFilter filter, bool includeCountry)
     {
         ArgumentNullException.ThrowIfNull(filter);
 
-        IQueryable<Person> query = DbContext.Persons;
+        var query = GetEntities<Person>();
 
-        return await GetAllPersonsImpl(filter, query);
-    }
+        if (includeCountry)
+        {
+            query = query.Include(x => x.BirthCountry);
+        }
 
-    public async Task<PagedResult<Person>> GetPersonsAsReadOnlyAsync(PersonFilter filter)
-    {
-        ArgumentNullException.ThrowIfNull(filter);
+        query = ApplyFiltering(query, filter);
+        query = ApplySearch(query, filter.Search);
+        query = ApplySorting(query, filter.Sorting);
+        query = ApplyPaging(query, filter.PageNumber, filter.PageSize);
 
-        var query = DbContext.Persons.AsNoTracking();
-
-        return await GetAllPersonsImpl(filter, query);
+        return query;
     }
 
     public async Task<Person> CreatePersonAsync(Person person)
@@ -59,32 +50,50 @@ public class PersonRepository(AppDbContext dbContext)
         return await CreateEntityAsync(person);
     }
 
-    public async Task<Person> UpdatePersonAsync(Person person)
+    public async Task<Person?> UpdatePersonAsync(Person person)
     {
         ArgumentNullException.ThrowIfNull(person);
 
-        var dbPerson = await DbContext.Persons
+        var existingPerson = await DbContext.Persons
             .Include(x => x.BirthCountry)
-            .FirstOrDefaultAsync(x => x.Id == person.Id) ?? throw new PersonNotFoundException(person.Id);
+            .FirstOrDefaultAsync(x => x.Id == person.Id);
 
-        UpdateProperties(dbPerson, person);
-        await UpdateEntity(dbPerson);
+        if (existingPerson == null)
+        {
+            return null;
+        }
 
-        return dbPerson;
+        UpdateProperties(existingPerson, person);
+        await UpdateEntity(existingPerson);
+
+        return existingPerson;
     }
 
-    public async Task<Person> DeletePersonAsync(Guid id)
+    public async Task<Person?> DeletePersonAsync(Guid id)
     {
-        var dbPerson = await DbContext.Persons
+        var personToDelete = await DbContext.Persons
             .Include(x => x.BirthCountry)
-            .FirstOrDefaultAsync(x => x.Id == id) ?? throw new PersonNotFoundException(id);
+            .FirstOrDefaultAsync(x => x.Id == id);
 
-        await DeleteEntity(dbPerson);
+        if (personToDelete == null)
+        {
+            return null;
+        }
 
-        return dbPerson;
+        await DeleteEntity(personToDelete);
+
+        return personToDelete;
     }
 
-    private static async Task<PagedResult<Person>> GetAllPersonsImpl(PersonFilter filter, IQueryable<Person> query)
+    private static void UpdateProperties(Person source, Person target)
+    {
+        target.FullName = source.FullName;
+        target.BirthYear = source.BirthYear;
+        target.BirthCountryId = source.BirthCountryId;
+        target.BirthCountry = source.BirthCountry;
+    }
+
+    private static IQueryable<Person> ApplyFiltering(IQueryable<Person> query, PersonFilter filter)
     {
         if (!string.IsNullOrWhiteSpace(filter.FullName))
         {
@@ -96,14 +105,45 @@ public class PersonRepository(AppDbContext dbContext)
             query = query.Where(p => p.BirthYear == filter.BirthYear.Value);
         }
 
-        return await GetPagedResult(query, filter.PageNumber, filter.PageSize);
+        return query;
     }
 
-    private static void UpdateProperties(Person source, Person target)
+    private static IQueryable<Person> ApplySearch(
+        IQueryable<Person> query,
+        string? search)
     {
-        target.FullName = source.FullName;
-        target.BirthYear = source.BirthYear;
-        target.BirthCountryId = source.BirthCountryId;
-        target.BirthCountry = source.BirthCountry;
+        if (string.IsNullOrWhiteSpace(search))
+        {
+            return query;
+        }
+
+        return query.Where(x =>
+            x.FullName.Contains(search));
+    }
+
+    private static IQueryable<Person> ApplySorting(
+        IQueryable<Person> query,
+        string? sorting)
+    {
+        var (propName, isDescending) = GetSortingOptions(sorting);
+
+        if (propName != null)
+        {
+            if (propName.Equals(nameof(Person.FullName), StringComparison.InvariantCultureIgnoreCase))
+            {
+                return isDescending
+                    ? query.OrderByDescending(x => x.FullName)
+                    : query.OrderBy(x => x.FullName);
+            }
+
+            if (propName.Equals(nameof(Person.BirthYear), StringComparison.InvariantCultureIgnoreCase))
+            {
+                return isDescending
+                    ? query.OrderByDescending(x => x.BirthYear)
+                    : query.OrderBy(x => x.BirthYear);
+            }
+        }
+
+        return query.OrderBy(x => x.Id);
     }
 }

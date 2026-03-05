@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using MindTrail.DomainEntities.Entities;
 using MindTrail.EfCore.Context;
 using MindTrail.EfCore.Interfaces.Entities;
 
@@ -20,30 +19,6 @@ public abstract class BaseRepository(AppDbContext dbContext)
     protected readonly AppDbContext DbContext = dbContext;
 
     /// <summary>
-    /// Returns a paged result from the specified query with the specified pagination parameters.
-    /// </summary>
-    /// <param name="query">The query to paginate.</param>
-    /// <param name="pageNumber">The current page number (starting from 1).</param>
-    /// <param name="pageSize">The size of each page (number of items per page).</param>
-    /// <typeparam name="TEntity">The type of the entities in the query.</typeparam>
-    /// <returns>A <see cref="PagedResult{TEntity}"/> containing the paged items and information about pagination.</returns>
-    protected static async Task<PagedResult<TEntity>> GetPagedResult<TEntity>(
-        IQueryable<TEntity> query, int pageNumber, int pageSize)
-        where TEntity : class, IPersistentEntity
-    {
-        var totalCount = await query.CountAsync();
-        var skip = (pageNumber - 1) * pageSize;
-
-        return new PagedResult<TEntity>
-        {
-            Items = await query.Skip(skip).Take(pageSize).ToListAsync(),
-            PageNumber = pageNumber,
-            PageSize = pageSize,
-            TotalCount = totalCount,
-        };
-    }
-
-    /// <summary>
     /// Prepares a persistent entity before adding it to the database.
     /// </summary>
     /// <remarks>
@@ -58,12 +33,58 @@ public abstract class BaseRepository(AppDbContext dbContext)
         SetCreationTime(entity);
     }
 
+    protected static (string? PropertyName, bool IsDescending) GetSortingOptions(string? sorting)
+    {
+        if (string.IsNullOrWhiteSpace(sorting))
+        {
+            return (null, false);
+        }
+
+        var normalizedParts = sorting
+            .Trim()
+            .ToUpperInvariant()
+            .Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+        if (normalizedParts.Length is < 1 or > 2)
+        {
+            return (null, false);
+        }
+
+        var propName = normalizedParts[0];
+        var isDescending = normalizedParts is [_, "DESC"];
+
+        return (propName, isDescending);
+    }
+
+    protected static IQueryable<TEntity> ApplyPaging<TEntity>(
+        IQueryable<TEntity> query,
+        uint pageNumber = 1,
+        uint pageSize = 10,
+        uint maxPageSize = 100)
+        where TEntity : class, IPersistentEntity
+    {
+        if (pageNumber == 0)
+        {
+            throw new InvalidOperationException("The page number must be greater than zero");
+        }
+
+        if (pageSize == 0)
+        {
+            throw new InvalidOperationException("The page size must be greater than zero");
+        }
+
+        var skip = pageNumber == 1 ? 0 : pageNumber * pageSize;
+        var take = Math.Min(pageSize, maxPageSize);
+
+        return query.Skip((int)skip).Take((int)take);
+    }
+
     /// <summary>
     /// Returns a list of all entities from database.
     /// </summary>
     /// <typeparam name="TEntity">Type of persistent entity.</typeparam>
     /// <returns>List of all entities.</returns>
-    protected DbSet<TEntity> GetEntities<TEntity>()
+    protected IQueryable<TEntity> GetEntities<TEntity>()
         where TEntity : class, IPersistentEntity
     {
         return DbContext.Set<TEntity>();

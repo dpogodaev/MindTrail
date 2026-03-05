@@ -5,13 +5,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MindTrail.Common.Extensions;
-using MindTrail.DomainServices.Exceptions;
-using MindTrail.DomainServices.Exceptions.Base;
+using MindTrail.DomainShared.Exceptions;
+using MindTrail.DomainShared.Exceptions.Base;
 using MindTrail.WebApi.Abstractions.Factories;
+using MindTrail.WebApi.Abstractions.Providers;
 using MindTrail.WebApi.Handlers;
 using MindTrail.WebApi.Interfaces.Handlers;
-using MindTrail.WebApi.Interfaces.Providers;
-using MindTrail.WebHost.Providers;
 
 namespace MindTrail.WebHost.Abstractions.Providers;
 

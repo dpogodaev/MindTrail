@@ -67,12 +67,14 @@ public class WebHostArchTests
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependenciesOtherThan(
                     CreateAllowedDependenciesList([
+                        ComponentNamespaces.Common,
+                        ComponentNamespaces.DomainShared,
                         ComponentNamespaces.WebApi,
                         ComponentNamespaces.WebAuth,
                         ComponentNamespaces.HostConfiguration
                     ])),
             "WebHost_ShouldOnlyDependOn_WebAndHostConfiguration",
-            $"The Web host can only depend on the components implementing its interface, such as {nameof(WebApi)} and {nameof(WebAuth)}, and the application configurator ({nameof(HostConfiguration)})");
+            $"The Web host can only depend on common utilities, shared domain types and the components implementing its interface, such as {nameof(WebApi)} and {nameof(WebAuth)}, and the application configurator ({nameof(HostConfiguration)})");
 
         // Act
         var results = policyDefinition.Evaluate().Results;

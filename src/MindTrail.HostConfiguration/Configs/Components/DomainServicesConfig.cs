@@ -1,15 +1,13 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using MindTrail.DomainServices.Interfaces.Services;
-using MindTrail.DomainServices.Interfaces.Storages.Repositories;
-using MindTrail.DomainServices.Services;
-using MindTrail.EfCore.Adapters.Repositories;
-using MindTrail.HostConfiguration.Interfaces;
+﻿using Microsoft.Extensions.DependencyInjection;
+using MindTrail.Domain.Abstractions.Repositories;
+using MindTrail.Domain.Interfaces.Services;
+using MindTrail.Domain.Services;
+using MindTrail.HostConfiguration.Abstractions.Adapters.Repositories;
 
 namespace MindTrail.HostConfiguration.Configs.Components;
 
 /// <summary>
-/// Used to configure the component <see cref="MindTrail.DomainServices"/>.
+/// Used to configure the component <see cref="MindTrail.Domain"/>.
 /// </summary>
 public static class DomainServicesConfig
 {
@@ -17,25 +15,22 @@ public static class DomainServicesConfig
     /// Adds a configuration for domain services.
     /// </summary>
     /// <param name="services">Used to register application services.</param>
-    /// <param name="configuration">The application configuration.</param>
-    /// <param name="logger">The startup logger. Optional.</param>
     public static void AddDomainServicesConfig(
-        this IServiceCollection services,
-        IConfiguration configuration,
-        IStartupLogger? logger = null)
+        this IServiceCollection services)
     {
-        AddServices(services);
-        AddRepositories(services);
+        services.AddServices();
+        services.AddRepositories();
     }
 
-    private static void AddServices(IServiceCollection services)
+    private static void AddServices(this IServiceCollection services)
     {
         services.AddTransient<IPersonService, PersonService>();
     }
 
-    private static void AddRepositories(IServiceCollection services)
+    private static void AddRepositories(this IServiceCollection services)
     {
-        services.AddTransient<ICountryRepository, CountryRepositoryAdapter>();
-        services.AddTransient<IPersonRepository, PersonRepositoryAdapter>();
+        services
+            .AddTransient<ICountryRepository, CountryRepositoryAdapter>()
+            .AddTransient<IPersonRepository, PersonRepositoryAdapter>();
     }
 }

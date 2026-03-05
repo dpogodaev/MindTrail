@@ -13,14 +13,16 @@ public static class CommonConfig
     /// Adds a configuration for all types of shared resources (providers, helpers, extensions, utils, etc.).
     /// </summary>
     /// <param name="services">Used to register application services.</param>
-    public static void AddCommonConfig(this IServiceCollection services)
+    public static void AddCommonConfig(
+        this IServiceCollection services)
     {
-        AddProviders(services);
+        services.AddProviders();
     }
 
-    private static void AddProviders(IServiceCollection services)
+    private static void AddProviders(this IServiceCollection services)
     {
-        services.AddTransient<ICurrentTimeProvider, CurrentTimeProvider>();
-        services.AddTransient<IElapsedTimeMeterProvider, ElapsedTimeMeterProvider>();
+        services
+            .AddTransient<ICurrentTimeProvider, CurrentTimeProvider>()
+            .AddTransient<IElapsedTimeMeterProvider, ElapsedTimeMeterProvider>();
     }
 }

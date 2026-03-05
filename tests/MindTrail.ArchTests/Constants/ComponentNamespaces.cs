@@ -7,9 +7,10 @@ public record ComponentNamespaces
 {
     public const string Solution = nameof(MindTrail);
     public const string Common = $"{Solution}.{nameof(MindTrail.Common)}";
-    public const string DomainEntities = $"{Solution}.{nameof(MindTrail.DomainEntities)}";
-    public const string DomainServices = $"{Solution}.{nameof(MindTrail.DomainServices)}";
-    public const string AppServices = $"{Solution}.{nameof(MindTrail.AppServices)}";
+    public const string Domain = $"{Solution}.{nameof(MindTrail.Domain)}";
+    public const string DomainShared = $"{Solution}.{nameof(MindTrail.DomainShared)}";
+    public const string Application = $"{Solution}.{nameof(MindTrail.Application)}";
+    public const string ApplicationContracts = $"{Solution}.{nameof(MindTrail.ApplicationContracts)}";
     public const string EfCore = $"{Solution}.{nameof(MindTrail.EfCore)}";
     public const string EfCoreMssql = $"{Solution}.{nameof(MindTrail.EfCoreMssql)}";
     public const string EfCorePostgreSql = $"{Solution}.{nameof(MindTrail.EfCorePostgreSql)}";

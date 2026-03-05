@@ -9,9 +9,8 @@ using MindTrail.EfCore.Repositories;
 using MindTrail.EfCoreMssql.Context;
 using MindTrail.EfCorePostgreSql.Context;
 using MindTrail.HostConfiguration.Extensions;
-using MindTrail.HostConfiguration.Interfaces;
+using MindTrail.HostConfiguration.Interfaces.Logging;
 using MindTrail.HostConfiguration.Settings;
-using IUnitOfWork = MindTrail.DomainServices.Interfaces.Storages.Repositories.IUnitOfWork;
 
 namespace MindTrail.HostConfiguration.Configs.Components;
 
@@ -36,8 +35,8 @@ public static class EfCoreConfig
         IConfiguration configuration,
         IStartupLogger? logger = null)
     {
-        AddRepositories(services);
-        AddDatabaseProvider(services, configuration, logger);
+        services.AddRepositories();
+        services.AddDatabaseProvider(configuration, logger);
     }
 
     /// <summary>
@@ -76,10 +75,11 @@ public static class EfCoreConfig
         }
     }
 
-    private static void AddRepositories(IServiceCollection services)
+    private static void AddRepositories(this IServiceCollection services)
     {
-        services.AddTransient<IPersonRepository, PersonRepository>();
-        services.AddTransient<ICountryRepository, CountryRepository>();
+        services
+            .AddTransient<IPersonRepository, PersonRepository>()
+            .AddTransient<ICountryRepository, CountryRepository>();
     }
 
     private static void AddDatabaseProvider(
@@ -99,13 +99,13 @@ public static class EfCoreConfig
         {
             case SqlServerProviderName:
                 services.AddEfCoreMssqlConfig<MssqlDbContext>(configuration, logger);
-                services.AddScoped<IUnitOfWork, AppUnitOfWork<MssqlDbContext>>(sp =>
-                    new AppUnitOfWork<MssqlDbContext>(sp.GetRequiredService<MssqlDbContext>()));
+                services.AddScoped<IUnitOfWork, UnitOfWork<MssqlDbContext>>(sp =>
+                    new UnitOfWork<MssqlDbContext>(sp.GetRequiredService<MssqlDbContext>()));
                 break;
             case PostgreSqlProviderName:
                 services.AddEfCorePostgreSqlConfig<PostgreSqlDbContext>(configuration, logger);
-                services.AddScoped<IUnitOfWork, AppUnitOfWork<PostgreSqlDbContext>>(sp =>
-                    new AppUnitOfWork<PostgreSqlDbContext>(sp.GetRequiredService<PostgreSqlDbContext>()));
+                services.AddScoped<IUnitOfWork, UnitOfWork<PostgreSqlDbContext>>(sp =>
+                    new UnitOfWork<PostgreSqlDbContext>(sp.GetRequiredService<PostgreSqlDbContext>()));
                 break;
             default:
                 HandleUnsupportedDatabaseProvider(databaseSettings);

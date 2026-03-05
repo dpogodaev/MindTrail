@@ -1,5 +1,5 @@
 ﻿using System;
-using MindTrail.HostConfiguration.Interfaces;
+using MindTrail.HostConfiguration.Interfaces.Logging;
 using NLog;
 
 namespace MindTrail.HostConfiguration.Logging;
