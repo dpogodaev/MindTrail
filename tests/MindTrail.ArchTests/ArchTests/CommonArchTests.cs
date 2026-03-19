@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MindTrail.ArchTests.Constants;
 using MindTrail.ArchTests.Extensions;
 using MindTrail.ArchTests.Helpers;
@@ -29,17 +28,20 @@ public class CommonArchTests
     {
         // Arrange
         var policyDefinition = PolicyHelper.BuildPolicyDefinition(
-            CurrentNamespace,
-            "Component dependency policy",
-            $"Enforces the dependencies of the {nameof(Common)} component");
+            componentNamespace: CurrentNamespace,
+            policyName: "Component dependency policy",
+            policyDescription: $"Enforces the dependencies of the {nameof(Common)} component");
 
         policyDefinition.Add(
-            types => types
+            definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependenciesOtherThan(
-                    CreateAllowedDependenciesList()),
-            "Common_ShouldNotDependOn_OtherComponent",
-            "The shared logic should not have any dependencies on other components");
+                    PolicyHelper.CreateAllowedDependenciesList(
+                        CurrentNamespace,
+                        libs: UsingLibs,
+                        components: null)),
+            name: "Allowed dependencies",
+            description: "Common utilities should not have any dependencies on other components");
 
         // Act
         var results = policyDefinition.Evaluate().Results;
@@ -59,13 +61,14 @@ public class CommonArchTests
     {
         // Arrange
         var policyDefinition = PolicyHelper.BuildPolicyDefinition(
-            CurrentNamespace,
-            "Type naming policy",
-            $"Enforces naming conventions for types in the {nameof(Common)} component");
+            componentNamespace: CurrentNamespace,
+            policyName: "Type naming policy",
+            policyDescription: $"Enforces naming conventions for types in the {nameof(Common)} component");
 
         policyDefinition
             .AddExtensionNamingRule(CurrentNamespace)
-            .AddInterfaceNamingRule(CurrentNamespace);
+            .AddInterfaceNamingRule(CurrentNamespace)
+            .AddProviderNamingRule(CurrentNamespace);
 
         // Act
         var results = policyDefinition.Evaluate().Results;
@@ -75,13 +78,5 @@ public class CommonArchTests
         {
             Assert.IsTrue(result.IsSuccessful, PolicyHelper.BuildFailureMessage(result));
         }
-    }
-
-    private static string[] CreateAllowedDependenciesList()
-    {
-        var allowedDependenciesList = new List<string> { CurrentNamespace };
-        allowedDependenciesList.AddRange(UsingLibs);
-
-        return allowedDependenciesList.ToArray();
     }
 }

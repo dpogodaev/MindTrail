@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using NetArchTest.Rules;
 using NetArchTest.Rules.Policies;
@@ -38,12 +39,25 @@ public static class PolicyHelper
             : $"{result.Description}. Failed types: {string.Join(", ", result.FailingTypes)}";
     }
 
-    #region Private methods
+    public static string[] CreateAllowedDependenciesList(
+        string currentNamespace,
+        IEnumerable<string> libs,
+        IEnumerable<string> components = null)
+    {
+        var allowedDependenciesList = new List<string> { currentNamespace };
+
+        allowedDependenciesList.AddRange(libs);
+
+        if (components != null)
+        {
+            allowedDependenciesList.AddRange(components);
+        }
+
+        return allowedDependenciesList.ToArray();
+    }
 
     private static Types GetTypes(string workingNamespace) =>
         Types.FromFile(Path.Combine(GetProjectPath(), $"{workingNamespace}.dll"));
 
     private static string GetProjectPath() => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
-    #endregion
 }

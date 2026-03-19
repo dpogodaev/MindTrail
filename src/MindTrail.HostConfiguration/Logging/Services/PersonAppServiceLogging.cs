@@ -6,7 +6,7 @@ using MindTrail.ApplicationContracts.Dtos;
 using MindTrail.ApplicationContracts.Interfaces.Services;
 using MindTrail.ApplicationContracts.RequestModels;
 using MindTrail.Common.Extensions;
-using MindTrail.DomainShared.Exceptions.Base;
+using MindTrail.HostConfiguration.Extensions;
 
 namespace MindTrail.HostConfiguration.Logging.Services;
 
@@ -30,13 +30,10 @@ public class PersonAppServiceLogging(
 
             return createdPerson;
         }
-        catch (DomainException)
-        {
-            throw;
-        }
         catch (Exception e)
         {
-            logger.LogError(
+            logger.Log(
+                e.GetLogLevel(),
                 LogEvents.Crud.Create, e,
                 "{Title} {Details}",
                 "Failed to create person",

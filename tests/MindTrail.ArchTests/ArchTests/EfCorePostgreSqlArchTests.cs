@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MindTrail.ArchTests.Constants;
 using MindTrail.ArchTests.Helpers;
 
@@ -28,57 +27,67 @@ public class EfCorePostgreSqlArchTests
     {
         // Arrange
         var policyDefinition = PolicyHelper.BuildPolicyDefinition(
-            CurrentNamespace,
-            "Component dependency policy",
-            $"Enforces the dependencies of the {nameof(EfCorePostgreSql)} component");
+            componentNamespace: CurrentNamespace,
+            policyName: "Component dependency policy",
+            policyDescription: $"Enforces the dependencies of the {nameof(EfCorePostgreSql)} component");
 
         policyDefinition.Add(
-            types => types
+            definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
-                    ComponentNamespaces.Domain,
-                    ComponentNamespaces.Application,
-                    ComponentNamespaces.ApplicationContracts),
-            "EfCorePostgreSql_ShouldNotDependOn_DomainLayer",
-            "The PostgreSQL data access implementation should not have any dependencies on the application (domain) layer");
+                    ComponentNamespaces.Domain),
+            name: "Restriction of dependency on Domain layer",
+            description: "The PostgreSQL persistence implementation should not have any dependencies on the domain core");
 
         policyDefinition.Add(
-            types => types
+            definition: types => types
+                .That().ResideInNamespace(CurrentNamespace)
+                .ShouldNot().HaveDependencyOnAny(
+                    ComponentNamespaces.Application,
+                    ComponentNamespaces.ApplicationContracts),
+            name: "Restriction of dependency on Application layer",
+            description: "The PostgreSQL persistence implementation should not have any dependencies on the application layer");
+
+        policyDefinition.Add(
+            definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.Cli,
                     ComponentNamespaces.WebApi,
                     ComponentNamespaces.WebAuth),
-            "EfCorePostgreSql_ShouldNotDependOn_PresentationLayer",
-            "The PostgreSQL data access implementation should not have any dependencies on the presentation layer");
+            name: "Restriction of dependency on Presentation layer",
+            description: "The PostgreSQL persistence implementation should not have any dependencies on the presentation layer");
 
         policyDefinition.Add(
-            types => types
+            definition: types => types
+                .That().ResideInNamespace(CurrentNamespace)
+                .ShouldNot().HaveDependencyOnAny(
+                    ComponentNamespaces.EfCoreMssql),
+            name: "Restriction of dependency on Persistence layer",
+            description: "The PostgreSQL persistence implementation should not have any dependencies on other persistence implementations, such as SQL Server");
+
+        policyDefinition.Add(
+            definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.HostConfiguration,
                     ComponentNamespaces.CliHost,
                     ComponentNamespaces.WebHost),
-            "EfCorePostgreSql_ShouldNotDependOn_InfrastructureLayer",
-            "The PostgreSQL data access implementation should not have any dependencies on the infrastructure layer");
+            name: "Restriction of dependency on Infrastructure layer",
+            description: "The PostgreSQL persistence implementation should not have any dependencies on the infrastructure layer");
 
         policyDefinition.Add(
-            types => types
-                .That().ResideInNamespace(CurrentNamespace)
-                .ShouldNot().HaveDependencyOnAny(
-                    ComponentNamespaces.EfCoreMssql),
-            "EfCorePostgreSql_ShouldNotDependOn_OtherImplementationOfDataAccess",
-            "The PostgreSQL data access implementation should not have any dependencies on other data access implementations such as SQL Server");
-
-        policyDefinition.Add(
-            types => types
+            definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependenciesOtherThan(
-                    CreateAllowedDependenciesList([
-                        ComponentNamespaces.EfCore
-                    ])),
-            "EfCorePostgreSql_ShouldOnlyDependOn_AbstractionAboveTheDataLayer",
-            "The PostgreSQL data access implementation can only depend on abstraction above the data layer (EF)");
+                    PolicyHelper.CreateAllowedDependenciesList(
+                        CurrentNamespace,
+                        UsingLibs,
+                        [
+                            ComponentNamespaces.EfCore
+                        ])),
+            name: "Allowed dependencies",
+            description: "The PostgreSQL persistence implementation can only depend on abstraction above the data layer (EF)");
 
         // Act
         var results = policyDefinition.Evaluate().Results;
@@ -88,14 +97,5 @@ public class EfCorePostgreSqlArchTests
         {
             Assert.IsTrue(result.IsSuccessful, PolicyHelper.BuildFailureMessage(result));
         }
-    }
-
-    private static string[] CreateAllowedDependenciesList(IEnumerable<string> allowedComponents)
-    {
-        var allowedDependenciesList = new List<string> { CurrentNamespace };
-        allowedDependenciesList.AddRange(UsingLibs);
-        allowedDependenciesList.AddRange(allowedComponents);
-
-        return allowedDependenciesList.ToArray();
     }
 }

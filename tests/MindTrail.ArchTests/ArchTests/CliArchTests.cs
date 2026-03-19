@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MindTrail.ArchTests.Constants;
 using MindTrail.ArchTests.Extensions;
 using MindTrail.ArchTests.Helpers;
@@ -30,66 +29,69 @@ public class CliArchTests
     {
         // Arrange
         var policyDefinition = PolicyHelper.BuildPolicyDefinition(
-            CurrentNamespace,
-            "Component dependency policy",
-            $"Enforces the dependencies of the {nameof(Cli)} component");
+            componentNamespace: CurrentNamespace,
+            policyName: "Component dependency policy",
+            policyDescription: $"Enforces the dependencies of the {nameof(Cli)} component");
 
         policyDefinition.Add(
-            types => types
+            definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
-                    ComponentNamespaces.Domain,
-                    ComponentNamespaces.DomainShared),
-            "Cli_ShouldNotDependOn_DomainLayer",
-            "The CLI should not have any dependencies on the domain layer");
+                    ComponentNamespaces.Domain),
+            name: "Restriction of dependency on Domain layer",
+            description: "The CLI should not have any dependencies on the domain core");
 
         policyDefinition.Add(
-            types => types
+            definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
-                    ComponentNamespaces.Application,
-                    ComponentNamespaces.ApplicationContracts),
-            "Cli_ShouldNotDependOn_ApplicationLayer",
-            "The CLI should not have any dependencies on the application layer");
+                    ComponentNamespaces.Application),
+            name: "Restriction of dependency on Application layer",
+            description: "The CLI should not have any dependencies on the application implementation");
 
         policyDefinition.Add(
-            types => types
+            definition: types => types
+                .That().ResideInNamespace(CurrentNamespace)
+                .ShouldNot().HaveDependencyOnAny(
+                    ComponentNamespaces.WebApi,
+                    ComponentNamespaces.WebAuth),
+            name: "Restriction of dependency on Presentation layer",
+            description: "The CLI should not depend on other presentation implementations, such as web-based presentation components");
+
+        policyDefinition.Add(
+            definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.EfCore,
                     ComponentNamespaces.EfCoreMssql,
                     ComponentNamespaces.EfCorePostgreSql),
-            "Cli_ShouldNotDependOn_DataAccessLayer",
-            "The CLI should not have any dependencies on the data access layer");
+            name: "Restriction of dependency on Persistence layer",
+            description: "The CLI should not have any dependencies on the persistence layer");
 
         policyDefinition.Add(
-            types => types
+            definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.HostConfiguration,
                     ComponentNamespaces.CliHost,
                     ComponentNamespaces.WebHost),
-            "Cli_ShouldNotDependOn_InfrastructureLayer",
-            "The CLI should not have any dependencies on the infrastructure layer");
+            name: "Restriction of dependency on Infrastructure layer",
+            description: "The CLI should not have any dependencies on the infrastructure layer");
 
         policyDefinition.Add(
-            types => types
-                .That().ResideInNamespace(CurrentNamespace)
-                .ShouldNot().HaveDependencyOnAny(
-                    ComponentNamespaces.WebApi,
-                    ComponentNamespaces.WebAuth),
-            "Cli_ShouldNotDependOn_WebComponents",
-            $"The CLI should not depend on web-based presentation components such as {nameof(WebApi)}");
-
-        policyDefinition.Add(
-            types => types
+            definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependenciesOtherThan(
-                    CreateAllowedDependenciesList([
-                        ComponentNamespaces.Common
-                    ])),
-            "Cli_ShouldOnlyDependOn_CommonLogic",
-            "The CLI can only depend on common utilities");
+                    PolicyHelper.CreateAllowedDependenciesList(
+                        CurrentNamespace,
+                        UsingLibs,
+                        [
+                            ComponentNamespaces.ApplicationContracts,
+                            ComponentNamespaces.DomainShared,
+                            ComponentNamespaces.Common
+                        ])),
+            name: "Allowed dependencies",
+            description: "The CLI can only depend on application contracts, shared domain types, and common utilities");
 
         // Act
         var results = policyDefinition.Evaluate().Results;
@@ -109,9 +111,9 @@ public class CliArchTests
     {
         // Arrange
         var policyDefinition = PolicyHelper.BuildPolicyDefinition(
-            CurrentNamespace,
-            "Type naming policy",
-            $"Enforces naming conventions for types in the {nameof(Cli)} component");
+            componentNamespace: CurrentNamespace,
+            policyName: "Type naming policy",
+            policyDescription: $"Enforces naming conventions for types in the {nameof(Cli)} component");
 
         policyDefinition
             .AddCommandNamingRule(CurrentNamespace, exceptionsToRule: [nameof(CommandControl)])
@@ -129,14 +131,5 @@ public class CliArchTests
         {
             Assert.IsTrue(result.IsSuccessful, PolicyHelper.BuildFailureMessage(result));
         }
-    }
-
-    private static string[] CreateAllowedDependenciesList(IEnumerable<string> allowedComponents)
-    {
-        var allowedDependenciesList = new List<string> { CurrentNamespace };
-        allowedDependenciesList.AddRange(UsingLibs);
-        allowedDependenciesList.AddRange(allowedComponents);
-
-        return allowedDependenciesList.ToArray();
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MindTrail.ArchTests.Constants;
 using MindTrail.ArchTests.Extensions;
 using MindTrail.ArchTests.Helpers;
@@ -15,6 +14,12 @@ public class WebAuthArchTests
 {
     private const string CurrentNamespace = ComponentNamespaces.WebAuth;
 
+    private static readonly string[] UsingLibs =
+    [
+        "System",
+        "Microsoft"
+    ];
+
     /// <summary>
     /// Verifies that the <see cref="MindTrail.WebAuth"/> component follows the dependency rules.
     /// </summary>
@@ -23,49 +28,22 @@ public class WebAuthArchTests
     {
         // Arrange
         var policyDefinition = PolicyHelper.BuildPolicyDefinition(
-            CurrentNamespace,
-            "Component dependency policy",
-            $"Enforces the dependencies of the {nameof(WebAuth)} component");
+            componentNamespace: CurrentNamespace,
+            policyName: "Component dependency policy",
+            policyDescription: $"Enforces the dependencies of the {nameof(WebAuth)} component");
 
         policyDefinition.Add(
-            types => types
-                .That().ResideInNamespace(CurrentNamespace)
-                .ShouldNot().HaveDependencyOnAny(
-                    ComponentNamespaces.EfCore,
-                    ComponentNamespaces.EfCoreMssql,
-                    ComponentNamespaces.EfCorePostgreSql),
-            "WebAuth_ShouldNotDependOn_DomainLayer",
-            "The Web API should not have any dependencies on the application (domain) layer");
-
-        policyDefinition.Add(
-            types => types
-                .That().ResideInNamespace(CurrentNamespace)
-                .ShouldNot().HaveDependencyOnAny(
-                    ComponentNamespaces.EfCore,
-                    ComponentNamespaces.EfCoreMssql,
-                    ComponentNamespaces.EfCorePostgreSql),
-            "WebAuth_ShouldNotDependOn_DataAccessLayer",
-            "The Web API should not have any dependencies on the data access layer");
-
-        policyDefinition.Add(
-            types => types
-                .That().ResideInNamespace(CurrentNamespace)
-                .ShouldNot().HaveDependencyOnAny(
-                    ComponentNamespaces.HostConfiguration,
-                    ComponentNamespaces.CliHost,
-                    ComponentNamespaces.WebHost),
-            "WebAuth_ShouldNotDependOn_InfrastructureLayer",
-            "The Web API should not have any dependencies on the infrastructure layer");
-
-        policyDefinition.Add(
-            types => types
+            definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependenciesOtherThan(
-                    CreateAllowedDependenciesList([
-                        ComponentNamespaces.Common
-                    ])),
-            "WebAuth_ShouldOnlyDependOn_CommonLogic",
-            $"The Web authorization component can only depend on the shared logic ({nameof(Common)})");
+                    PolicyHelper.CreateAllowedDependenciesList(
+                        CurrentNamespace,
+                        UsingLibs,
+                        [
+                            ComponentNamespaces.Common
+                        ])),
+            name: "Allowed dependencies",
+            description: "The Web authorization component can only depend on common utilities");
 
         // Act
         var results = policyDefinition.Evaluate().Results;
@@ -85,9 +63,9 @@ public class WebAuthArchTests
     {
         // Arrange
         var policyDefinition = PolicyHelper.BuildPolicyDefinition(
-            CurrentNamespace,
-            "Type naming policy",
-            $"Enforces naming conventions for types in the {nameof(WebAuth)} component");
+            componentNamespace: CurrentNamespace,
+            policyName: "Type naming policy",
+            policyDescription: $"Enforces naming conventions for types in the {nameof(WebAuth)} component");
 
         policyDefinition
             .AddAttributeNamingRule(CurrentNamespace)
@@ -108,23 +86,5 @@ public class WebAuthArchTests
         {
             Assert.IsTrue(result.IsSuccessful, PolicyHelper.BuildFailureMessage(result));
         }
-    }
-
-    private static string[] CreateAllowedDependenciesList(IEnumerable<string> allowedComponents)
-    {
-        var allowedDependenciesList = new List<string> { CurrentNamespace };
-        allowedDependenciesList.AddRange(GetUsingLibs());
-        allowedDependenciesList.AddRange(allowedComponents);
-
-        return allowedDependenciesList.ToArray();
-    }
-
-    private static IEnumerable<string> GetUsingLibs()
-    {
-        return
-        [
-            "System",
-            "Microsoft"
-        ];
     }
 }

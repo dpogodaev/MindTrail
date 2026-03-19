@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MindTrail.ArchTests.Constants;
 using MindTrail.ArchTests.Extensions;
 using MindTrail.ArchTests.Helpers;
@@ -30,9 +29,9 @@ public class HostConfigurationArchTests
     {
         // Arrange
         var policyDefinition = PolicyHelper.BuildPolicyDefinition(
-            CurrentNamespace,
-            "Component dependency policy",
-            $"Enforces the dependencies of the {nameof(HostConfiguration)} component");
+            componentNamespace: CurrentNamespace,
+            policyName: "Component dependency policy",
+            policyDescription: $"Enforces the dependencies of the {nameof(HostConfiguration)} component");
 
         policyDefinition.Add(
             types => types
@@ -41,7 +40,7 @@ public class HostConfigurationArchTests
                     ComponentNamespaces.Cli,
                     ComponentNamespaces.WebApi,
                     ComponentNamespaces.WebAuth),
-            "HostConfiguration_ShouldNotDependOn_PresentationLayer",
+            "Restriction of dependency on Presentation layer",
             "The application configurator should not have any dependencies on the presentation layer");
 
         policyDefinition.Add(
@@ -50,25 +49,28 @@ public class HostConfigurationArchTests
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.CliHost,
                     ComponentNamespaces.WebHost),
-            "HostConfiguration_ShouldNotDependOn_PresentationLayerHostComponents",
-            $"The application configurator should not depend on any presentation layer host components such as ${nameof(WebHost)} or ${nameof(CliHost)}");
+            "Restriction of dependency on Infrastructure layer",
+            $"The application configurator should not depend on any host implementations, such as ${nameof(WebHost)} or ${nameof(CliHost)}");
 
         policyDefinition.Add(
             types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependenciesOtherThan(
-                    CreateAllowedDependenciesList([
-                        ComponentNamespaces.Common,
-                        ComponentNamespaces.Domain,
-                        ComponentNamespaces.DomainShared,
-                        ComponentNamespaces.Application,
-                        ComponentNamespaces.ApplicationContracts,
-                        ComponentNamespaces.EfCore,
-                        ComponentNamespaces.EfCoreMssql,
-                        ComponentNamespaces.EfCorePostgreSql
-                    ])),
-            "HostConfiguration_ShouldOnlyDependOn_DomainLayerAndDataAccessLayer",
-            "The application configurator can only depend on the domain layer, application layer, and data access layer");
+                    PolicyHelper.CreateAllowedDependenciesList(
+                        CurrentNamespace,
+                        UsingLibs,
+                        [
+                            ComponentNamespaces.Domain,
+                            ComponentNamespaces.DomainShared,
+                            ComponentNamespaces.Application,
+                            ComponentNamespaces.ApplicationContracts,
+                            ComponentNamespaces.EfCore,
+                            ComponentNamespaces.EfCoreMssql,
+                            ComponentNamespaces.EfCorePostgreSql,
+                            ComponentNamespaces.Common
+                        ])),
+            "Allowed dependencies",
+            "The application configurator can only depend on the domain layer, application layer, persistence layer, and common utilities");
 
         // Act
         var results = policyDefinition.Evaluate().Results;
@@ -88,16 +90,18 @@ public class HostConfigurationArchTests
     {
         // Arrange
         var policyDefinition = PolicyHelper.BuildPolicyDefinition(
-            CurrentNamespace,
-            "Type naming policy",
-            $"Enforces naming conventions for types in the {nameof(HostConfiguration)} component");
+            componentNamespace: CurrentNamespace,
+            policyName: "Type naming policy",
+            policyDescription: $"Enforces naming conventions for types in the {nameof(HostConfiguration)} component");
 
         policyDefinition
+            .AddAdapterNamingRule($"{CurrentNamespace}.Abstractions")
             .AddConfigNamingRule(CurrentNamespace)
             .AddExtensionNamingRule(CurrentNamespace)
             .AddHelperNamingRule(CurrentNamespace)
             .AddInterfaceNamingRule(CurrentNamespace)
-            .AddProviderNamingRule(CurrentNamespace);
+            .AddProviderNamingRule(CurrentNamespace)
+            .AddSettingNamingRule(CurrentNamespace);
 
         // Act
         var results = policyDefinition.Evaluate().Results;
@@ -107,14 +111,5 @@ public class HostConfigurationArchTests
         {
             Assert.IsTrue(result.IsSuccessful, PolicyHelper.BuildFailureMessage(result));
         }
-    }
-
-    private static string[] CreateAllowedDependenciesList(IEnumerable<string> allowedComponents)
-    {
-        var allowedDependenciesList = new List<string> { CurrentNamespace };
-        allowedDependenciesList.AddRange(UsingLibs);
-        allowedDependenciesList.AddRange(allowedComponents);
-
-        return allowedDependenciesList.ToArray();
     }
 }

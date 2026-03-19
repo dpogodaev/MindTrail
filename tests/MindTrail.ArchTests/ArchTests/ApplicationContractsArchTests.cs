@@ -6,13 +6,13 @@ using MindTrail.ArchTests.Helpers;
 namespace MindTrail.ArchTests.ArchTests;
 
 /// <summary>
-/// Architectural tests for <see cref="MindTrail.Domain"/> component.
+/// Architectural tests for <see cref="MindTrail.ApplicationContracts"/> component.
 /// </summary>
 [TestClass]
 [TestCategory("Architecture")]
-public class DomainArchTests
+public class ApplicationContractsArchTests
 {
-    private const string CurrentNamespace = ComponentNamespaces.Domain;
+    private const string CurrentNamespace = ComponentNamespaces.ApplicationContracts;
 
     private static readonly string[] UsingLibs =
     [
@@ -20,25 +20,32 @@ public class DomainArchTests
     ];
 
     /// <summary>
-    /// Verifies that the <see cref="MindTrail.Domain"/> component follows the dependency rules.
+    /// Verifies that the <see cref="MindTrail.ApplicationContracts"/> component follows the dependency rules.
     /// </summary>
     [TestMethod]
-    public void Domain_ShouldFollowDependencyRules()
+    public void Application_ShouldFollowDependencyRules()
     {
         // Arrange
         var policyDefinition = PolicyHelper.BuildPolicyDefinition(
             componentNamespace: CurrentNamespace,
             policyName: "Component dependency policy",
-            policyDescription: $"Enforces the dependencies of the {nameof(Domain)} component");
+            policyDescription: $"Enforces the dependencies of the {nameof(ApplicationContracts)} component");
 
         policyDefinition.Add(
             definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
-                    ComponentNamespaces.Application,
-                    ComponentNamespaces.ApplicationContracts),
+                    ComponentNamespaces.Domain),
+            name: "Restriction of dependency on Domain layer",
+            description: "Application contracts should not have any dependencies on the domain core");
+
+        policyDefinition.Add(
+            definition: types => types
+                .That().ResideInNamespace(CurrentNamespace)
+                .ShouldNot().HaveDependencyOnAny(
+                    ComponentNamespaces.Application),
             name: "Restriction of dependency on Application layer",
-            description: "The domain core should not have any dependencies on the application layer");
+            description: "Application contracts should not have any dependencies on the application implementation");
 
         policyDefinition.Add(
             definition: types => types
@@ -48,7 +55,7 @@ public class DomainArchTests
                     ComponentNamespaces.WebApi,
                     ComponentNamespaces.WebAuth),
             name: "Restriction of dependency on Presentation layer",
-            description: "The domain core should not have any dependencies on the presentation layer");
+            description: "Application contracts should not have any dependencies on the presentation layer");
 
         policyDefinition.Add(
             definition: types => types
@@ -58,7 +65,7 @@ public class DomainArchTests
                     ComponentNamespaces.EfCoreMssql,
                     ComponentNamespaces.EfCorePostgreSql),
             name: "Restriction of dependency on Persistence layer",
-            description: "The domain core should not have any dependencies on the persistence layer");
+            description: "Application contracts should not have any dependencies on the persistence layer");
 
         policyDefinition.Add(
             definition: types => types
@@ -68,7 +75,7 @@ public class DomainArchTests
                     ComponentNamespaces.CliHost,
                     ComponentNamespaces.WebHost),
             name: "Restriction of dependency on Infrastructure layer",
-            description: "The domain core should not have any dependencies on the infrastructure layer");
+            description: "Application contracts should not have any dependencies on the infrastructure layer");
 
         policyDefinition.Add(
             definition: types => types
@@ -81,35 +88,8 @@ public class DomainArchTests
                             ComponentNamespaces.DomainShared,
                             ComponentNamespaces.Common
                         ])),
-            name: "Domain_ShouldOnlyDependOn_CommonAndDomainShared",
-            description: "The domain core can only depend on shared domain types and common utilities");
-
-        policyDefinition.Add(
-            definition: types => types
-                .That().ResideInNamespace($"{CurrentNamespace}.Entities")
-                .ShouldNot().HaveDependenciesOtherThan(
-                    PolicyHelper.CreateAllowedDependenciesList(
-                        $"{CurrentNamespace}.Entities",
-                        UsingLibs,
-                        [
-                            $"{ComponentNamespaces.Domain}.ValueObjects",
-                            ComponentNamespaces.DomainShared
-                        ])),
-            name: "Allowed dependencies for Domain Entities",
-            description: "Domain entities can only depend on domain value objects and shared domain types");
-
-        policyDefinition.Add(
-            definition: types => types
-                .That().ResideInNamespace($"{CurrentNamespace}.ValueObjects")
-                .ShouldNot().HaveDependenciesOtherThan(
-                    PolicyHelper.CreateAllowedDependenciesList(
-                        $"{CurrentNamespace}.ValueObjects",
-                        UsingLibs,
-                        [
-                            ComponentNamespaces.DomainShared
-                        ])),
-            name: "Allowed dependencies for Domain Value Objects",
-            description: "Domain value objects can only depend on domain shared types");
+            name: "Allowed dependencies",
+            description: "Application contracts can only depend on shared domain types and common utilities");
 
         // Act
         var results = policyDefinition.Evaluate().Results;
@@ -122,22 +102,21 @@ public class DomainArchTests
     }
 
     /// <summary>
-    /// Verifies that the <see cref="MindTrail.Domain"/> component's types follow the naming conventions.
+    /// Verifies that the <see cref="MindTrail.ApplicationContracts"/> component's types follow the naming conventions.
     /// </summary>
     [TestMethod]
-    public void Domain_ShouldFollowNamingConventions()
+    public void Application_ShouldFollowNamingConventions()
     {
         // Arrange
         var policyDefinition = PolicyHelper.BuildPolicyDefinition(
             componentNamespace: CurrentNamespace,
             policyName: "Type naming policy",
-            policyDescription: $"Enforces naming conventions for types in the {nameof(Domain)} component");
+            policyDescription: $"Enforces naming conventions for types in the {nameof(ApplicationContracts)} component");
 
         policyDefinition
-            .AddAbstractionNamingRule(CurrentNamespace)
-            .AddRepositoryNamingRule($"{CurrentNamespace}.Abstractions")
+            .AddDtoNamingRule(CurrentNamespace)
             .AddInterfaceNamingRule(CurrentNamespace)
-            .AddServiceNamingRule(CurrentNamespace);
+            .AddRequestModelNamingRule(CurrentNamespace);
 
         // Act
         var results = policyDefinition.Evaluate().Results;

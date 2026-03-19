@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MindTrail.ArchTests.Constants;
+using MindTrail.ArchTests.Extensions;
 using MindTrail.ArchTests.Helpers;
 
 namespace MindTrail.ArchTests.ArchTests;
@@ -28,57 +28,67 @@ public class EfCoreMssqlArchTests
     {
         // Arrange
         var policyDefinition = PolicyHelper.BuildPolicyDefinition(
-            CurrentNamespace,
-            "Component dependency policy",
-            $"Enforces the dependencies of the {nameof(EfCoreMssql)} component");
+            componentNamespace: CurrentNamespace,
+            policyName: "Component dependency policy",
+            policyDescription: $"Enforces the dependencies of the {nameof(EfCoreMssql)} component");
 
         policyDefinition.Add(
-            types => types
+            definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
-                    ComponentNamespaces.Domain,
-                    ComponentNamespaces.Application,
-                    ComponentNamespaces.ApplicationContracts),
-            "EfCoreMssql_ShouldNotDependOn_DomainLayer",
-            "The SQL Server data access implementation should not have any dependencies on the domain and application layers");
+                    ComponentNamespaces.Domain),
+            name: "Restriction of dependency on Domain layer",
+            description: "The SQL Server persistence implementation should not have any dependencies on the domain core");
 
         policyDefinition.Add(
-            types => types
+            definition: types => types
+                .That().ResideInNamespace(CurrentNamespace)
+                .ShouldNot().HaveDependencyOnAny(
+                    ComponentNamespaces.Application,
+                    ComponentNamespaces.ApplicationContracts),
+            name: "Restriction of dependency on Application layer",
+            description: "The SQL Server persistence implementation should not have any dependencies on the application layer");
+
+        policyDefinition.Add(
+            definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.Cli,
                     ComponentNamespaces.WebApi,
                     ComponentNamespaces.WebAuth),
-            "EfCoreMssql_ShouldNotDependOn_PresentationLayer",
-            "The SQL Server data access implementation should not have any dependencies on the presentation layer");
+            name: "Restriction of dependency on Presentation layer",
+            description: "The SQL Server persistence implementation should not have any dependencies on the presentation layer");
 
         policyDefinition.Add(
-            types => types
+            definition: types => types
+                .That().ResideInNamespace(CurrentNamespace)
+                .ShouldNot().HaveDependencyOnAny(
+                    ComponentNamespaces.EfCorePostgreSql),
+            name: "Restriction of dependency on Persistence layer",
+            description: "The SQL Server persistence implementation should not have any dependencies on other persistence implementations such as PostgreSQL");
+
+        policyDefinition.Add(
+            definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.HostConfiguration,
                     ComponentNamespaces.CliHost,
                     ComponentNamespaces.WebHost),
-            "EfCoreMssql_ShouldNotDependOn_InfrastructureLayer",
-            "The SQL Server data access implementation should not have any dependencies on the infrastructure layer");
+            name: "Restriction of dependency on Infrastructure layer",
+            description: "The SQL Server persistence implementation should not have any dependencies on the infrastructure layer");
 
         policyDefinition.Add(
-            types => types
-                .That().ResideInNamespace(CurrentNamespace)
-                .ShouldNot().HaveDependencyOnAny(
-                    ComponentNamespaces.EfCorePostgreSql),
-            "EfCoreMssql_ShouldNotDependOn_OtherImplementationOfDataAccess",
-            "The SQL Server data access implementation should not have any dependencies on other data access implementations such as PostgreSQL");
-
-        policyDefinition.Add(
-            types => types
+            definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependenciesOtherThan(
-                    CreateAllowedDependenciesList([
-                        ComponentNamespaces.EfCore
-                    ])),
-            "EfCoreMssql_ShouldOnlyDependOn_AbstractionAboveTheDataLayer",
-            "The SQL Server data access implementation can only depend on abstraction above the data layer (EF)");
+                    PolicyHelper.CreateAllowedDependenciesList(
+                        CurrentNamespace,
+                        UsingLibs,
+                        [
+                            ComponentNamespaces.EfCore
+                        ])),
+            name: "Allowed dependencies",
+            description: "The SQL Server persistence implementation can only depend on abstraction above the persistence layer (EF)");
 
         // Act
         var results = policyDefinition.Evaluate().Results;
@@ -90,12 +100,28 @@ public class EfCoreMssqlArchTests
         }
     }
 
-    private static string[] CreateAllowedDependenciesList(IEnumerable<string> allowedComponents)
+    /// <summary>
+    /// Verifies that the <see cref="MindTrail.EfCoreMssql"/> component's types follow the naming conventions.
+    /// </summary>
+    [TestMethod]
+    public void EfCoreMssql_ShouldFollowNamingConventions()
     {
-        var allowedDependenciesList = new List<string> { CurrentNamespace };
-        allowedDependenciesList.AddRange(UsingLibs);
-        allowedDependenciesList.AddRange(allowedComponents);
+        // Arrange
+        var policyDefinition = PolicyHelper.BuildPolicyDefinition(
+            componentNamespace: CurrentNamespace,
+            policyName: "Type naming policy",
+            policyDescription: $"Enforces naming conventions for types in the {nameof(EfCoreMssql)} component");
 
-        return allowedDependenciesList.ToArray();
+        policyDefinition
+            .AddContextNamingRule(CurrentNamespace);
+
+        // Act
+        var results = policyDefinition.Evaluate().Results;
+
+        // Assert
+        foreach (var result in results)
+        {
+            Assert.IsTrue(result.IsSuccessful, PolicyHelper.BuildFailureMessage(result));
+        }
     }
 }

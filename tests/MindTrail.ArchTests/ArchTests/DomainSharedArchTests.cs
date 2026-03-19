@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MindTrail.ArchTests.Constants;
 using MindTrail.ArchTests.Extensions;
 using MindTrail.ArchTests.Helpers;
@@ -35,8 +34,11 @@ public class DomainSharedArchTests
         policyDefinition.Add(
             types => types
                 .That().ResideInNamespace(CurrentNamespace)
-                .ShouldNot().HaveDependenciesOtherThan(CreateAllowedDependenciesList()),
-            "DomainShared_ShouldNotDependOn_OtherComponent",
+                .ShouldNot().HaveDependenciesOtherThan(
+                    PolicyHelper.CreateAllowedDependenciesList(
+                        CurrentNamespace,
+                        UsingLibs)),
+            "DomainShared_ShouldNotDependOn_OtherComponents",
             "Shared domain types should not have any dependencies on other components");
 
         // Act
@@ -73,13 +75,5 @@ public class DomainSharedArchTests
         {
             Assert.IsTrue(result.IsSuccessful, PolicyHelper.BuildFailureMessage(result));
         }
-    }
-
-    private static string[] CreateAllowedDependenciesList()
-    {
-        var allowedDependenciesList = new List<string> { CurrentNamespace };
-        allowedDependenciesList.AddRange(UsingLibs);
-
-        return allowedDependenciesList.ToArray();
     }
 }

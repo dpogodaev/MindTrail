@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using MindTrail.DomainShared.Exceptions.Base;
 
-namespace MindTrail.Application.Extensions;
+namespace MindTrail.HostConfiguration.Extensions;
 
 /// <summary>
 /// Provides extension methods for the <see cref="Exception"/> class.

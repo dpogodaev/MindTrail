@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MindTrail.ArchTests.Constants;
 using MindTrail.ArchTests.Extensions;
 using MindTrail.ArchTests.Helpers;
@@ -29,49 +28,69 @@ public class CliHostArchTests
     {
         // Arrange
         var policyDefinition = PolicyHelper.BuildPolicyDefinition(
-            CurrentNamespace,
-            "Component dependency policy",
-            $"Enforces the dependencies of the {nameof(CliHost)} component");
+            componentNamespace: CurrentNamespace,
+            policyName: "Component dependency policy",
+            policyDescription: $"Enforces the dependencies of the {nameof(CliHost)} component");
 
         policyDefinition.Add(
-            types => types
+            definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
-                    ComponentNamespaces.EfCore,
-                    ComponentNamespaces.EfCoreMssql,
-                    ComponentNamespaces.EfCorePostgreSql),
-            "CliHost_ShouldNotDependOn_DomainLayer",
-            "The CLI host should not have any dependencies on the application (domain) layer");
+                    ComponentNamespaces.Domain),
+            name: "Restriction of dependency on Domain layer",
+            description: "The CLI host should not have any dependencies on the domain core");
 
         policyDefinition.Add(
-            types => types
+            definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
-                    ComponentNamespaces.EfCore,
-                    ComponentNamespaces.EfCoreMssql,
-                    ComponentNamespaces.EfCorePostgreSql),
-            "CliHost_ShouldNotDependOn_DataAccessLayer",
-            "The CLI host should not have any dependencies on the data access layer");
+                    ComponentNamespaces.Application,
+                    ComponentNamespaces.ApplicationContracts),
+            name: "Restriction of dependency on Application layer",
+            description: "The CLI host should not have any dependencies on the application layer");
 
         policyDefinition.Add(
-            types => types
+            definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.WebApi,
                     ComponentNamespaces.WebAuth),
-            "CliHost_ShouldNotDependOn_WebComponents",
-            $"The CLI host should not depend on web-based presentation components such as {nameof(WebApi)}");
+            name: "Restriction of dependency on Presentation layer",
+            description: $"The CLI host should not depend on web-based presentation components such as {nameof(WebApi)}");
 
         policyDefinition.Add(
-            types => types
+            definition: types => types
+                .That().ResideInNamespace(CurrentNamespace)
+                .ShouldNot().HaveDependencyOnAny(
+                    ComponentNamespaces.EfCore,
+                    ComponentNamespaces.EfCoreMssql,
+                    ComponentNamespaces.EfCorePostgreSql),
+            name: "Restriction of dependency on Persistence layer",
+            description: "The CLI host should not have any dependencies on persistence layer");
+
+        policyDefinition.Add(
+            definition: types => types
+                .That().ResideInNamespace(CurrentNamespace)
+                .ShouldNot().HaveDependencyOnAny(
+                    ComponentNamespaces.WebHost),
+            name: "Restriction of dependency on Infrastructure layer",
+            description: $"The CLI should not have any dependencies on other infrastructure implementations, such as {nameof(WebHost)}");
+
+        policyDefinition.Add(
+            definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependenciesOtherThan(
-                    CreateAllowedDependenciesList([
-                        ComponentNamespaces.Cli,
-                        ComponentNamespaces.HostConfiguration
-                    ])),
-            "CliHost_ShouldOnlyDependOn_CliAndHostConfiguration",
-            $"The CLI host can only depend on the components implementing its interface (e.g., {nameof(Cli)}) and the application configurator ({nameof(HostConfiguration)})");
+                    PolicyHelper.CreateAllowedDependenciesList(
+                        CurrentNamespace,
+                        UsingLibs,
+                        [
+                            ComponentNamespaces.Cli,
+                            ComponentNamespaces.HostConfiguration,
+                            ComponentNamespaces.DomainShared,
+                            ComponentNamespaces.Common
+                        ])),
+            name: "Allowed dependencies",
+            description: "The CLI host can only depend on the components implementing its interface, the application configurator, shared domain types, and common utilities");
 
         // Act
         var results = policyDefinition.Evaluate().Results;
@@ -91,9 +110,9 @@ public class CliHostArchTests
     {
         // Arrange
         var policyDefinition = PolicyHelper.BuildPolicyDefinition(
-            CurrentNamespace,
-            "Type naming policy",
-            $"Enforces naming conventions for types in the {nameof(CliHost)} component");
+            componentNamespace: CurrentNamespace,
+            policyName: "Type naming policy",
+            policyDescription: $"Enforces naming conventions for types in the {nameof(CliHost)} component");
 
         policyDefinition.AddConfigNamingRule(CurrentNamespace);
 
@@ -106,17 +125,4 @@ public class CliHostArchTests
             Assert.IsTrue(result.IsSuccessful, PolicyHelper.BuildFailureMessage(result));
         }
     }
-
-    #region Private methods
-
-    private static string[] CreateAllowedDependenciesList(IEnumerable<string> allowedComponents)
-    {
-        var allowedDependenciesList = new List<string> { CurrentNamespace };
-        allowedDependenciesList.AddRange(UsingLibs);
-        allowedDependenciesList.AddRange(allowedComponents);
-
-        return allowedDependenciesList.ToArray();
-    }
-
-    #endregion
 }

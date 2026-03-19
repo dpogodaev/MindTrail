@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MindTrail.ArchTests.Constants;
 using MindTrail.ArchTests.Extensions;
 using MindTrail.ArchTests.Helpers;
@@ -30,58 +29,69 @@ public class WebApiArchTests
     {
         // Arrange
         var policyDefinition = PolicyHelper.BuildPolicyDefinition(
-            CurrentNamespace,
-            "Component dependency policy",
-            $"Enforces the dependencies of the {nameof(WebApi)} component");
+            componentNamespace: CurrentNamespace,
+            policyName: "Component dependency policy",
+            policyDescription: $"Enforces the dependencies of the {nameof(WebApi)} component");
 
         policyDefinition.Add(
-            types => types
+            definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.Domain),
-            "WebApi_ShouldNotDependOn_Domain",
-            "The Web API should not have any dependencies on the domain component");
+            name: "Restriction of dependency on Domain layer",
+            description: "The Web API should not have any dependencies on the domain core");
 
         policyDefinition.Add(
-            types => types
+            definition: types => types
+                .That().ResideInNamespace(CurrentNamespace)
+                .ShouldNot().HaveDependencyOnAny(
+                    ComponentNamespaces.Application),
+            name: "Restriction of dependency on Application layer",
+            description: "The Web API should not have any dependencies on the application implementation");
+
+        policyDefinition.Add(
+            definition: types => types
+                .That().ResideInNamespace(CurrentNamespace)
+                .ShouldNot().HaveDependencyOnAny(
+                    ComponentNamespaces.Cli),
+            name: "Restriction of dependency on Presentation layer",
+            description: "The Web API should not depend on other presentation implementations, such as command-line-based presentation components");
+
+        policyDefinition.Add(
+            definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.EfCore,
                     ComponentNamespaces.EfCoreMssql,
                     ComponentNamespaces.EfCorePostgreSql),
-            "WebApi_ShouldNotDependOn_DataAccessLayer",
-            "The Web API should not have any dependencies on the data access layer");
+            name: "Restriction of dependency on Persistence layer",
+            description: "The Web API should not have any dependencies on the persistence layer");
 
         policyDefinition.Add(
-            types => types
+            definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.HostConfiguration,
                     ComponentNamespaces.CliHost,
                     ComponentNamespaces.WebHost),
-            "WebApi_ShouldNotDependOn_InfrastructureLayer",
-            "The Web API should not have any dependencies on the infrastructure layer");
+            name: "Restriction of dependency on Infrastructure layer",
+            description: "The Web API should not have any dependencies on the infrastructure layer");
 
         policyDefinition.Add(
-            types => types
-                .That().ResideInNamespace(CurrentNamespace)
-                .ShouldNot().HaveDependencyOnAny(
-                    ComponentNamespaces.Cli),
-            "WebApi_ShouldNotDependOn_CliComponents",
-            $"The Web API should not depend on command-line-based presentation components such as {nameof(Cli)}");
-
-        policyDefinition.Add(
-            types => types
+            definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependenciesOtherThan(
-                    CreateAllowedDependenciesList([
-                        ComponentNamespaces.Common,
-                        ComponentNamespaces.DomainShared,
-                        ComponentNamespaces.ApplicationContracts,
-                        ComponentNamespaces.WebAuth
-                    ])),
-            "WebApi_ShouldOnlyDependOn_WebComponentsAndCommonLogic",
-            $"The Web API can only depend on common utilities, shared domain types, application contracts and on components that also implement the web interface, such as {nameof(WebAuth)}");
+                    PolicyHelper.CreateAllowedDependenciesList(
+                        CurrentNamespace,
+                        UsingLibs,
+                        [
+                            ComponentNamespaces.WebAuth,
+                            ComponentNamespaces.ApplicationContracts,
+                            ComponentNamespaces.DomainShared,
+                            ComponentNamespaces.Common
+                        ])),
+            name: "Allowed dependencies",
+            description: "The Web API can only depend on components that also implement the web interface, application contracts, shared domain types, and common utilities");
 
         // Act
         var results = policyDefinition.Evaluate().Results;
@@ -101,15 +111,23 @@ public class WebApiArchTests
     {
         // Arrange
         var policyDefinition = PolicyHelper.BuildPolicyDefinition(
-            CurrentNamespace,
-            "Type naming policy",
-            $"Enforces naming conventions for types in the {nameof(WebApi)} component");
+            componentNamespace: CurrentNamespace,
+            policyName: "Type naming policy",
+            policyDescription: $"Enforces naming conventions for types in the {nameof(WebApi)} component");
 
         policyDefinition
+            .AddAbstractionNamingRule(CurrentNamespace)
+            .AddBuilderNamingRule($"{CurrentNamespace}.Abstractions")
+            .AddFactoryNamingRule($"{CurrentNamespace}.Abstractions")
+            .AddProviderNamingRule($"{CurrentNamespace}.Abstractions")
             .AddAttributeNamingRule(CurrentNamespace)
             .AddControllerNamingRule(CurrentNamespace)
+            .AddDtoNamingRule(CurrentNamespace)
             .AddFilterNamingRule(CurrentNamespace)
-            .AddModelNamingRule(CurrentNamespace);
+            .AddHandlerNamingRule(CurrentNamespace)
+            .AddInterfaceNamingRule(CurrentNamespace)
+            .AddMappingNamingRule(CurrentNamespace)
+            .AddRequestModelNamingRule(CurrentNamespace);
 
         // Act
         var results = policyDefinition.Evaluate().Results;
@@ -119,14 +137,5 @@ public class WebApiArchTests
         {
             Assert.IsTrue(result.IsSuccessful, PolicyHelper.BuildFailureMessage(result));
         }
-    }
-
-    private static string[] CreateAllowedDependenciesList(IEnumerable<string> allowedComponents)
-    {
-        var allowedDependenciesList = new List<string> { CurrentNamespace };
-        allowedDependenciesList.AddRange(UsingLibs);
-        allowedDependenciesList.AddRange(allowedComponents);
-
-        return allowedDependenciesList.ToArray();
     }
 }

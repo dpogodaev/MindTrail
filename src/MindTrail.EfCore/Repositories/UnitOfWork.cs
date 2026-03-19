@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Storage;
+using MindTrail.EfCore.Context;
 using MindTrail.EfCore.Interfaces.Repositories;
 
-namespace MindTrail.EfCore.Context;
+namespace MindTrail.EfCore.Repositories;
 
 /// <summary>
 /// Entity Framework implementation of <see cref="IUnitOfWork"/>.

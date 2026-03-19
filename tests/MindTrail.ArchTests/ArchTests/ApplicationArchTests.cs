@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MindTrail.Application.Abstractions.Repositories;
 using MindTrail.ArchTests.Constants;
 using MindTrail.ArchTests.Extensions;
 using MindTrail.ArchTests.Helpers;
@@ -17,8 +17,7 @@ public class ApplicationArchTests
 
     private static readonly string[] UsingLibs =
     [
-        "System",
-        "Microsoft"
+        "System"
     ];
 
     /// <summary>
@@ -29,52 +28,55 @@ public class ApplicationArchTests
     {
         // Arrange
         var policyDefinition = PolicyHelper.BuildPolicyDefinition(
-            CurrentNamespace,
-            "Component dependency policy",
-            $"Enforces the dependencies of the {nameof(Application)} component");
+            componentNamespace: CurrentNamespace,
+            policyName: "Component dependency policy",
+            policyDescription: $"Enforces the dependencies of the {nameof(Application)} component");
 
         policyDefinition.Add(
-            types => types
-                .That().ResideInNamespace(CurrentNamespace)
-                .ShouldNot().HaveDependencyOnAny(
-                    ComponentNamespaces.EfCore,
-                    ComponentNamespaces.EfCoreMssql,
-                    ComponentNamespaces.EfCorePostgreSql),
-            "Application_ShouldNotDependOn_DataAccessLayer",
-            "The application layer should not have any dependencies on the data access layer");
-
-        policyDefinition.Add(
-            types => types
+            definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.Cli,
                     ComponentNamespaces.WebApi,
                     ComponentNamespaces.WebAuth),
-            "Application_ShouldNotDependOn_PresentationLayer",
-            "The application layer should not have any dependencies on the presentation layer");
+            name: "Restriction of dependency on Presentation layer",
+            description: "The application implementation should not have any dependencies on the presentation layer");
 
         policyDefinition.Add(
-            types => types
+            definition: types => types
+                .That().ResideInNamespace(CurrentNamespace)
+                .ShouldNot().HaveDependencyOnAny(
+                    ComponentNamespaces.EfCore,
+                    ComponentNamespaces.EfCoreMssql,
+                    ComponentNamespaces.EfCorePostgreSql),
+            name: "Restriction of dependency on Persistence layer",
+            description: "The application implementation should not have any dependencies on the persistence layer");
+
+        policyDefinition.Add(
+            definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.HostConfiguration,
                     ComponentNamespaces.CliHost,
                     ComponentNamespaces.WebHost),
-            "Application_ShouldNotDependOn_InfrastructureLayer",
-            "The application layer should not have any dependencies on the infrastructure layer");
+            name: "Restriction of dependency on Infrastructure layer",
+            description: "The application implementation should not have any dependencies on the infrastructure layer");
 
         policyDefinition.Add(
-            types => types
+            definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependenciesOtherThan(
-                    CreateAllowedDependenciesList([
-                        ComponentNamespaces.Common,
-                        ComponentNamespaces.Domain,
-                        ComponentNamespaces.DomainShared,
-                        ComponentNamespaces.ApplicationContracts
-                    ])),
-            "Application_ShouldOnlyDependOn_DomainLayerAndCommonUtilities",
-            "The application can only depend on common utilities, the domain layer and application contracts");
+                    PolicyHelper.CreateAllowedDependenciesList(
+                        CurrentNamespace,
+                        UsingLibs,
+                        [
+                            ComponentNamespaces.Domain,
+                            ComponentNamespaces.DomainShared,
+                            ComponentNamespaces.ApplicationContracts,
+                            ComponentNamespaces.Common
+                        ])),
+            name: "Allowed dependencies",
+            description: "The application implementation can only depend on the domain layer, application contracts, and common utilities");
 
         // Act
         var results = policyDefinition.Evaluate().Results;
@@ -94,13 +96,14 @@ public class ApplicationArchTests
     {
         // Arrange
         var policyDefinition = PolicyHelper.BuildPolicyDefinition(
-            CurrentNamespace,
-            "Type naming policy",
-            $"Enforces naming conventions for types in the {nameof(Application)} component");
+            componentNamespace: CurrentNamespace,
+            policyName: "Type naming policy",
+            policyDescription: $"Enforces naming conventions for types in the {nameof(Application)} component");
 
         policyDefinition
-            .AddInterfaceNamingRule(CurrentNamespace)
-            .AddModelNamingRule(CurrentNamespace)
+            .AddAbstractionNamingRule($"{CurrentNamespace}")
+            .AddRepositoryNamingRule($"{CurrentNamespace}.Abstractions", [nameof(IUnitOfWork)])
+            .AddMappingNamingRule(CurrentNamespace)
             .AddServiceNamingRule(CurrentNamespace);
 
         // Act
@@ -111,14 +114,5 @@ public class ApplicationArchTests
         {
             Assert.IsTrue(result.IsSuccessful, PolicyHelper.BuildFailureMessage(result));
         }
-    }
-
-    private static string[] CreateAllowedDependenciesList(IEnumerable<string> allowedComponents)
-    {
-        var allowedDependenciesList = new List<string> { CurrentNamespace };
-        allowedDependenciesList.AddRange(UsingLibs);
-        allowedDependenciesList.AddRange(allowedComponents);
-
-        return allowedDependenciesList.ToArray();
     }
 }
