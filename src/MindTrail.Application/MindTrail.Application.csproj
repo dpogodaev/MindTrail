@@ -15,17 +15,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.1"/>
-        <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        <PackageReference Include="Microsoft.Extensions.Logging"/>
+        <PackageReference Include="StyleCop.Analyzers">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MindTrail.ApplicationContracts\MindTrail.ApplicationContracts.csproj" />
-        <ProjectReference Include="..\MindTrail.Common\MindTrail.Common.csproj" />
-        <ProjectReference Include="..\MindTrail.Domain\MindTrail.Domain.csproj" />
+        <ProjectReference Include="..\MindTrail.ApplicationContracts\MindTrail.ApplicationContracts.csproj"/>
+        <ProjectReference Include="..\MindTrail.Common\MindTrail.Common.csproj"/>
+        <ProjectReference Include="..\MindTrail.Domain\MindTrail.Domain.csproj"/>
     </ItemGroup>
 
 </Project>

@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MindTrail.HostConfiguration.Extensions;
-using Xunit;
 
 namespace MindTrail.HostConfiguration.Tests.ExtensionTests;
 
 /// <summary>
 /// Tests for <see cref="HostConfiguration.Extensions.ConfigurationExtensions"/> class.
 /// </summary>
+[TestClass]
 public class ConfigurationExtensionsTests
 {
     #region SectionExists
@@ -15,7 +16,7 @@ public class ConfigurationExtensionsTests
     /// <summary>
     /// Test for <see cref="Extensions.ConfigurationExtensions.SectionExists"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void SectionExists_SpecifiedSectionExists_ReturnsTrue()
     {
         // Arrange
@@ -30,13 +31,13 @@ public class ConfigurationExtensionsTests
         var result = configuration.SectionExists(sectionName);
 
         // Assert
-        Assert.True(result);
+        Assert.IsTrue(result);
     }
 
     /// <summary>
     /// Test for <see cref="Extensions.ConfigurationExtensions.SectionExists"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void SectionExists_SpecifiedSectionDoesNotExist_ReturnsFalse()
     {
         // Arrange
@@ -48,7 +49,7 @@ public class ConfigurationExtensionsTests
         var result = configuration.SectionExists(sectionName);
 
         // Assert
-        Assert.False(result);
+        Assert.IsFalse(result);
     }
 
     #endregion
@@ -58,7 +59,7 @@ public class ConfigurationExtensionsTests
     /// <summary>
     /// Test for <see cref="Extensions.ConfigurationExtensions.PropertyExists"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void PropertyExists_SpecifiedPropertyExists_ReturnsTrue()
     {
         // Arrange
@@ -73,13 +74,13 @@ public class ConfigurationExtensionsTests
         var result = configuration.PropertyExists(propertyName);
 
         // Assert
-        Assert.True(result);
+        Assert.IsTrue(result);
     }
 
     /// <summary>
     /// Test for <see cref="Extensions.ConfigurationExtensions.PropertyExists"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void PropertyExists_SpecifiedPropertyDoesNotExist_ReturnsFalse()
     {
         // Arrange
@@ -91,7 +92,7 @@ public class ConfigurationExtensionsTests
         var result = configuration.PropertyExists(propertyName);
 
         // Assert
-        Assert.False(result);
+        Assert.IsFalse(result);
     }
 
     #endregion
@@ -101,7 +102,7 @@ public class ConfigurationExtensionsTests
     /// <summary>
     /// Test for <see cref="HostConfiguration.Extensions.ConfigurationExtensions.GetProperty"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void GetProperty_SpecifiedPropertyExists_ReturnsPropertyValue()
     {
         // Arrange
@@ -117,13 +118,13 @@ public class ConfigurationExtensionsTests
         var propertyValue = configuration.GetProperty(propertyName);
 
         // Assert
-        Assert.Equal(expectedPropertyValue, propertyValue);
+        Assert.AreEqual(expectedPropertyValue, propertyValue);
     }
 
     /// <summary>
     /// Test for <see cref="HostConfiguration.Extensions.ConfigurationExtensions.GetProperty"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void GetProperty_SpecifiedPropertyDoesNotExist_ReturnsNull()
     {
         // Arrange
@@ -135,7 +136,7 @@ public class ConfigurationExtensionsTests
         var propertyValue = configuration.GetProperty(propertyName);
 
         // Assert
-        Assert.Null(propertyValue);
+        Assert.IsNull(propertyValue);
     }
 
     #endregion
@@ -145,7 +146,7 @@ public class ConfigurationExtensionsTests
     /// <summary>
     /// Test for <see cref="HostConfiguration.Extensions.ConfigurationExtensions.TryGetProperty"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void TryGetProperty_SpecifiedPropertyExists_ReturnsTrue()
     {
         // Arrange
@@ -161,14 +162,14 @@ public class ConfigurationExtensionsTests
         var propertyExists = configuration.TryGetProperty(propertyName, out var propertyValue);
 
         // Assert
-        Assert.True(propertyExists);
-        Assert.Equal(expectedPropertyValue, propertyValue);
+        Assert.IsTrue(propertyExists);
+        Assert.AreEqual(expectedPropertyValue, propertyValue);
     }
 
     /// <summary>
     /// Test for <see cref="HostConfiguration.Extensions.ConfigurationExtensions.TryGetProperty"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void TryGetProperty_SpecifiedPropertyDoesNotExist_ReturnsFalse()
     {
         // Arrange
@@ -180,7 +181,7 @@ public class ConfigurationExtensionsTests
         var propertyExists = configuration.TryGetProperty(propertyName, out _);
 
         // Assert
-        Assert.False(propertyExists);
+        Assert.IsFalse(propertyExists);
     }
 
     #endregion
@@ -190,7 +191,7 @@ public class ConfigurationExtensionsTests
     /// <summary>
     /// Test for <see cref="HostConfiguration.Extensions.ConfigurationExtensions.BindSection{T}"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void BindSection_SpecifiedSectionExists_BindsSectionToSpecifiedClass()
     {
         // Arrange
@@ -208,15 +209,15 @@ public class ConfigurationExtensionsTests
         var specifiedClass = configuration.BindSection<TestSection>(sectionName);
 
         // Assert
-        Assert.NotNull(specifiedClass);
-        Assert.Equal(property1Value, specifiedClass.Property1);
-        Assert.Equal(property2Value, specifiedClass.Property2);
+        Assert.IsNotNull(specifiedClass);
+        Assert.AreEqual(property1Value, specifiedClass.Property1);
+        Assert.AreEqual(property2Value, specifiedClass.Property2);
     }
 
     /// <summary>
     /// Test for <see cref="HostConfiguration.Extensions.ConfigurationExtensions.BindSection{T}"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void BindSection_SpecifiedSectionDoesNotExist_ReturnsNull()
     {
         // Arrange
@@ -228,12 +229,10 @@ public class ConfigurationExtensionsTests
         var specifiedClass = configuration.BindSection<TestSection>(sectionName);
 
         // Assert
-        Assert.Null(specifiedClass);
+        Assert.IsNull(specifiedClass);
     }
 
     #endregion
-
-    #region Private methods
 
     private static IConfiguration BuildConfiguration(Dictionary<string, string> settings = null)
     {
@@ -242,16 +241,11 @@ public class ConfigurationExtensionsTests
             .Build();
     }
 
-    #endregion
-
-    #region Private classes
-
-    private record TestSection
+    // ReSharper disable once ClassNeverInstantiated.Local
+    private sealed record TestSection
     {
         public string Property1 { get; set; }
 
         public string Property2 { get; set; }
     }
-
-    #endregion
 }

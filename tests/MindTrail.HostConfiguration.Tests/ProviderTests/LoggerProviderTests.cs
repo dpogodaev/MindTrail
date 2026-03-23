@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
-using MindTrail.HostConfiguration.Interfaces;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MindTrail.HostConfiguration.Interfaces.Logging;
 using MindTrail.HostConfiguration.Providers;
-using Xunit;
 
 namespace MindTrail.HostConfiguration.Tests.ProviderTests;
 
 /// <summary>
 /// Tests for <see cref="LoggerProvider"/> class.
 /// </summary>
+[TestClass]
 public class LoggerProviderTests
 {
     #region Configure
@@ -20,7 +20,7 @@ public class LoggerProviderTests
     /// <summary>
     /// Test for <see cref="LoggerProvider.Configure(IConfiguration)"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void Configure_Call_LoggerProviderIsConfigured()
     {
         // Arrange
@@ -32,20 +32,20 @@ public class LoggerProviderTests
         LoggerProvider.Configure(configuration);
 
         // Assert
-        Assert.True(LoggerProvider.IsConfigured());
+        Assert.IsTrue(LoggerProvider.IsConfigured());
     }
 
     /// <summary>
     /// Test for <see cref="LoggerProvider.Configure(IConfiguration)"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void Configure_NotCall_LoggerProviderIsNotConfigured()
     {
         // Arrange
         LoggerProvider.Shutdown();
 
         // Assert
-        Assert.False(LoggerProvider.IsConfigured());
+        Assert.IsFalse(LoggerProvider.IsConfigured());
     }
 
     #endregion
@@ -55,7 +55,7 @@ public class LoggerProviderTests
     /// <summary>
     /// Test for <see cref="LoggerProvider.GetStartupLogger"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void GetStartupLogger_LoggerProviderIsNotConfigured_ThrowsException()
     {
         // Arrange
@@ -66,7 +66,7 @@ public class LoggerProviderTests
 
         // Assert
         var exception = Assert.Throws<Exception>(GetStartupLogger);
-        Assert.Equal("The logger provider is not configured", exception.Message);
+        Assert.AreEqual("The logger provider is not configured", exception.Message);
     }
 
     #endregion

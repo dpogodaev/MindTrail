@@ -2,15 +2,16 @@
 using System.IO;
 using System.Reflection;
 using System.Text.Json;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MindTrail.HostConfiguration.Extensions;
 using MindTrail.HostConfiguration.Helpers;
-using Xunit;
 
 namespace MindTrail.HostConfiguration.Tests.HelperTests;
 
 /// <summary>
 /// Tests for <see cref="ConfigurationHelper"/> class.
 /// </summary>
+[TestClass]
 public class ConfigurationHelperTests
 {
     #region DetermineRuntimeEnvironment
@@ -18,7 +19,7 @@ public class ConfigurationHelperTests
     /// <summary>
     /// Test for <see cref="ConfigurationHelper.DetermineRuntimeEnvironment"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void DetermineRuntimeEnvironment_IsWebHost_ReturnsValueOfAspNetCoreEnvironment()
     {
         // Arrange
@@ -30,13 +31,13 @@ public class ConfigurationHelperTests
         var runtimeEnvironment = ConfigurationHelper.DetermineRuntimeEnvironment(isWebHost);
 
         // Assert
-        Assert.Equal("Development", runtimeEnvironment);
+        Assert.AreEqual("Development", runtimeEnvironment);
     }
 
     /// <summary>
     /// Test for <see cref="ConfigurationHelper.DetermineRuntimeEnvironment"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void DetermineRuntimeEnvironment_IsNotWebHost_ReturnsValueOfDotNetEnvironment()
     {
         // Arrange
@@ -48,7 +49,7 @@ public class ConfigurationHelperTests
         var runtimeEnvironment = ConfigurationHelper.DetermineRuntimeEnvironment(isWebHost);
 
         // Assert
-        Assert.Equal("Development", runtimeEnvironment);
+        Assert.AreEqual("Development", runtimeEnvironment);
     }
 
     #endregion
@@ -58,7 +59,7 @@ public class ConfigurationHelperTests
     /// <summary>
     /// Test for <see cref="ConfigurationHelper.BuildAppConfiguration"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void BuildAppConfiguration_ConfigurationIsSetInAllSources_SetsConfigurationAccordingToPriorityOfSources()
     {
         // Arrange
@@ -83,7 +84,7 @@ public class ConfigurationHelperTests
             },
         });
 
-        Environment.SetEnvironmentVariable("TESTSECTION__PROPERTY3", "Property3 from EnvironmentVariable");
+        Environment.SetEnvironmentVariable("TestSection__Property3", "Property3 from EnvironmentVariable");
 
         // Act
         var appConfig = ConfigurationHelper.BuildAppConfiguration(runtimeEnvironment);
@@ -93,16 +94,14 @@ public class ConfigurationHelperTests
         var property3 = appConfig.GetProperty("TestSection:Property3");
 
         // Assert
-        Assert.NotNull(appConfig);
+        Assert.IsNotNull(appConfig);
 
-        Assert.Equal("Property1 from appsettings.json", property1);
-        Assert.Equal($"Property2 from appsettings.{runtimeEnvironment}.json", property2);
-        Assert.Equal("Property3 from EnvironmentVariable", property3);
+        Assert.AreEqual("Property1 from appsettings.json", property1);
+        Assert.AreEqual($"Property2 from appsettings.{runtimeEnvironment}.json", property2);
+        Assert.AreEqual("Property3 from EnvironmentVariable", property3);
     }
 
     #endregion
-
-    #region Private methods
 
     private static void WriteToJsonFile(string fileName, object fileContent)
     {
@@ -118,6 +117,4 @@ public class ConfigurationHelperTests
     }
 
     private static string GetProjectPath() => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
-    #endregion
 }

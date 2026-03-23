@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MindTrail.WebAuth.Extensions;
-using Xunit;
 
 namespace MindTrail.WebAuth.Tests.ExtensionTests;
 
 /// <summary>
 /// Tests for <see cref="HttpRequestExtensions"/> class.
 /// </summary>
+[TestClass]
 public class HttpRequestExtensionsTests
 {
     #region GetHeaderKeyValue
@@ -14,7 +15,7 @@ public class HttpRequestExtensionsTests
     /// <summary>
     /// Test for <see cref="HttpRequestExtensions.GetHeaderKeyValue"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void GetHeaderKeyValue_KeyExists_ReturnsKeyValue()
     {
         // Arrange
@@ -28,13 +29,13 @@ public class HttpRequestExtensionsTests
         var result = request.GetHeaderKeyValue(keyName);
 
         // Assert
-        Assert.Equal(keyValue, result);
+        Assert.AreEqual(keyValue, result);
     }
 
     /// <summary>
     /// Test for <see cref="HttpRequestExtensions.GetHeaderKeyValue"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void GetHeaderKeyValue_KeyNotExists_ReturnsNull()
     {
         // Arrange
@@ -48,7 +49,7 @@ public class HttpRequestExtensionsTests
         var result = request.GetHeaderKeyValue("non-existent-key");
 
         // Assert
-        Assert.Null(result);
+        Assert.IsNull(result);
     }
 
     #endregion
@@ -58,7 +59,7 @@ public class HttpRequestExtensionsTests
     /// <summary>
     /// Test for <see cref="HttpRequestExtensions.GetRouteParameter"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void GetRouteParameter_ParamExists_ReturnsKeyValue()
     {
         // Arrange
@@ -72,13 +73,13 @@ public class HttpRequestExtensionsTests
         var result = request.GetRouteParameter(paramName);
 
         // Assert
-        Assert.Equal(paramValue, result);
+        Assert.AreEqual(paramValue, result);
     }
 
     /// <summary>
     /// Test for <see cref="HttpRequestExtensions.GetRouteParameter"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void GetRouteParameter_ParamNotExists_ReturnsNull()
     {
         // Arrange
@@ -92,7 +93,7 @@ public class HttpRequestExtensionsTests
         var result = request.GetRouteParameter("non-existent-param");
 
         // Assert
-        Assert.Null(result);
+        Assert.IsNull(result);
     }
 
     #endregion
@@ -102,7 +103,7 @@ public class HttpRequestExtensionsTests
     /// <summary>
     /// Test for <see cref="HttpRequestExtensions.GetQueryParameter"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void GetQueryParameter_ParamExists_ReturnsKeyValue()
     {
         // Arrange
@@ -116,13 +117,13 @@ public class HttpRequestExtensionsTests
         var result = request.GetQueryParameter(paramName);
 
         // Assert
-        Assert.Equal(paramValue, result);
+        Assert.AreEqual(paramValue, result);
     }
 
     /// <summary>
     /// Test for <see cref="HttpRequestExtensions.GetQueryParameter"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void GetQueryParameter_ParamNotExists_ReturnsNull()
     {
         // Arrange
@@ -135,17 +136,13 @@ public class HttpRequestExtensionsTests
         var result = request.GetQueryParameter(paramName);
 
         // Assert
-        Assert.Null(result);
+        Assert.IsNull(result);
     }
 
     #endregion
-
-    #region Private methods
 
     private static HttpRequest BuildHttpRequest()
     {
         return new DefaultHttpContext().Request;
     }
-
-    #endregion
 }

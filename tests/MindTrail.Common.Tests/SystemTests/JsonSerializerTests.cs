@@ -2,13 +2,14 @@
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MindTrail.Common.Tests.SystemTests;
 
 /// <summary>
 /// Tests for <see cref="JsonSerializer"/> class.
 /// </summary>
+[TestClass]
 public class JsonSerializerTests
 {
     private readonly JsonSerializerOptions _options = new()
@@ -22,7 +23,7 @@ public class JsonSerializerTests
     /// Test for <see cref="JsonSerializer.DeserializeAsync{TValue}(Stream,JsonSerializerOptions?,System.Threading.CancellationToken)"/> method.
     /// </summary>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    [Fact]
+    [TestMethod]
     public async Task DeserializeAsync_ShouldDeserializeCamelCaseJsonCorrectly()
     {
         // Arrange
@@ -32,15 +33,15 @@ public class JsonSerializerTests
         var obj = await JsonSerializer.DeserializeAsync<TestObject>(json, _options);
 
         // Assert
-        Assert.Equal(1, obj.Id);
-        Assert.Equal("2", obj.Name);
+        Assert.AreEqual(1, obj.Id);
+        Assert.AreEqual("2", obj.Name);
     }
 
     /// <summary>
     /// Test for <see cref="JsonSerializer.DeserializeAsync{TValue}(Stream,JsonSerializerOptions?,System.Threading.CancellationToken)"/> method.
     /// </summary>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    [Fact]
+    [TestMethod]
     public async Task DeserializeAsync_ShouldDeserializePascalCaseJsonCorrectly()
     {
         // Arrange
@@ -50,15 +51,15 @@ public class JsonSerializerTests
         var obj = await JsonSerializer.DeserializeAsync<TestObject>(json);
 
         // Assert
-        Assert.Equal(1, obj.Id);
-        Assert.Equal("2", obj.Name);
+        Assert.AreEqual(1, obj.Id);
+        Assert.AreEqual("2", obj.Name);
     }
 
     /// <summary>
     /// Test for <see cref="JsonSerializer.DeserializeAsync{TValue}(Stream,JsonSerializerOptions?,System.Threading.CancellationToken)"/> method.
     /// </summary>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    [Fact]
+    [TestMethod]
     public async Task DeserializeAsync_ShouldHandleNullValuesCorrectly()
     {
         // Arrange
@@ -68,9 +69,9 @@ public class JsonSerializerTests
         var obj = await JsonSerializer.DeserializeAsync<TestObject>(json, _options);
 
         // Assert
-        Assert.NotNull(obj);
-        Assert.Equal(1, obj.Id);
-        Assert.Null(obj.Name);
+        Assert.IsNotNull(obj);
+        Assert.AreEqual(1, obj.Id);
+        Assert.IsNull(obj.Name);
     }
 
     #endregion

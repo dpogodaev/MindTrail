@@ -16,18 +16,18 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        <PackageReference Include="StyleCop.Analyzers">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="7.1.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MindTrail.DomainShared\MindTrail.DomainShared.csproj" />
-        <ProjectReference Include="..\MindTrail.ApplicationContracts\MindTrail.ApplicationContracts.csproj" />
-        <ProjectReference Include="..\MindTrail.Common\MindTrail.Common.csproj" />
-        <ProjectReference Include="..\MindTrail.WebAuth\MindTrail.WebAuth.csproj" />
+        <ProjectReference Include="..\MindTrail.DomainShared\MindTrail.DomainShared.csproj"/>
+        <ProjectReference Include="..\MindTrail.ApplicationContracts\MindTrail.ApplicationContracts.csproj"/>
+        <ProjectReference Include="..\MindTrail.Common\MindTrail.Common.csproj"/>
+        <ProjectReference Include="..\MindTrail.WebAuth\MindTrail.WebAuth.csproj"/>
     </ItemGroup>
 
 </Project>

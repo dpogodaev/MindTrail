@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Threading;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MindTrail.Common.Utilities;
-using Xunit;
 
 namespace MindTrail.Common.Tests.UtilityTests;
 
 /// <summary>
 /// Tests for <see cref="ElapsedTimeMeter"/> class.
 /// </summary>
+[TestClass]
 public class ElapsedTimeMeterTests
 {
     #region Constructor
@@ -15,27 +16,27 @@ public class ElapsedTimeMeterTests
     /// <summary>
     /// Test for the constructor of class <see cref="ElapsedTimeMeter"/>.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void Constructor_AutoStartupIsEnabled_TimerIsActive()
     {
         // Act
         var timer = new ElapsedTimeMeter(true);
 
         // Assert
-        Assert.True(timer.IsActive);
+        Assert.IsTrue(timer.IsActive);
     }
 
     /// <summary>
     /// Test for the constructor of class <see cref="ElapsedTimeMeter"/>.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void Constructor_AutoStartupIsDisabled_TimerIsNotActive()
     {
         // Act
         var timer = new ElapsedTimeMeter();
 
         // Assert
-        Assert.False(timer.IsActive);
+        Assert.IsFalse(timer.IsActive);
     }
 
     #endregion
@@ -45,7 +46,7 @@ public class ElapsedTimeMeterTests
     /// <summary>
     /// Test for <see cref="ElapsedTimeMeter.Start"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void Start_TimerIsNotActive_StartsTimer()
     {
         // Arrange
@@ -56,15 +57,15 @@ public class ElapsedTimeMeterTests
         DoSomethingInMs(1);
 
         // Assert
-        Assert.True(timer.IsActive);
-        Assert.NotEqual(0, timer.ElapsedTimeInMs);
-        Assert.NotEqual(0, timer.TotalElapsedTimeInMs);
+        Assert.IsTrue(timer.IsActive);
+        Assert.AreNotEqual(0, timer.ElapsedTimeInMs);
+        Assert.AreNotEqual(0, timer.TotalElapsedTimeInMs);
     }
 
     /// <summary>
     /// Test for <see cref="ElapsedTimeMeter.Start"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void Start_TimerIsActive_ThrowsException()
     {
         // Arrange
@@ -75,8 +76,8 @@ public class ElapsedTimeMeterTests
 
         // Assert
         var exception = Assert.Throws<InvalidOperationException>(StartTimer);
-        Assert.Equal("The time meter has already been started", exception.Message);
-        Assert.True(timer.IsActive);
+        Assert.AreEqual("The time meter has already been started", exception.Message);
+        Assert.IsTrue(timer.IsActive);
     }
 
     #endregion
@@ -86,7 +87,7 @@ public class ElapsedTimeMeterTests
     /// <summary>
     /// Test for <see cref="ElapsedTimeMeter.Stop"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void Stop_TimerIsActive_StopsTimer()
     {
         // Arrange
@@ -101,17 +102,17 @@ public class ElapsedTimeMeterTests
         timer.Stop();
 
         // Assert
-        Assert.False(timer.IsActive);
-        Assert.Equal(0, timer.ElapsedTimeInMs);
-        Assert.Equal(0, timer.TotalElapsedTimeInMs);
-        Assert.NotEqual(0, elapsedTimeInMs);
-        Assert.NotEqual(0, totalElapsedTimeInMs);
+        Assert.IsFalse(timer.IsActive);
+        Assert.AreEqual(0, timer.ElapsedTimeInMs);
+        Assert.AreEqual(0, timer.TotalElapsedTimeInMs);
+        Assert.AreNotEqual(0, elapsedTimeInMs);
+        Assert.AreNotEqual(0, totalElapsedTimeInMs);
     }
 
     /// <summary>
     /// Test for <see cref="ElapsedTimeMeter.Stop"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void Stop_TimerIsNotActive_ThrowsException()
     {
         // Arrange
@@ -122,8 +123,8 @@ public class ElapsedTimeMeterTests
 
         // Assert
         var exception = Assert.Throws<InvalidOperationException>(StopTimer);
-        Assert.Equal("The time meter was not started", exception.Message);
-        Assert.False(timer.IsActive);
+        Assert.AreEqual("The time meter was not started", exception.Message);
+        Assert.IsFalse(timer.IsActive);
     }
 
     #endregion
@@ -133,7 +134,7 @@ public class ElapsedTimeMeterTests
     /// <summary>
     /// Test for <see cref="ElapsedTimeMeter.Restart"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void Restart_TimerIsActive_RestartsTimer()
     {
         // Arrange
@@ -159,21 +160,21 @@ public class ElapsedTimeMeterTests
         timer.Stop();
 
         // Assert
-        Assert.Equal(1, elapsedTimeInSecondsBeforeReset);
-        Assert.Equal(1, totalElapsedTimeInSecondsBeforeReset);
+        Assert.AreEqual(1, elapsedTimeInSecondsBeforeReset);
+        Assert.AreEqual(1, totalElapsedTimeInSecondsBeforeReset);
 
-        Assert.True(statusAfterReset);
-        Assert.Equal(0, elapsedTimeInSecondsAfterReset);
-        Assert.Equal(1, totalElapsedTimeInSecondsAfterReset);
+        Assert.IsTrue(statusAfterReset);
+        Assert.AreEqual(0, elapsedTimeInSecondsAfterReset);
+        Assert.AreEqual(1, totalElapsedTimeInSecondsAfterReset);
 
-        Assert.Equal(1, elapsedTimeInSecondsBeforeStop);
-        Assert.Equal(2, totalElapsedTimeInSecondsBeforeStop);
+        Assert.AreEqual(1, elapsedTimeInSecondsBeforeStop);
+        Assert.AreEqual(2, totalElapsedTimeInSecondsBeforeStop);
     }
 
     /// <summary>
     /// Test for <see cref="ElapsedTimeMeter.Restart"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void Restart_TimerIsNotActive_ThrowsException()
     {
         // Arrange
@@ -184,8 +185,8 @@ public class ElapsedTimeMeterTests
 
         // Assert
         var exception = Assert.Throws<InvalidOperationException>(PauseTimer);
-        Assert.Equal("The time meter is not active", exception.Message);
-        Assert.False(timer.IsActive);
+        Assert.AreEqual("The time meter is not active", exception.Message);
+        Assert.IsFalse(timer.IsActive);
     }
 
     #endregion

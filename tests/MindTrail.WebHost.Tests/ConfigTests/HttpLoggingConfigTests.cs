@@ -2,15 +2,16 @@
 using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MindTrail.WebHost.Configs.Common;
 using MindTrail.WebHost.Tests.ConfigTests.Fakes;
-using Xunit;
 
 namespace MindTrail.WebHost.Tests.ConfigTests;
 
 /// <summary>
 /// Tests for <see cref="HttpLoggingConfig"/> class.
 /// </summary>
+[TestClass]
 public class HttpLoggingConfigTests
 {
     #region ConfigureServices
@@ -18,7 +19,7 @@ public class HttpLoggingConfigTests
     /// <summary>
     /// Test for <see cref="HttpLoggingConfig.AddHttpLoggingConfig"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void ConfigureServices_HttpLoggingSectionIsNotSpecified_LogsWarningMsg()
     {
         // Arrange
@@ -35,8 +36,8 @@ public class HttpLoggingConfigTests
         builder.Services.AddHttpLoggingConfig(configuration, mockStartupLogger);
 
         // Assert
-        Assert.NotNull(builder);
-        Assert.NotNull(mockStartupLogger.WarnMsgList.Single(x =>
+        Assert.IsNotNull(builder);
+        Assert.IsNotNull(mockStartupLogger.WarnMsgList.Single(x =>
             x == "The configuration section 'LoggingFeatures:HttpLogging' is not specified"));
     }
 

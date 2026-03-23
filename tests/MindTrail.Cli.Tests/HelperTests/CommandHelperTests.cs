@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MindTrail.Cli.Helpers;
-using Xunit;
 
 namespace MindTrail.Cli.Tests.HelperTests;
 
 /// <summary>
 /// Tests for <see cref="CommandHelper"/> class.
 /// </summary>
+[TestClass]
 public class CommandHelperTests
 {
     #region GetCommandName
@@ -14,9 +15,10 @@ public class CommandHelperTests
     /// <summary>
     /// Test for <see cref="CommandHelper.GetCommandName"/> method.
     /// </summary>
-    [Theory]
-    [InlineData("command-name -t -p 10")]
-    [InlineData(" command-name -t  -p   10")]
+    /// <param name="commandLine">Command line content.</param>
+    [TestMethod]
+    [DataRow("command-name -t -p 10")]
+    [DataRow(" command-name -t  -p   10")]
     public void GetCommandName_CommandLineHasName_ReturnsParsedName(string commandLine)
     {
         // Arrange
@@ -26,24 +28,25 @@ public class CommandHelperTests
         var name = CommandHelper.GetCommandName(commandLine);
 
         // Assert
-        Assert.Equal(expectedName, name);
+        Assert.AreEqual(expectedName, name);
     }
 
     /// <summary>
     /// Test for <see cref="CommandHelper.GetCommandName"/> method.
     /// </summary>
-    [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData("-t")]
-    [InlineData(" -t")]
+    /// <param name="commandLine">Command line content.</param>
+    [TestMethod]
+    [DataRow("")]
+    [DataRow(" ")]
+    [DataRow("-t")]
+    [DataRow(" -t")]
     public void GetCommandName_CommandLineHasNotName_ReturnsNull(string commandLine)
     {
         // Act
         var name = CommandHelper.GetCommandName(commandLine);
 
         // Assert
-        Assert.Null(name);
+        Assert.IsNull(name);
     }
 
     #endregion
@@ -53,9 +56,10 @@ public class CommandHelperTests
     /// <summary>
     /// Test for <see cref="CommandHelper.GetCommandOptions"/> method.
     /// </summary>
-    [Theory]
-    [InlineData("-t -p 10 --opt1 100 --opt2 'a b c' --opt3 \"d e f\"")]
-    [InlineData(" -t  -p  10  --opt1  100 --opt2  'a b c'  --opt3  \"d e f\" ")]
+    /// <param name="commandLine">Command line content.</param>
+    [TestMethod]
+    [DataRow("-t -p 10 --opt1 100 --opt2 'A b c' --opt3 \"d e f\"")]
+    [DataRow(" -t  -p  10  --opt1  100 --opt2  'A b c'  --opt3  \"d e f\" ")]
     public void GetCommandOptions_CommandLineHasOptionsWithoutName_ReturnsParsedOptions(string commandLine)
     {
         // Arrange
@@ -64,7 +68,7 @@ public class CommandHelperTests
             { "t", string.Empty },
             { "p", "10" },
             { "opt1", "100" },
-            { "opt2", "a b c" },
+            { "opt2", "A b c" },
             { "opt3", "d e f" },
         };
 
@@ -72,7 +76,11 @@ public class CommandHelperTests
         var options = CommandHelper.GetCommandOptions(commandLine, false);
 
         // Assert
-        Assert.Equal(expectedOptions, options);
+        Assert.AreEqual(expectedOptions["t"], options["t"]);
+        Assert.AreEqual(expectedOptions["p"], options["p"]);
+        Assert.AreEqual(expectedOptions["opt1"], options["opt1"]);
+        Assert.AreEqual(expectedOptions["opt2"], options["opt2"]);
+        Assert.AreEqual(expectedOptions["opt3"], options["opt3"]);
     }
 
     #endregion

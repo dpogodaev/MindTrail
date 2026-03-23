@@ -16,25 +16,25 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0"/>
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1"/>
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1"/>
-        <PackageReference Include="NLog" Version="5.3.2"/>
-        <PackageReference Include="NLog.Appsettings.Standard" Version="2.1.0"/>
-        <PackageReference Include="NLog.Extensions.Hosting" Version="5.3.11"/>
-        <PackageReference Include="NLog.Schema" Version="5.3.2"/>
-        <PackageReference Include="NLog.Targets.Loki" Version="2.2.0"/>
-        <PackageReference Include="Scrutor.DecorateOnly" Version="6.1.0"/>
-        <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
+        <PackageReference Include="Microsoft.Extensions.Configuration"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection"/>
+        <PackageReference Include="Microsoft.Extensions.Hosting"/>
+        <PackageReference Include="NLog"/>
+        <PackageReference Include="NLog.Appsettings.Standard"/>
+        <PackageReference Include="NLog.Extensions.Hosting"/>
+        <PackageReference Include="NLog.Schema"/>
+        <PackageReference Include="NLog.Targets.Loki"/>
+        <PackageReference Include="Scrutor.DecorateOnly"/>
+        <PackageReference Include="StyleCop.Analyzers">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MindTrail.Application\MindTrail.Application.csproj" />
+        <ProjectReference Include="..\MindTrail.Application\MindTrail.Application.csproj"/>
         <ProjectReference Include="..\MindTrail.Common\MindTrail.Common.csproj"/>
-        <ProjectReference Include="..\MindTrail.Domain\MindTrail.Domain.csproj" />
+        <ProjectReference Include="..\MindTrail.Domain\MindTrail.Domain.csproj"/>
         <ProjectReference Include="..\MindTrail.EfCoreMssql\MindTrail.EfCoreMssql.csproj"/>
         <ProjectReference Include="..\MindTrail.EfCorePostgreSql\MindTrail.EfCorePostgreSql.csproj"/>
         <ProjectReference Include="..\MindTrail.EfCore\MindTrail.EfCore.csproj"/>

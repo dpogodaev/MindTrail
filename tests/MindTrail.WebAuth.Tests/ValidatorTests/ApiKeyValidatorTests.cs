@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MindTrail.WebAuth.Constants;
 using MindTrail.WebAuth.Settings;
 using MindTrail.WebAuth.Validators;
-using Xunit;
 
 namespace MindTrail.WebAuth.Tests.ValidatorTests;
 
 /// <summary>
 /// Tests for <see cref="ApiKeyValidator"/> class.
 /// </summary>
+[TestClass]
 public class ApiKeyValidatorTests
 {
     #region IsValid
@@ -17,7 +18,7 @@ public class ApiKeyValidatorTests
     /// <summary>
     /// Test for <see cref="ApiKeyValidator.IsValid"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void IsValid_SingleApiKeyIsValid_ReturnsTrue()
     {
         // Arrange
@@ -28,13 +29,13 @@ public class ApiKeyValidatorTests
         var result = service.IsValid(apiKey);
 
         // Assert
-        Assert.True(result);
+        Assert.IsTrue(result);
     }
 
     /// <summary>
     /// Test for <see cref="ApiKeyValidator.IsValid"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void IsValid_SingleApiKeyIsNotValid_ReturnsFalse()
     {
         // Arrange
@@ -45,15 +46,15 @@ public class ApiKeyValidatorTests
         var result = service.IsValid("not-valid-apikey");
 
         // Assert
-        Assert.False(result);
+        Assert.IsFalse(result);
     }
 
     /// <summary>
     /// Test for <see cref="ApiKeyValidator.IsValid"/> method.
     /// </summary>
-    [Theory]
-    [InlineData(0)]
-    [InlineData(1)]
+    [TestMethod]
+    [DataRow(0)]
+    [DataRow(1)]
     public void IsValid_OneOfAdditionalKeysIsValid_ReturnsTrue(int apiKeyIndex)
     {
         // Arrange
@@ -71,13 +72,13 @@ public class ApiKeyValidatorTests
         var result = service.IsValid(additionalApiKeys.ElementAt(apiKeyIndex).Value);
 
         // Assert
-        Assert.True(result);
+        Assert.IsTrue(result);
     }
 
     /// <summary>
     /// Test for <see cref="ApiKeyValidator.IsValid"/> method.
     /// </summary>
-    [Fact]
+    [TestMethod]
     public void IsValid_ApiKeyAndAllAdditionalKeysAreNotValid_ReturnsFalse()
     {
         // Arrange
@@ -95,12 +96,10 @@ public class ApiKeyValidatorTests
         var result = service.IsValid("not-valid-apikey");
 
         // Assert
-        Assert.False(result);
+        Assert.IsFalse(result);
     }
 
     #endregion
-
-    #region Private methods
 
     private static ApiKeyValidator BuildService(string apiKey, Dictionary<string, string> additionalApiKeys = null)
     {
@@ -111,6 +110,4 @@ public class ApiKeyValidatorTests
             AdditionalApiKeys = additionalApiKeys,
         });
     }
-
-    #endregion
 }
