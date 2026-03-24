@@ -46,17 +46,17 @@ Example response:
 {
   "errors": {
     "monthCount": [
-      "Must be greater than zero and less than 255"
+      "The maximum length is 64 characters"
     ]
   },
   "type": "https://tools.ietf.org/doc/html/rfc9110#section-15.5.1",
-  "title": "Month count is outside the valid range",
+  "title": "The name is too long",
   "status": 400,
-  "detail": "The month count must be greater than zero and less than 255 (the current value is 0).",
-  "instance": "&timezone=utc&from=1773456656509&to=1773457256509&var-app=AccountingService&var-traceId=26c5353f046a4e35025d3bdf0f04fd3d",
+  "detail": "The maximum length of the person's name is 64 characters (the current value is 80).",
+  "instance": "&timezone=utc&from=1773456656509&to=1773457256509&var-app=MindTrailService&var-traceId=26c5353f046a4e35025d3bdf0f04fd3d",
   "traceId": "26c5353f046a4e35025d3bdf0f04fd3d",
-  "errorCode": "accounting.month_count_outside_range",
-  "maxValue": 255
+  "errorCode": "mind_trail.person_name_too_long",
+  "maxLength": 64
 }
 ```
 
@@ -166,19 +166,19 @@ Client applications may use `errorCode`, for example:
 
 The format of the `errorCode` value is:
 
+```
 <service>.<error_identifier>
+```
 
 where:
 
-- <service> is the service name
-- <error_identifier> is a short description of the error in snake_case
+- `<service>` is the service name
+- `<error_identifier>` is a short description of the error in snake_case
 
 Examples of `errorCode` values:
 
-- accounting.subscription_plan_name_too_long
-- accounting.subscription_plan_sku_too_long
-- accounting.subscription_plan_duplicate
-- accounting.month_count_outside_range
+- mind_trail.person_duplicate
+- mind_trail.person_name_too_long
 
 ### Error Parameters
 
@@ -197,10 +197,10 @@ For example, if the error is related to exceeding a limit, the response may look
 ```json
 {
   "type": "https://tools.ietf.org/doc/html/rfc9110#section-15.5.1",
-  "title": "Month count is outside the valid range",
+  "title": "The name is too long",
   "status": 400,
-  "detail": "The month count must be greater than zero and less than 255 (the current value is 0).",
-  "maxValue": 255
+  "detail": "The maximum length of the person's name is 64 characters (the current value is 80).",
+  "maxLength": 64
 }
 ```
 
@@ -245,13 +245,13 @@ Example validation error response:
 {
   "errors": {
     "monthCount": [
-      "Must be greater than zero and less than 255"
+      "The maximum length is 64 characters"
     ]
   },
   "type": "https://tools.ietf.org/doc/html/rfc9110#section-15.5.1",
-  "title": "Month count is outside the valid range",
+  "title": "The name is too long",
   "status": 400,
-  "detail": "The month count must be greater than zero and less than 255 (the current value is 0)."
+  "detail": "The maximum length of the person's name is 64 characters (the current value is 80)."
 }
 ```
 
