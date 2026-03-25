@@ -15,6 +15,11 @@ public class PersonAppServiceLogging(
     IPersonAppService personService)
     : IPersonAppService
 {
+    public async Task<PagedDto<PersonDto>> GetPersonsAsync(PersonFilterModel filter)
+    {
+        return await personService.GetPersonsAsync(filter);
+    }
+
     public async Task<PersonDto> CreatePersonAsync(PersonCreationModel model)
     {
         try

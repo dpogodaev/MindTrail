@@ -25,10 +25,10 @@ public class PersonRepositoryAdapter(
             BirthYear = birthYear,
         };
 
-        var person = await repository.GetPersons(filter, includeCountry: false)
-            .SingleOrDefaultAsync();
+        var filteredPersons = await repository.GetPersonsAsync(filter, includeCountry: false);
+        var foundPerson = await filteredPersons.Items.SingleOrDefaultAsync();
 
-        return person != null ? ToDomainEntity(person) : null;
+        return foundPerson != null ? ToDomainEntity(foundPerson) : null;
     }
 
     public async Task<DomainEntities.Person> GetRequiredBPersonByIdAsync(Guid id)

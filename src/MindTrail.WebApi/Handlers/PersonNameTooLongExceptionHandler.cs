@@ -16,6 +16,7 @@ public sealed class PersonNameTooLongExceptionHandler(
         return ProblemDetailsBuilderFactory.Create(e)
             .AddTitle("The name is too long")
             .AddParameter("maxLength", e.MaxLength)
+            .AddParameter("specifiedNameLength", e.SpecifiedNameLength)
             .AddValidationErrorDescription(
                 invalidPropName,
                 $"The maximum length is {e.MaxLength} characters");

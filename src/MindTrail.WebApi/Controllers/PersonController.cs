@@ -25,6 +25,20 @@ public class PersonController(
     : ControllerBase
 {
     /// <summary>
+    /// Returns a paged list of <see cref="PersonDto"/>.
+    /// </summary>
+    /// <param name="filter">Filter model for querying persons.</param>
+    /// <returns>Paged <see cref="PersonDto"/> collection.</returns>
+    [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedDto<PersonDto>))]
+    public async Task<IActionResult> GetPersons([FromQuery] PersonFilterModel filter)
+    {
+        var persons = await personService.GetPersonsAsync(filter.ToAppModel());
+
+        return Ok(persons);
+    }
+
+    /// <summary>
     /// Creates a new person.
     /// </summary>
     /// <param name="model">The model to create a person.</param>

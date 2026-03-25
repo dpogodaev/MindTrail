@@ -8,7 +8,7 @@ namespace MindTrail.DomainShared.Exceptions;
 public sealed class BirthYearOutOfRangeException(uint birthYear, uint minBirthYear)
     : DomainException(
         $"The birth year must be greater than {minBirthYear} " +
-        $"and earlier than the current year." +
+        $"and earlier than the current year. " +
         $"The specified value is {birthYear}).")
 {
     /// <summary>

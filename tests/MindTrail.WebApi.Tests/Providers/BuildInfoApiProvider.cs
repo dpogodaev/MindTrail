@@ -1,4 +1,6 @@
-﻿using MindTrail.WebApi.Controllers;
+﻿using System.Net.Http;
+using System.Threading.Tasks;
+using MindTrail.WebApi.Controllers;
 
 namespace MindTrail.WebApi.Tests.Providers;
 

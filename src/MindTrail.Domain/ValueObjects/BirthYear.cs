@@ -8,7 +8,7 @@ namespace MindTrail.Domain.ValueObjects;
 /// </summary>
 public sealed record BirthYear
 {
-    private const int MinBirthYearInYears = 1600;
+    public const int MinBirthYear = 1600;
 
     public BirthYear(int birthYear, DateTime currentTime)
         : this(checked((uint)birthYear), currentTime)
@@ -17,9 +17,9 @@ public sealed record BirthYear
 
     public BirthYear(uint birthYear, DateTime currentTime)
     {
-        if (birthYear < MinBirthYearInYears || birthYear > currentTime.Year)
+        if (birthYear < MinBirthYear || birthYear > currentTime.Year)
         {
-            throw new BirthYearOutOfRangeException(birthYear, MinBirthYearInYears);
+            throw new BirthYearOutOfRangeException(birthYear, MinBirthYear);
         }
 
         Value = birthYear;

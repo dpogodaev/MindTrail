@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using MindTrail.EfCore.Entities;
 using MindTrail.EfCore.Filters;
@@ -11,7 +10,7 @@ namespace MindTrail.EfCore.Interfaces.Repositories;
 /// </summary>
 public interface IPersonRepository
 {
-    IQueryable<Person> GetPersons(PersonFilter filter, bool includeCountry);
+    Task<PagedEntity<Person>> GetPersonsAsync(PersonFilter filter, bool includeCountry);
 
     Task<Person?> GetPersonByIdAsync(Guid id);
 

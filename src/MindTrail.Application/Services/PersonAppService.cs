@@ -16,9 +16,16 @@ public class PersonAppService(
     ICurrentTimeProvider currentTimeProvider,
     IUnitOfWork unitOfWork,
     IPersonRepository personRepository,
+    IPersonReadRepository personReadRepository,
     IPersonService personService)
     : IPersonAppService
 {
+    /// <inheritdoc cref="IPersonAppService.GetPersonsAsync"/>
+    public async Task<PagedDto<PersonDto>> GetPersonsAsync(PersonFilterModel filter)
+    {
+        return await personReadRepository.GetPersonsAsync(filter);
+    }
+
     /// <inheritdoc cref="IPersonAppService.CreatePersonAsync"/>
     public async Task<PersonDto> CreatePersonAsync(PersonCreationModel model)
     {

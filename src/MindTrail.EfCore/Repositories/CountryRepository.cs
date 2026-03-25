@@ -20,7 +20,7 @@ public class CountryRepository(AppDbContext dbContext)
             .AnyAsync(x => x.Id == id);
     }
 
-    public IQueryable<Country> GetCountriesAsReadOnly(CountryFilter filter)
+    public async Task<PagedEntity<Country>> GetCountriesAsync(CountryFilter filter)
     {
         ArgumentNullException.ThrowIfNull(filter);
 
@@ -28,9 +28,7 @@ public class CountryRepository(AppDbContext dbContext)
 
         query = ApplySearch(query, filter.Search);
         query = ApplySorting(query, filter.Sorting);
-        query = ApplyPaging(query, filter.PageNumber, filter.PageSize);
-
-        return query.AsNoTracking();
+        return await ApplyPaging(query, filter.PageNumber, filter.PageSize);
     }
 
     private static IQueryable<Country> ApplySearch(

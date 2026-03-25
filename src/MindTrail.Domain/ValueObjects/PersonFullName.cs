@@ -5,7 +5,7 @@ namespace MindTrail.Domain.ValueObjects;
 
 public class PersonFullName
 {
-    private const int MaxNameLength = 64;
+    public const int MaxNameLength = 64;
 
     public PersonFullName(string value)
     {

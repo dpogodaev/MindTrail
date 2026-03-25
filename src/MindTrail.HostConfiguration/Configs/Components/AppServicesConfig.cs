@@ -27,7 +27,8 @@ public static class AppServicesConfig
     {
         services
             .AddScoped<IUnitOfWork, UnitOfWorkAdapter>()
-            .AddScoped<ICountryReadRepository, CountryReadRepositoryAdapter>();
+            .AddScoped<ICountryReadRepository, CountryReadRepositoryAdapter>()
+            .AddScoped<IPersonReadRepository, PersonReadRepositoryAdapter>();
     }
 
     private static void AddAppServices(this IServiceCollection services)

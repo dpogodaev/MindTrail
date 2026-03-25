@@ -1,5 +1,8 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Linq;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MindTrail.WebApi.Controllers;
 using MindTrail.WebApi.Dtos;
 using MindTrail.WebApi.Tests.Extensions;

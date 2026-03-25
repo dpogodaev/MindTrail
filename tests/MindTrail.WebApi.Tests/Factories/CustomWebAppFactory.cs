@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -20,8 +22,6 @@ public class CustomWebAppFactory<TProgram>(
 
     private SqliteConnection? _connection;
     private IServiceScopeFactory? _scopeFactory;
-
-    public int DefaultTenantId => 1;
 
     public void ResetDatabase()
     {

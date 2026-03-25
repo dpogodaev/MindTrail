@@ -16,8 +16,16 @@ public class PersonReadRepositoryAdapter(
 {
     public async Task<AppDtos.PagedDto<AppDtos.PersonDto>> GetPersonsAsync(AppModels.PersonFilterModel filter)
     {
-        return await ToAppDto(
-            repository.GetPersons(ToEfFilter(filter), includeCountry: true));
+        var pagedEntity = await repository.GetPersonsAsync(ToEfFilter(filter), includeCountry: true);
+
+        return new AppDtos.PagedDto<AppDtos.PersonDto>
+        {
+            Total = pagedEntity.Total,
+            Items = await pagedEntity.Items
+                .Select(x => ToAppDto(x))
+                .AsNoTracking()
+                .ToListAsync(),
+        };
     }
 
     private static AppDtos.PersonDto ToAppDto(EfEntities.Person efEntity)
@@ -29,18 +37,6 @@ public class PersonReadRepositoryAdapter(
             BirthYear = (uint?)efEntity.BirthYear,
             BirthCountryId = efEntity.BirthCountryId,
             BirthCountryName = efEntity.BirthCountry?.Name,
-        };
-    }
-
-    private static async Task<AppDtos.PagedDto<AppDtos.PersonDto>> ToAppDto(IQueryable<EfEntities.Person> query)
-    {
-        var total = await query.CountAsync();
-        var items = query.Select(x => ToAppDto(x));
-
-        return new AppDtos.PagedDto<AppDtos.PersonDto>
-        {
-            Total = total,
-            Items = await items.ToListAsync(),
         };
     }
 

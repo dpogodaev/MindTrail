@@ -10,6 +10,8 @@ namespace MindTrail.ApplicationContracts.Interfaces.Services;
 /// </summary>
 public interface IPersonAppService
 {
+    Task<PagedDto<PersonDto>> GetPersonsAsync(PersonFilterModel filter);
+
     /// <summary>
     /// Creates a new person.
     /// </summary>

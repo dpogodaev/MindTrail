@@ -1,6 +1,10 @@
-﻿using System.Net;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 using System.Web;
 using MindTrail.WebAuth.Constants;
 
@@ -8,8 +12,6 @@ namespace MindTrail.WebApi.Tests.Extensions;
 
 public static class HttpMessageExtensions
 {
-    #region Request
-
     public static HttpRequestMessage AddApiKey(this HttpRequestMessage request, string apiKey)
     {
         request.Headers.Add(ApiKeyConstants.ApiKeyHeaderName, apiKey);
@@ -50,35 +52,6 @@ public static class HttpMessageExtensions
         return request;
     }
 
-    #endregion
-
-    #region Response
-
-    public static bool IsOk(this HttpResponseMessage response)
-    {
-        return response.StatusCode == HttpStatusCode.OK;
-    }
-
-    public static bool IsUnauthorized(this HttpResponseMessage response)
-    {
-        return response.StatusCode == HttpStatusCode.Unauthorized;
-    }
-
-    public static bool IsForbidden(this HttpResponseMessage response)
-    {
-        return response.StatusCode == HttpStatusCode.Forbidden;
-    }
-
-    public static bool IsConflict(this HttpResponseMessage response)
-    {
-        return response.StatusCode == HttpStatusCode.Conflict;
-    }
-
-    public static bool IsBadRequest(this HttpResponseMessage response)
-    {
-        return response.StatusCode == HttpStatusCode.BadRequest;
-    }
-
     public static async Task<T?> GetContentAsync<T>(this HttpResponseMessage response)
         where T : class
     {
@@ -90,8 +63,6 @@ public static class HttpMessageExtensions
 
         return JsonSerializer.Deserialize<T>(content, options);
     }
-
-    #endregion
 
     private static UriBuilder GetUriBuilder(HttpRequestMessage request, string baseUrl)
     {

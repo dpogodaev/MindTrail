@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MindTrail.EfCore.Entities;
 using MindTrail.EfCore.Filters;
 
@@ -9,5 +8,5 @@ public interface ICountryRepository
 {
     Task<bool> ExistsByIdAsync(int countryId);
 
-    IQueryable<Country> GetCountriesAsReadOnly(CountryFilter filter);
+    Task<PagedEntity<Country>> GetCountriesAsync(CountryFilter filter);
 }

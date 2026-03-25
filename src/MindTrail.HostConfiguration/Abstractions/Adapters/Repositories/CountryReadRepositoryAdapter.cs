@@ -16,8 +16,16 @@ public class CountryReadRepositoryAdapter(
 {
     public async Task<AppDtos.PagedDto<AppDtos.CountryDto>> GetCountriesAsync(AppModels.CountryFilterModel filter)
     {
-        return await ToAppDto(
-            repository.GetCountriesAsReadOnly(ToEfFilter(filter)));
+        var pagedEntity = await repository.GetCountriesAsync(ToEfFilter(filter));
+
+        return new AppDtos.PagedDto<AppDtos.CountryDto>
+        {
+            Total = pagedEntity.Total,
+            Items = await pagedEntity.Items
+                .Select(x => ToAppDto(x))
+                .AsNoTracking()
+                .ToListAsync(),
+        };
     }
 
     private static AppDtos.CountryDto ToAppDto(EfEntities.Country efEntity)
@@ -27,18 +35,6 @@ public class CountryReadRepositoryAdapter(
             Id = efEntity.Id,
             Name = efEntity.Name,
             Code = efEntity.Code,
-        };
-    }
-
-    private static async Task<AppDtos.PagedDto<AppDtos.CountryDto>> ToAppDto(IQueryable<EfEntities.Country> query)
-    {
-        var total = await query.CountAsync();
-        var items = query.Select(x => ToAppDto(x));
-
-        return new AppDtos.PagedDto<AppDtos.CountryDto>
-        {
-            Total = total,
-            Items = await items.ToListAsync(),
         };
     }
 

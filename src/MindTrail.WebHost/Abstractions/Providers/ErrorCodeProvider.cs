@@ -16,6 +16,7 @@ public class ErrorCodeProvider
     {
         { typeof(PersonNameTooLongException), $"{ServiceName}.person_name_too_long" },
         { typeof(PersonDuplicateException), $"{ServiceName}.person_duplicate" },
+        { typeof(BirthYearOutOfRangeException), $"{ServiceName}.birth_year_outside_range" },
     };
 
     /// <summary>

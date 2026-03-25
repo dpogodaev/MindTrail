@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MindTrail.EfCore.Context;
+using MindTrail.EfCore.Entities;
 using MindTrail.EfCore.Interfaces.Entities;
 
 namespace MindTrail.EfCore.Repositories.Base;
@@ -56,7 +57,7 @@ public abstract class BaseRepository(AppDbContext dbContext)
         return (propName, isDescending);
     }
 
-    protected static IQueryable<TEntity> ApplyPaging<TEntity>(
+    protected static async Task<PagedEntity<TEntity>> ApplyPaging<TEntity>(
         IQueryable<TEntity> query,
         uint pageNumber = 1,
         uint pageSize = 10,
@@ -76,7 +77,11 @@ public abstract class BaseRepository(AppDbContext dbContext)
         var skip = pageNumber == 1 ? 0 : pageNumber * pageSize;
         var take = Math.Min(pageSize, maxPageSize);
 
-        return query.Skip((int)skip).Take((int)take);
+        return new PagedEntity<TEntity>
+        {
+            Total = await query.CountAsync(),
+            Items = query.Skip((int)skip).Take((int)take),
+        };
     }
 
     /// <summary>

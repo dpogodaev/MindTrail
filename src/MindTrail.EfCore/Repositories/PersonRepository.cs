@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +25,7 @@ public class PersonRepository(AppDbContext dbContext)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public IQueryable<Person> GetPersons(PersonFilter filter, bool includeCountry)
+    public async Task<PagedEntity<Person>> GetPersonsAsync(PersonFilter filter, bool includeCountry)
     {
         ArgumentNullException.ThrowIfNull(filter);
 
@@ -36,11 +37,9 @@ public class PersonRepository(AppDbContext dbContext)
         }
 
         query = ApplyFiltering(query, filter);
-        query = ApplySearch(query, filter.Search);
+        query = ApplySearch(query, filter.Search, includeCountry);
         query = ApplySorting(query, filter.Sorting);
-        query = ApplyPaging(query, filter.PageNumber, filter.PageSize);
-
-        return query;
+        return await ApplyPaging(query, filter.PageNumber, filter.PageSize);
     }
 
     public async Task<Person> CreatePersonAsync(Person person)
@@ -108,9 +107,14 @@ public class PersonRepository(AppDbContext dbContext)
         return query;
     }
 
+    [SuppressMessage(
+        category: "Style",
+        checkId: "CA1862: Prefer 'StringComparison' method overloads",
+        Justification = "EF Core does not support StringComparison in SQL")]
     private static IQueryable<Person> ApplySearch(
         IQueryable<Person> query,
-        string? search)
+        string? search,
+        bool includeCountry)
     {
         if (string.IsNullOrWhiteSpace(search))
         {
@@ -118,7 +122,9 @@ public class PersonRepository(AppDbContext dbContext)
         }
 
         return query.Where(x =>
-            x.FullName.Contains(search));
+            x.FullName.ToLower().Contains(search.ToLower()) ||
+            (x.BirthYear != null && x.BirthYear.ToString()!.Contains(search)) ||
+            (includeCountry && x.BirthCountry != null && x.BirthCountry.Name.ToLower().Contains(search.ToLower())));
     }
 
     private static IQueryable<Person> ApplySorting(
@@ -144,6 +150,6 @@ public class PersonRepository(AppDbContext dbContext)
             }
         }
 
-        return query.OrderBy(x => x.Id);
+        return query.OrderByDescending(x => x.CreationTime);
     }
 }

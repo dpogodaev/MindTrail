@@ -15,7 +15,8 @@ public sealed class PersonDuplicateExceptionHandler(
     {
         return ProblemDetailsBuilderFactory.Create(e)
             .AddTitle("Duplicate person")
-            .AddParameter("fullName", e.FullName)
-            .AddParameter("birthYear", (int?)e.BirthYear);
+            .AddParameter("personId", e.PersonId.ToString())
+            .AddParameter("specifiedFullName", e.SpecifiedFullName)
+            .AddParameter("specifiedBirthYear", e.SpecifiedBirthYear);
     }
 }

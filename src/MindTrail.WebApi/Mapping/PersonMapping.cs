@@ -17,4 +17,17 @@ internal static class PersonMapping
             BirthCountryId = model.BirthCountryId,
         };
     }
+
+    public static AppLayerModels.PersonFilterModel ToAppModel(this PersonFilterModel model)
+    {
+        ArgumentNullException.ThrowIfNull(model, nameof(model));
+
+        return new AppLayerModels.PersonFilterModel
+        {
+            PageNumber = model.PageNumber,
+            PageSize = model.PageSize,
+            Search = model.Search,
+            Sorting = model.Sorting,
+        };
+    }
 }
