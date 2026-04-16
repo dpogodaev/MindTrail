@@ -47,7 +47,7 @@ public class CliService(IServiceScopeFactory scopeFactory)
         throw new NotImplementedException();
     }
 
-    private static string GetUserCommand()
+    private static string? GetUserCommand()
     {
         Console.ForegroundColor = ColorConstants.InputColor;
         Console.Write("> ");

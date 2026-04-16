@@ -8,7 +8,7 @@ namespace MindTrail.DomainShared.Exceptions;
 /// </summary>
 /// <param name="fullName">Full name.</param>
 /// <param name="birthYear">Year of birth.</param>
-public class PersonDuplicateException(Guid personId, string fullName, uint? birthYear)
+public class PersonDuplicateException(Guid personId, string fullName, int? birthYear)
     : DomainException(birthYear == null
         ? $"The person with the name {fullName} already exists, try to set his date of birth."
         : $"The person with the name {fullName} and birth year {birthYear} already exists.")
@@ -26,5 +26,5 @@ public class PersonDuplicateException(Guid personId, string fullName, uint? birt
     /// <summary>
     /// Gets the year of birth.
     /// </summary>
-    public int? SpecifiedBirthYear { get; } = (int?)birthYear;
+    public int? SpecifiedBirthYear { get; } = birthYear;
 }

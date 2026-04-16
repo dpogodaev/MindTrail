@@ -107,7 +107,7 @@ public class HttpErrorResultProvider(
         var simpleExceptionHandler = exceptionHandlers.SingleOrDefault(x => x.CanHandle(simpleDomainException));
 
         return simpleExceptionHandler == null
-            ? throw new InvalidOperationException($"The {nameof(SimpleExceptionHandler)} is not registered")
+            ? throw new InvalidOperationException($"The {nameof(SimpleExceptionHandler)} is not registered.")
             : (simpleExceptionHandler, simpleDomainException);
     }
 

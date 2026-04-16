@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MindTrail.EfCore.Context;
 using MindTrail.EfCore.Entities;
-using MindTrail.EfCore.Filters;
 using MindTrail.EfCore.Interfaces.Repositories;
 using MindTrail.EfCore.Repositories.Base;
 
@@ -18,28 +16,36 @@ namespace MindTrail.EfCore.Repositories;
 public class PersonRepository(AppDbContext dbContext)
     : BaseRepository(dbContext), IPersonRepository
 {
-    public async Task<Person?> GetPersonByIdAsync(Guid id)
+    public async Task<Person?> GetPersonByIdAsync(Guid id, bool includeCountry = false)
     {
-        return await DbContext.Persons
-            .Include(x => x.BirthCountry)
-            .FirstOrDefaultAsync(x => x.Id == id);
-    }
-
-    public async Task<PagedEntity<Person>> GetPersonsAsync(PersonFilter filter, bool includeCountry)
-    {
-        ArgumentNullException.ThrowIfNull(filter);
-
         var query = GetEntities<Person>();
 
         if (includeCountry)
         {
-            query = query.Include(x => x.BirthCountry);
+            query = query.Include(p => p.BirthCountry);
         }
 
-        query = ApplyFiltering(query, filter);
-        query = ApplySearch(query, filter.Search, includeCountry);
-        query = ApplySorting(query, filter.Sorting);
-        return await ApplyPaging(query, filter.PageNumber, filter.PageSize);
+        return await query.FirstOrDefaultAsync(p => p.Id == id);
+    }
+
+    public async Task<Person?> GetPersonByNameAndBirthAsync(
+        string fullName, int? birthYear, bool includeCountry = false)
+    {
+        var query = GetEntities<Person>();
+
+        if (includeCountry)
+        {
+            query = query.Include(p => p.BirthCountry);
+        }
+
+        query = query.Where(x => x.FullName.ToLower() == fullName.ToLower());
+
+        if (birthYear != null)
+        {
+            query = query.Where(x => x.BirthYear == birthYear);
+        }
+
+        return await query.FirstOrDefaultAsync();
     }
 
     public async Task<Person> CreatePersonAsync(Person person)
@@ -49,13 +55,18 @@ public class PersonRepository(AppDbContext dbContext)
         return await CreateEntityAsync(person);
     }
 
-    public async Task<Person?> UpdatePersonAsync(Person person)
+    public async Task<Person?> UpdatePersonAsync(Person person, bool includeCountry = false)
     {
         ArgumentNullException.ThrowIfNull(person);
 
-        var existingPerson = await DbContext.Persons
-            .Include(x => x.BirthCountry)
-            .FirstOrDefaultAsync(x => x.Id == person.Id);
+        var query = GetEntities<Person>();
+
+        if (includeCountry)
+        {
+            query = query.Include(p => p.BirthCountry);
+        }
+
+        var existingPerson = await query.FirstOrDefaultAsync(x => x.Id == person.Id);
 
         if (existingPerson == null)
         {
@@ -68,11 +79,16 @@ public class PersonRepository(AppDbContext dbContext)
         return existingPerson;
     }
 
-    public async Task<Person?> DeletePersonAsync(Guid id)
+    public async Task<Person?> DeletePersonAsync(Guid id, bool includeCountry = false)
     {
-        var personToDelete = await DbContext.Persons
-            .Include(x => x.BirthCountry)
-            .FirstOrDefaultAsync(x => x.Id == id);
+        var query = GetEntities<Person>();
+
+        if (includeCountry)
+        {
+            query = query.Include(p => p.BirthCountry);
+        }
+
+        var personToDelete = await query.FirstOrDefaultAsync(x => x.Id == id);
 
         if (personToDelete == null)
         {
@@ -90,66 +106,5 @@ public class PersonRepository(AppDbContext dbContext)
         target.BirthYear = source.BirthYear;
         target.BirthCountryId = source.BirthCountryId;
         target.BirthCountry = source.BirthCountry;
-    }
-
-    private static IQueryable<Person> ApplyFiltering(IQueryable<Person> query, PersonFilter filter)
-    {
-        if (!string.IsNullOrWhiteSpace(filter.FullName))
-        {
-            query = query.Where(p => p.FullName.Contains(filter.FullName));
-        }
-
-        if (filter.BirthYear.HasValue)
-        {
-            query = query.Where(p => p.BirthYear == filter.BirthYear.Value);
-        }
-
-        return query;
-    }
-
-    [SuppressMessage(
-        category: "Style",
-        checkId: "CA1862: Prefer 'StringComparison' method overloads",
-        Justification = "EF Core does not support StringComparison in SQL")]
-    private static IQueryable<Person> ApplySearch(
-        IQueryable<Person> query,
-        string? search,
-        bool includeCountry)
-    {
-        if (string.IsNullOrWhiteSpace(search))
-        {
-            return query;
-        }
-
-        return query.Where(x =>
-            x.FullName.ToLower().Contains(search.ToLower()) ||
-            (x.BirthYear != null && x.BirthYear.ToString()!.Contains(search)) ||
-            (includeCountry && x.BirthCountry != null && x.BirthCountry.Name.ToLower().Contains(search.ToLower())));
-    }
-
-    private static IQueryable<Person> ApplySorting(
-        IQueryable<Person> query,
-        string? sorting)
-    {
-        var (propName, isDescending) = GetSortingOptions(sorting);
-
-        if (propName != null)
-        {
-            if (propName.Equals(nameof(Person.FullName), StringComparison.InvariantCultureIgnoreCase))
-            {
-                return isDescending
-                    ? query.OrderByDescending(x => x.FullName)
-                    : query.OrderBy(x => x.FullName);
-            }
-
-            if (propName.Equals(nameof(Person.BirthYear), StringComparison.InvariantCultureIgnoreCase))
-            {
-                return isDescending
-                    ? query.OrderByDescending(x => x.BirthYear)
-                    : query.OrderBy(x => x.BirthYear);
-            }
-        }
-
-        return query.OrderByDescending(x => x.CreationTime);
     }
 }

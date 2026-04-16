@@ -47,7 +47,7 @@ public class CustomWebAppFactory<TProgram>(
         {
             OverrideDbContext(services);
             OverrideCurrentTimeProvider(services);
-            InitializeInMemoryDatabase(services);
+            InitializeDatabase(services);
         });
     }
 
@@ -105,7 +105,7 @@ public class CustomWebAppFactory<TProgram>(
         services.AddSingleton(currentTimeProvider);
     }
 
-    private void InitializeInMemoryDatabase(IServiceCollection services)
+    private void InitializeDatabase(IServiceCollection services)
     {
         var sp = services.BuildServiceProvider();
         _scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();

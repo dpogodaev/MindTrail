@@ -44,10 +44,9 @@ public class EfCoreArchTests
             definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
-                    ComponentNamespaces.Application,
-                    ComponentNamespaces.ApplicationContracts),
+                    ComponentNamespaces.Application),
             name: "Restriction of dependency on Application layer",
-            description: "Abstraction above the persistence layer (EF) should not have any dependencies on the application layer");
+            description: "Abstraction above the persistence layer (EF) should not have any dependencies on the application implementation");
 
         policyDefinition.Add(
             definition: types => types
@@ -72,7 +71,7 @@ public class EfCoreArchTests
             definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
-                    ComponentNamespaces.HostConfiguration,
+                    ComponentNamespaces.ApplicationConfigurator,
                     ComponentNamespaces.CliHost,
                     ComponentNamespaces.WebHost),
             name: "Restriction of dependency on Infrastructure layer",
@@ -86,11 +85,12 @@ public class EfCoreArchTests
                         CurrentNamespace,
                         UsingLibs,
                         [
+                            ComponentNamespaces.ApplicationContracts,
                             ComponentNamespaces.DomainShared,
                             ComponentNamespaces.Common
                         ])),
             name: "Allowed dependencies",
-            description: "Abstraction above the persistence layer (EF) can only depend on shared domain types and common utilities");
+            description: "Abstraction above the persistence layer (EF) can only depend on the application contracts, shared domain types and common utilities");
 
         // Act
         var results = policyDefinition.Evaluate().Results;

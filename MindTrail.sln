@@ -1,26 +1,26 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MindTrail.Infrastructure", "MindTrail.Infrastructure", "{3B54549D-31F7-4149-BD6D-CB1AFE83E66A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{3B54549D-31F7-4149-BD6D-CB1AFE83E66A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MindTrail.CliHost", "src\MindTrail.CliHost\MindTrail.CliHost.csproj", "{15A890B9-1747-4DBB-A68B-261E2A0859A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MindTrail.HostConfiguration", "src\MindTrail.HostConfiguration\MindTrail.HostConfiguration.csproj", "{60EDD451-BB18-412B-9962-96B806BEFFEC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MindTrail.ApplicationConfigurator", "src\MindTrail.ApplicationConfigurator\MindTrail.ApplicationConfigurator.csproj", "{60EDD451-BB18-412B-9962-96B806BEFFEC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MindTrail.WebHost", "src\MindTrail.WebHost\MindTrail.WebHost.csproj", "{EF3E8D4B-68E1-47B2-B2D7-857333907051}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MindTrail.Tests", "MindTrail.Tests", "{4562250A-4A5E-46DA-9492-7C9C26C4AA9F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4562250A-4A5E-46DA-9492-7C9C26C4AA9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MindTrail.HostConfiguration.Tests", "tests\MindTrail.HostConfiguration.Tests\MindTrail.HostConfiguration.Tests.csproj", "{F0E0CA1C-B5D5-40B1-84D8-D19D68D0A192}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MindTrail.ApplicationConfigurator.Tests", "tests\MindTrail.ApplicationConfigurator.Tests\MindTrail.ApplicationConfigurator.Tests.csproj", "{F0E0CA1C-B5D5-40B1-84D8-D19D68D0A192}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MindTrail.WebHost.Tests", "tests\MindTrail.WebHost.Tests\MindTrail.WebHost.Tests.csproj", "{FF85507C-B527-4B34-A792-C9CDCB53D10D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MindTrail.CliHost.Tests", "tests\MindTrail.CliHost.Tests\MindTrail.CliHost.Tests.csproj", "{77DA10F5-32FA-4570-B124-442A81E92EA6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MindTrail.Presentation", "MindTrail.Presentation", "{2D1A318D-817B-4431-B64D-4E4E9F70F083}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{2D1A318D-817B-4431-B64D-4E4E9F70F083}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MindTrail.WebApi", "src\MindTrail.WebApi\MindTrail.WebApi.csproj", "{D67B5C88-A617-4899-81BC-3949559A4291}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MindTrail.Common", "MindTrail.Common", "{94627913-9E29-4ACB-9A76-9806192E83B6}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{94627913-9E29-4ACB-9A76-9806192E83B6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MindTrail.Common", "src\MindTrail.Common\MindTrail.Common.csproj", "{10C86295-4480-4534-9DB2-E1932AD86803}"
 EndProject
@@ -36,13 +36,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MindTrail.Cli.Tests", "test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MindTrail.Common.Tests", "tests\MindTrail.Common.Tests\MindTrail.Common.Tests.csproj", "{AD7C2D48-8191-4ADA-9B77-36FF66970FD3}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MindTrail.Application", "MindTrail.Application", "{423B5513-251A-4D0D-8FEB-90BE5302EA21}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{423B5513-251A-4D0D-8FEB-90BE5302EA21}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MindTrail.Application", "src\MindTrail.Application\MindTrail.Application.csproj", "{5A0CF99D-16E5-4B6D-9D4B-0B1040370C28}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MindTrail.Domain", "src\MindTrail.Domain\MindTrail.Domain.csproj", "{240AFE87-E536-4282-8EE8-E9022FC41498}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MindTrail.Persistence", "MindTrail.Persistence", "{8F032D25-7D0B-443E-94A1-C1E0C72AC4D3}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Persistence", "Persistence", "{8F032D25-7D0B-443E-94A1-C1E0C72AC4D3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MindTrail.EfCore", "src\MindTrail.EfCore\MindTrail.EfCore.csproj", "{55537EB4-2A9B-4997-9E5C-331923F11E83}"
 EndProject
@@ -50,13 +50,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MindTrail.EfCoreMssql", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MindTrail.EfCorePostgreSql", "src\MindTrail.EfCorePostgreSql\MindTrail.EfCorePostgreSql.csproj", "{40B939AD-3397-472E-9D94-DA2AB1528737}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MindTrail.Domain", "MindTrail.Domain", "{3D2A2929-71A9-4B4A-8193-446D530E300A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{3D2A2929-71A9-4B4A-8193-446D530E300A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MindTrail.ApplicationContracts", "src\MindTrail.ApplicationContracts\MindTrail.ApplicationContracts.csproj", "{12B5E882-725E-4EAA-B395-DCF27CB22522}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MindTrail.DomainShared", "src\MindTrail.DomainShared\MindTrail.DomainShared.csproj", "{5CB6B4E1-EF7C-4334-9A73-6AAD8D70121F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MindTrail.WebApi.Tests", "tests\MindTrail.WebApi.Tests\MindTrail.WebApi.Tests.csproj", "{0E9F2EE4-B226-4914-A6D4-B096367E6073}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MindTrail.Domain.Tests", "tests\MindTrail.Domain.Tests\MindTrail.Domain.Tests.csproj", "{4F25900E-324C-4347-8DAF-788C659430E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -86,6 +88,7 @@ Global
 		{12B5E882-725E-4EAA-B395-DCF27CB22522} = {423B5513-251A-4D0D-8FEB-90BE5302EA21}
 		{5CB6B4E1-EF7C-4334-9A73-6AAD8D70121F} = {3D2A2929-71A9-4B4A-8193-446D530E300A}
 		{0E9F2EE4-B226-4914-A6D4-B096367E6073} = {4562250A-4A5E-46DA-9492-7C9C26C4AA9F}
+		{4F25900E-324C-4347-8DAF-788C659430E9} = {4562250A-4A5E-46DA-9492-7C9C26C4AA9F}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{15A890B9-1747-4DBB-A68B-261E2A0859A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -176,5 +179,9 @@ Global
 		{0E9F2EE4-B226-4914-A6D4-B096367E6073}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E9F2EE4-B226-4914-A6D4-B096367E6073}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E9F2EE4-B226-4914-A6D4-B096367E6073}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F25900E-324C-4347-8DAF-788C659430E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F25900E-324C-4347-8DAF-788C659430E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F25900E-324C-4347-8DAF-788C659430E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F25900E-324C-4347-8DAF-788C659430E9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

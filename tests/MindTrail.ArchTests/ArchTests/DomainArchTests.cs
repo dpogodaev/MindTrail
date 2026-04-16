@@ -64,7 +64,7 @@ public class DomainArchTests
             definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
-                    ComponentNamespaces.HostConfiguration,
+                    ComponentNamespaces.ApplicationConfigurator,
                     ComponentNamespaces.CliHost,
                     ComponentNamespaces.WebHost),
             name: "Restriction of dependency on Infrastructure layer",
@@ -81,7 +81,7 @@ public class DomainArchTests
                             ComponentNamespaces.DomainShared,
                             ComponentNamespaces.Common
                         ])),
-            name: "Domain_ShouldOnlyDependOn_CommonAndDomainShared",
+            name: "Allowed dependencies for Domain Core",
             description: "The domain core can only depend on shared domain types and common utilities");
 
         policyDefinition.Add(

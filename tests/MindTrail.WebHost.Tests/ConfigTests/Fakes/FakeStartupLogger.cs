@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using MindTrail.HostConfiguration.Interfaces;
-using MindTrail.HostConfiguration.Interfaces.Logging;
+using MindTrail.ApplicationConfigurator.Interfaces;
+using MindTrail.ApplicationConfigurator.Interfaces.Logging;
 
 namespace MindTrail.WebHost.Tests.ConfigTests.Fakes;
 
@@ -49,7 +49,7 @@ public class FakeStartupLogger : IStartupLogger
     }
 
     /// <inheritdoc cref="IStartupLogger.Error"/>
-    public void Error(string msg, Exception e = null)
+    public void Error(string msg, Exception? e = null)
     {
         ErrorMsgList.Add(msg);
     }

@@ -76,7 +76,7 @@ public class ElapsedTimeMeterTests
 
         // Assert
         var exception = Assert.Throws<InvalidOperationException>(StartTimer);
-        Assert.AreEqual("The time meter has already been started", exception.Message);
+        Assert.AreEqual("The time meter has already been started.", exception.Message);
         Assert.IsTrue(timer.IsActive);
     }
 
@@ -123,7 +123,7 @@ public class ElapsedTimeMeterTests
 
         // Assert
         var exception = Assert.Throws<InvalidOperationException>(StopTimer);
-        Assert.AreEqual("The time meter was not started", exception.Message);
+        Assert.AreEqual("The time meter was not started.", exception.Message);
         Assert.IsFalse(timer.IsActive);
     }
 
@@ -185,7 +185,7 @@ public class ElapsedTimeMeterTests
 
         // Assert
         var exception = Assert.Throws<InvalidOperationException>(PauseTimer);
-        Assert.AreEqual("The time meter is not active", exception.Message);
+        Assert.AreEqual("The time meter is not active.", exception.Message);
         Assert.IsFalse(timer.IsActive);
     }
 

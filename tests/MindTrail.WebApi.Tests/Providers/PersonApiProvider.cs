@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -25,24 +26,30 @@ public class PersonApiProvider
     /// <summary>
     /// Request for endpoint <see cref="PersonController.GetPersons"/>.
     /// </summary>
-    /// <param name="filter">Filter model for querying persons.</param>
+    /// <param name="query">Parameters for querying.</param>
     /// <returns>The HTTP response message received from the endpoint. </returns>
-    public async Task<HttpResponseMessage> GetPersonsAsync(PersonFilterModel filter)
+    public async Task<HttpResponseMessage> GetPersonsAsync(PersonQueryModel query)
     {
-        var queryParams = new Dictionary<string, string>
-        {
-            ["pageNumber"] = filter.PageNumber.ToString(),
-            ["pageSize"] = filter.PageSize.ToString(),
-        };
+        ArgumentNullException.ThrowIfNull(query, nameof(query));
 
-        if (!string.IsNullOrWhiteSpace(filter.Search))
+        var queryParams = new Dictionary<string, string>();
+
+        queryParams.AddIfNotNull(nameof(query.PageNumber), query.PageNumber);
+        queryParams.AddIfNotNull(nameof(query.PageSize), query.PageSize);
+
+        if (!string.IsNullOrWhiteSpace(query.TextSearchQuery))
         {
-            queryParams["search"] = filter.Search!;
+            queryParams.AddIfNotNull(nameof(query.TextSearchQuery), query.TextSearchQuery);
+            queryParams.AddIfNotNull(nameof(query.TextSearchCaseSensitive), query.TextSearchCaseSensitive);
         }
 
-        if (!string.IsNullOrWhiteSpace(filter.Sorting))
+        queryParams.AddIfNotNull(nameof(query.FullName), query.FullName);
+        queryParams.AddIfNotNull(nameof(query.BirthYear), query.BirthYear);
+
+        if (query.SortField != null)
         {
-            queryParams["sorting"] = filter.Sorting!;
+            queryParams.AddIfNotNull(nameof(query.SortField), (int)query.SortField);
+            queryParams.AddIfNotNull(nameof(query.SortDirection), (int?)query.SortDirection);
         }
 
         var request = new HttpRequestMessage(HttpMethod.Get, BaseUrl)

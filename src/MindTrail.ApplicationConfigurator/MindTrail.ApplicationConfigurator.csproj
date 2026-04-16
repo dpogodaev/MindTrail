@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <OutputPath>bin\</OutputPath>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <OutputPath>bin\</OutputPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Configuration"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection"/>
+        <PackageReference Include="Microsoft.Extensions.Hosting"/>
+        <PackageReference Include="NLog"/>
+        <PackageReference Include="NLog.Appsettings.Standard"/>
+        <PackageReference Include="NLog.Extensions.Hosting"/>
+        <PackageReference Include="NLog.Schema"/>
+        <PackageReference Include="NLog.Targets.Loki"/>
+        <PackageReference Include="Scrutor.DecorateOnly"/>
+        <PackageReference Include="StyleCop.Analyzers">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\MindTrail.Application\MindTrail.Application.csproj"/>
+        <ProjectReference Include="..\MindTrail.Common\MindTrail.Common.csproj"/>
+        <ProjectReference Include="..\MindTrail.Domain\MindTrail.Domain.csproj"/>
+        <ProjectReference Include="..\MindTrail.EfCoreMssql\MindTrail.EfCoreMssql.csproj"/>
+        <ProjectReference Include="..\MindTrail.EfCorePostgreSql\MindTrail.EfCorePostgreSql.csproj"/>
+        <ProjectReference Include="..\MindTrail.EfCore\MindTrail.EfCore.csproj"/>
+    </ItemGroup>
+
+</Project>

@@ -43,10 +43,12 @@ public class HttpLoggingConfigTests
 
     #endregion
 
-    private static IConfiguration BuildConfiguration(Dictionary<string, string> settings = null)
+    private static IConfiguration BuildConfiguration(Dictionary<string, string>? settings = null)
     {
+        var initialData = settings ?? new Dictionary<string, string>();
+
         return new ConfigurationBuilder()
-            .AddInMemoryCollection(settings ?? new Dictionary<string, string>())
+            .AddInMemoryCollection(initialData!)
             .Build();
     }
 }

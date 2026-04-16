@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System;
+using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -50,6 +51,11 @@ public class ApiKeyAuthNHandler(
 
     private ClaimsPrincipal BuildApiKeyClaim()
     {
+        if (Options.ClaimName is null)
+        {
+            throw new InvalidOperationException("The name of claim for API key is not specified.");
+        }
+
         var claimsIdentity = new ClaimsIdentity(Scheme.Name);
 
         claimsIdentity.AddClaim(new Claim(

@@ -1,39 +1,25 @@
-﻿using MindTrail.ApplicationContracts.Dtos;
-
-namespace MindTrail.ApplicationContracts.RequestModels;
+﻿namespace MindTrail.ApplicationContracts.RequestModels;
 
 /// <summary>
-/// Model for querying a list of countries.
+/// Model for filtering countries.
 /// </summary>
-public record CountryFilterModel
+public record CountryFilterModel(string? Code, string? Name)
 {
     /// <summary>
-    /// Gets the page number.
-    /// The default value is <c>1</c>.
-    /// </summary>
-    public uint PageNumber { get; init; } = 1;
-
-    /// <summary>
-    /// Gets the page size.
-    /// The default value is <c>10</c>.
-    /// </summary>
-    public uint PageSize { get; init; } = 10;
-
-    /// <summary>
-    /// Gets the search text used to filter countries by partial match.
+    /// Gets the filter value by country code.
     /// </summary>
     /// <remarks>
-    /// If <c>null</c> or empty, no text filtering is applied.
+    /// Performs a partial, case-insensitive match.
+    /// Ignored if <c>null</c> or empty.
     /// </remarks>
-    public string? Search { get; init; }
+    public string? Code { get; } = Code;
 
     /// <summary>
-    /// Gets the sorting order of the result list in SQL ORDER BY format,
-    /// e.g.: <c>Name ASC</c>, <c>Code DESC</c> (case insensitive).
+    /// Gets the filter value by the name of the country.
     /// </summary>
     /// <remarks>
-    /// Supports fields: <see cref="CountryDto.Code"/>, <see cref="CountryDto.Name"/>.
-    /// Default sorting is ASC by <see cref="CountryDto.Id"/>.
+    /// Performs a partial, case-insensitive match.
+    /// Ignored if <c>null</c> or empty.
     /// </remarks>
-    public string? Sorting { get; init; }
+    public string? Name { get; } = Name;
 }

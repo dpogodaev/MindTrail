@@ -86,7 +86,7 @@ public class WebHostArchTests
                         [
                             ComponentNamespaces.WebApi,
                             ComponentNamespaces.WebAuth,
-                            ComponentNamespaces.HostConfiguration,
+                            ComponentNamespaces.ApplicationConfigurator,
                             ComponentNamespaces.DomainShared,
                             ComponentNamespaces.Common
                         ])),

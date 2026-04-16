@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MindTrail.ApplicationConfigurator.Interfaces.Logging;
 using MindTrail.DomainShared.Exceptions.Base;
-using MindTrail.HostConfiguration.Interfaces.Logging;
 using MindTrail.WebApi.Abstractions.Factories;
 using MindTrail.WebApi.Abstractions.Providers;
 using MindTrail.WebApi.Handlers;

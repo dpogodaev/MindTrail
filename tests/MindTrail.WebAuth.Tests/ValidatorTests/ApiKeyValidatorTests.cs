@@ -101,7 +101,7 @@ public class ApiKeyValidatorTests
 
     #endregion
 
-    private static ApiKeyValidator BuildService(string apiKey, Dictionary<string, string> additionalApiKeys = null)
+    private static ApiKeyValidator BuildService(string apiKey, Dictionary<string, string>? additionalApiKeys = null)
     {
         return new ApiKeyValidator(new ApiKeySettings
         {

@@ -1,7 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Builder;
+using MindTrail.ApplicationConfigurator.Providers;
 using MindTrail.Common.Providers;
-using MindTrail.HostConfiguration.Providers;
 using MindTrail.WebHost;
 
 LoggerProvider.Configure(true);

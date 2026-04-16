@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MindTrail.HostConfiguration.Extensions;
-using MindTrail.HostConfiguration.Interfaces.Logging;
+using MindTrail.ApplicationConfigurator.Extensions;
+using MindTrail.ApplicationConfigurator.Interfaces.Logging;
 using MindTrail.WebAuth.Constants;
 using MindTrail.WebAuth.Extensions;
 using MindTrail.WebAuth.Filters;
@@ -68,7 +68,7 @@ internal static class WebAuthConfig
 
         services.AddTransient(_ => new ApiKeySettings
         {
-            ApiKey = apiKey,
+            ApiKey = apiKey!,
             HeaderName = ApiKeyConstants.ApiKeyHeaderName,
             AdditionalApiKeys = additionalApiKeys,
         });

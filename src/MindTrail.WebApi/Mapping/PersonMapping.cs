@@ -18,16 +18,30 @@ internal static class PersonMapping
         };
     }
 
-    public static AppLayerModels.PersonFilterModel ToAppModel(this PersonFilterModel model)
+    public static AppLayerModels.PersonQueryModel ToAppModel(this PersonQueryModel model)
     {
         ArgumentNullException.ThrowIfNull(model, nameof(model));
 
-        return new AppLayerModels.PersonFilterModel
+        var paginationModel = new AppLayerModels.PaginationModel(model.PageNumber, model.PageSize);
+
+        var filterModel = string.IsNullOrEmpty(model.FullName) && model.BirthYear == null
+            ? null
+            : new AppLayerModels.PersonFilterModel(model.FullName, model.BirthYear);
+
+        var searchModel = string.IsNullOrEmpty(model.TextSearchQuery)
+            ? null
+            : new AppLayerModels.TextSearchModel(model.TextSearchQuery, model.TextSearchCaseSensitive);
+
+        var sortingModel = model.SortField == null
+            ? null
+            : new AppLayerModels.PersonSortingModel(model.SortField.Value, model.SortDirection);
+
+        return new AppLayerModels.PersonQueryModel
         {
-            PageNumber = model.PageNumber,
-            PageSize = model.PageSize,
-            Search = model.Search,
-            Sorting = model.Sorting,
+            Pagination = paginationModel,
+            Filter = filterModel,
+            Search = searchModel,
+            Sorting = sortingModel,
         };
     }
 }

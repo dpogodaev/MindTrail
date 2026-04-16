@@ -2,9 +2,8 @@
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
-        <Nullable>enable</Nullable>
         <ImplicitUsings>disable</ImplicitUsings>
-        <RootNamespace>MindTrail.WebHost</RootNamespace>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -33,7 +32,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MindTrail.HostConfiguration\MindTrail.HostConfiguration.csproj"/>
+        <ProjectReference Include="..\MindTrail.ApplicationConfigurator\MindTrail.ApplicationConfigurator.csproj"/>
         <ProjectReference Include="..\MindTrail.WebApi\MindTrail.WebApi.csproj"/>
         <ProjectReference Include="..\MindTrail.WebAuth\MindTrail.WebAuth.csproj"/>
     </ItemGroup>

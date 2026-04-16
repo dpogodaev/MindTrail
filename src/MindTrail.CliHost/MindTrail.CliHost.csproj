@@ -5,7 +5,6 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>disable</ImplicitUsings>
         <Nullable>disable</Nullable>
-        <RootNamespace>MindTrail.CliHost</RootNamespace>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -17,16 +16,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MindTrail.Cli\MindTrail.Cli.csproj"/>
-        <ProjectReference Include="..\MindTrail.HostConfiguration\MindTrail.HostConfiguration.csproj"/>
+        <PackageReference Include="StyleCop.Analyzers">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
-        <Content Update="appsettings.Development.json">
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-        </Content>
+        <ProjectReference Include="..\MindTrail.Cli\MindTrail.Cli.csproj"/>
+        <ProjectReference Include="..\MindTrail.ApplicationConfigurator\MindTrail.ApplicationConfigurator.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -47,13 +45,6 @@
             <CopyToPublishDirectory>Never</CopyToPublishDirectory>
             <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
         </None>
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="StyleCop.Analyzers">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
     </ItemGroup>
 
 </Project>

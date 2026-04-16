@@ -20,7 +20,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddAdapterNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
-        string[] exceptionsToRule = null)
+        string[]? exceptionsToRule = null)
     {
         const string name = "Naming rule for classes used as adapters";
         const string description = "Classes used as adapters must have names ending with the word 'Adapter'";
@@ -48,7 +48,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddAttributeNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
-        string[] exceptionsToRule = null)
+        string[]? exceptionsToRule = null)
     {
         const string name = "Naming rule for classes derived from the Attribute class";
         const string description =
@@ -77,7 +77,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddBuilderNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
-        string[] exceptionsToRule = null)
+        string[]? exceptionsToRule = null)
     {
         const string name = "Naming rule for classes used as builders";
         const string description = "Classes used as builders must have names ending with the word 'Builder'";
@@ -105,7 +105,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddCommandNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
-        string[] exceptionsToRule = null)
+        string[]? exceptionsToRule = null)
     {
         const string name = "Naming rule for classes used as commands";
         const string description = "Classes used as commands must have names ending with the word 'Command'";
@@ -133,7 +133,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddConfigNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
-        string[] exceptionsToRule = null)
+        string[]? exceptionsToRule = null)
     {
         const string name = "Naming rule for configuration classes";
         const string description = "Configuration classes must have names ending with the word 'Config'";
@@ -161,7 +161,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddContextNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
-        string[] exceptionsToRule = null)
+        string[]? exceptionsToRule = null)
     {
         const string name = "Naming rule for context classes";
         const string description = "Context classes must have names ending with the word 'Context'";
@@ -189,7 +189,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddConstantNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
-        string[] exceptionsToRule = null)
+        string[]? exceptionsToRule = null)
     {
         const string name = "Naming rule for classes containing constants";
         const string description = "Classes containing constants must have names ending with the word 'Constants'";
@@ -217,7 +217,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddControllerNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
-        string[] exceptionsToRule = null)
+        string[]? exceptionsToRule = null)
     {
         const string name = "Naming rule for classes derived from the ControllerBase class";
         const string description =
@@ -246,7 +246,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddDtoNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
-        string[] exceptionsToRule = null)
+        string[]? exceptionsToRule = null)
     {
         const string name = "Naming rule for classes used as DTOs";
         const string description = "Classes used as DTOs must have names ending with the word 'Dto'";
@@ -274,7 +274,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddEnumNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
-        string[] exceptionsToRule = null)
+        string[]? exceptionsToRule = null)
     {
         const string name = "Naming rule for enum types";
         const string description = "Enum types must have names ending with the word 'Type'";
@@ -302,7 +302,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddExceptionNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
-        string[] exceptionsToRule = null)
+        string[]? exceptionsToRule = null)
     {
         const string name = "Naming rule for classes derived from the Exception class";
         const string description =
@@ -331,7 +331,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddExtensionNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
-        string[] exceptionsToRule = null)
+        string[]? exceptionsToRule = null)
     {
         const string name = "Naming rule for classes containing extensions";
         const string description = "Classes containing extensions must have names ending with the word 'Extensions'";
@@ -359,7 +359,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddFactoryNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
-        string[] exceptionsToRule = null)
+        string[]? exceptionsToRule = null)
     {
         const string name = "Naming rule for classes used as factories";
         const string description = "Classes used as factories must have names ending with the word 'Factory'";
@@ -387,7 +387,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddFilterNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
-        string[] exceptionsToRule = null)
+        string[]? exceptionsToRule = null)
     {
         const string name = "Naming rule for classes used as filters";
         const string description = "Classes used as filters must have names ending with the word 'Filter'";
@@ -415,7 +415,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddHandlerNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
-        string[] exceptionsToRule = null)
+        string[]? exceptionsToRule = null)
     {
         const string name = "Naming rule for classes used as handlers";
         const string description = "Classes used as handlers must have names ending with the word 'Handler'";
@@ -443,7 +443,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddHelperNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
-        string[] exceptionsToRule = null)
+        string[]? exceptionsToRule = null)
     {
         const string name = "Naming rule for helper classes";
         const string description = "Helper classes must have names ending with the word 'Helper'";
@@ -471,7 +471,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddInterfaceNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
-        string[] exceptionsToRule = null)
+        string[]? exceptionsToRule = null)
     {
         const string name = "Naming rule for interfaces";
         const string description = "Interfaces must have names beginning with the letter 'I'";
@@ -499,7 +499,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddAbstractionNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
-        string[] exceptionsToRule = null)
+        string[]? exceptionsToRule = null)
     {
         const string name = "Naming rule for external dependencies";
         const string description = "External dependencies must have names beginning with the letter 'I'";
@@ -527,7 +527,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddRequestModelNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
-        string[] exceptionsToRule = null)
+        string[]? exceptionsToRule = null)
     {
         const string name = "Naming rule for classes used as request models";
         const string description = "Classes used as request models must have names ending with the word 'Model'";
@@ -555,7 +555,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddMappingNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
-        string[] exceptionsToRule = null)
+        string[]? exceptionsToRule = null)
     {
         const string name = "Naming rule for mapping classes";
         const string description = "Mapping classes must have names ending with the word 'Mapping'";
@@ -583,7 +583,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddOptionNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
-        string[] exceptionsToRule = null)
+        string[]? exceptionsToRule = null)
     {
         const string name = "Naming rule for classes containing options";
         const string description = "Classes containing options must have names ending with the word 'Options'";
@@ -611,7 +611,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddProviderNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
-        string[] exceptionsToRule = null)
+        string[]? exceptionsToRule = null)
     {
         const string name = "Naming rule for classes used as providers";
         const string description = "Classes used as providers must have names ending with the word 'Provider'";
@@ -639,7 +639,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddRepositoryNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
-        string[] exceptionsToRule = null)
+        string[]? exceptionsToRule = null)
     {
         const string name = "Naming rule for classes used as repositories";
         const string description = "Classes used as repositories must have names ending with the word 'Repository'";
@@ -667,7 +667,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddServiceNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
-        string[] exceptionsToRule = null)
+        string[]? exceptionsToRule = null)
     {
         const string name = "Naming rule for classes used as services";
         const string description = "Classes used as services must have names ending with the word 'Service'";
@@ -695,7 +695,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddSettingNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
-        string[] exceptionsToRule = null)
+        string[]? exceptionsToRule = null)
     {
         const string name = "Naming rule for classes containing settings";
         const string description = "Classes containing settings must have names ending with the word 'Settings'";
@@ -723,7 +723,7 @@ public static class PolicyExtensions
     public static PolicyDefinition AddValidatorNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
-        string[] exceptionsToRule = null)
+        string[]? exceptionsToRule = null)
     {
         const string name = "Naming rule for classes used as validators";
         const string description = "Classes used as validators must have names ending with the word 'Validator'";
@@ -741,7 +741,7 @@ public static class PolicyExtensions
         return policyDefinition.Add(Definition, name, description);
     }
 
-    private static void AddExceptionsToRule(this ConditionList conditions, string[] exceptionsToRule)
+    private static void AddExceptionsToRule(this ConditionList conditions, string[]? exceptionsToRule)
     {
         if (exceptionsToRule == null)
         {

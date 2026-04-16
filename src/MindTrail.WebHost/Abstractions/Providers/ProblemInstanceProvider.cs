@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.Extensions.Configuration;
-using MindTrail.HostConfiguration.Extensions;
+using MindTrail.ApplicationConfigurator.Extensions;
 
 namespace MindTrail.WebHost.Abstractions.Providers;
 

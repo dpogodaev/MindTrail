@@ -12,8 +12,8 @@ public class CommandHelper
     /// Returns the command name from the command line.
     /// </summary>
     /// <param name="commandLine">Command line.</param>
-    /// <returns>The command name.</returns>
-    public static string GetCommandName(string commandLine)
+    /// <returns>The command name if parsing succeeds; otherwise, null.</returns>
+    public static string? GetCommandName(string commandLine)
     {
         var splittedLine = commandLine.Trim().Split(" ");
         var commandName = splittedLine[0].Trim();
@@ -59,7 +59,7 @@ public class CommandHelper
         }
 
         var commandLineWithoutCommandName = withCommandName
-            ? commandLine.Replace(GetCommandName(commandLine), string.Empty)
+            ? commandLine.Replace(GetCommandName(commandLine) ?? string.Empty, string.Empty)
             : commandLine;
 
         var parsedCommandLine = commandLineWithoutCommandName.Replace("\"", "'").Trim() + defaultEndMarker;

@@ -72,7 +72,7 @@ public class CliArchTests
             definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
-                    ComponentNamespaces.HostConfiguration,
+                    ComponentNamespaces.ApplicationConfigurator,
                     ComponentNamespaces.CliHost,
                     ComponentNamespaces.WebHost),
             name: "Restriction of dependency on Infrastructure layer",

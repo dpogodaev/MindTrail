@@ -85,7 +85,7 @@ public class CliHostArchTests
                         UsingLibs,
                         [
                             ComponentNamespaces.Cli,
-                            ComponentNamespaces.HostConfiguration,
+                            ComponentNamespaces.ApplicationConfigurator,
                             ComponentNamespaces.DomainShared,
                             ComponentNamespaces.Common
                         ])),

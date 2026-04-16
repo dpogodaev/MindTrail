@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using MindTrail.HostConfiguration.Providers;
+using MindTrail.ApplicationConfigurator.Providers;
 using MindTrail.WebHost.Services.Hosted;
 
 namespace MindTrail.WebHost.Middlewares;

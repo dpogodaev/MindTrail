@@ -3,7 +3,7 @@
 /// <summary>
 /// Model for creating a person.
 /// </summary>
-public class PersonCreationModel
+public sealed record PersonCreationModel
 {
     /// <summary>
     /// Gets the full name.
@@ -13,7 +13,7 @@ public class PersonCreationModel
     /// <summary>
     /// Gets the year of birth.
     /// </summary>
-    public uint? BirthYear { get; init; }
+    public int? BirthYear { get; init; }
 
     /// <summary>
     /// Gets the ID of the country in which the person was born.

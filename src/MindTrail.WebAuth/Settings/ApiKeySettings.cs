@@ -8,17 +8,17 @@ namespace MindTrail.WebAuth.Settings;
 public class ApiKeySettings
 {
     /// <summary>
-    /// API key header name.
+    ///  Gets the API key header name.
     /// </summary>
-    public string HeaderName { get; init; }
+    public required string HeaderName { get; init; }
 
     /// <summary>
-    /// API key value.
+    /// Gets the API key value.
     /// </summary>
-    public string ApiKey { get; init; }
+    public required string ApiKey { get; init; }
 
     /// <summary>
-    /// Additional API keys.
+    /// Gets additional API keys.
     /// </summary>
-    public Dictionary<string, string> AdditionalApiKeys { get; init; }
+    public Dictionary<string, string>? AdditionalApiKeys { get; init; }
 }

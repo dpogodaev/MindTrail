@@ -193,7 +193,7 @@ public class ProblemDetailsBuilder(DomainException e)
             StatusCodes.Status400BadRequest => CreateBadRequest(),
             StatusCodes.Status409Conflict => CreateConflict(),
             StatusCodes.Status404NotFound => CreateNotFound(),
-            _ => throw new ArgumentOutOfRangeException(nameof(statusCode), statusCode, "Supported: 400, 404, 409"),
+            _ => throw new ArgumentOutOfRangeException(nameof(statusCode), statusCode, "Supported: 400, 404, 409."),
         };
     }
 

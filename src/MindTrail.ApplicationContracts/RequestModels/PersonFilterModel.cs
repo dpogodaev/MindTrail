@@ -1,39 +1,25 @@
-﻿using MindTrail.ApplicationContracts.Dtos;
-
-namespace MindTrail.ApplicationContracts.RequestModels;
+﻿namespace MindTrail.ApplicationContracts.RequestModels;
 
 /// <summary>
-/// Model for querying a list of persons.
+/// Model for filtering persons.
 /// </summary>
-public record PersonFilterModel
+public sealed record PersonFilterModel(string? FullName, int? BirthYear)
 {
     /// <summary>
-    /// Gets the page number.
-    /// The default value is <c>1</c>.
-    /// </summary>
-    public uint PageNumber { get; init; } = 1;
-
-    /// <summary>
-    /// Gets the page size.
-    /// The default value is <c>10</c>.
-    /// </summary>
-    public uint PageSize { get; init; } = 10;
-
-    /// <summary>
-    /// Gets the search text used to filter countries by partial match.
+    /// Gets the filter value by full name.
     /// </summary>
     /// <remarks>
-    /// If <c>null</c> or empty, no text filtering is applied.
+    /// Performs a partial, case-insensitive match.
+    /// Ignored if <c>null</c> or empty.
     /// </remarks>
-    public string? Search { get; init; }
+    public string? FullName { get; } = FullName;
 
     /// <summary>
-    /// Gets the sorting order of the result list in SQL ORDER BY format,
-    /// e.g.: <c>FullName ASC</c>, <c>BirthYear DESC</c> (case insensitive).
+    /// Gets the filter value by year of birth.
     /// </summary>
     /// <remarks>
-    /// Supports fields: <see cref="PersonDto.FullName"/>, <see cref="PersonDto.BirthYear"/>.
-    /// Default sorting is ASC by <see cref="PersonDto.Id"/>.
+    /// Performs an exact match.
+    /// Ignored if <c>null</c>.
     /// </remarks>
-    public string? Sorting { get; init; }
+    public int? BirthYear { get; } = BirthYear;
 }

@@ -33,6 +33,7 @@ public class JsonSerializerTests
         var obj = await JsonSerializer.DeserializeAsync<TestObject>(json, _options);
 
         // Assert
+        Assert.IsNotNull(obj);
         Assert.AreEqual(1, obj.Id);
         Assert.AreEqual("2", obj.Name);
     }
@@ -51,6 +52,7 @@ public class JsonSerializerTests
         var obj = await JsonSerializer.DeserializeAsync<TestObject>(json);
 
         // Assert
+        Assert.IsNotNull(obj);
         Assert.AreEqual(1, obj.Id);
         Assert.AreEqual("2", obj.Name);
     }
@@ -85,6 +87,6 @@ public class JsonSerializerTests
     {
         public int Id { get; init; }
 
-        public string Name { get; init; }
+        public required string Name { get; init; }
     }
 }

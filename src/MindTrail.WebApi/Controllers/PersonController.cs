@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MindTrail.ApplicationContracts.Dtos;
-using MindTrail.ApplicationContracts.Interfaces.Services;
+using MindTrail.ApplicationContracts.Interfaces.AppServices;
 using MindTrail.DomainShared.Exceptions;
 using MindTrail.DomainShared.Exceptions.Base;
 using MindTrail.WebApi.Abstractions.Providers;
@@ -27,13 +27,13 @@ public class PersonController(
     /// <summary>
     /// Returns a paged list of <see cref="PersonDto"/>.
     /// </summary>
-    /// <param name="filter">Filter model for querying persons.</param>
+    /// <param name="query">Parameters for querying.</param>
     /// <returns>Paged <see cref="PersonDto"/> collection.</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedDto<PersonDto>))]
-    public async Task<IActionResult> GetPersons([FromQuery] PersonFilterModel filter)
+    public async Task<IActionResult> GetPersons([FromQuery] PersonQueryModel query)
     {
-        var persons = await personService.GetPersonsAsync(filter.ToAppModel());
+        var persons = await personService.GetPersonsAsync(query.ToAppModel());
 
         return Ok(persons);
     }

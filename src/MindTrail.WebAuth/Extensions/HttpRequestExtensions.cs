@@ -14,7 +14,7 @@ public static class HttpRequestExtensions
     /// <param name="httpRequest">HTTP request.</param>
     /// <param name="name">Parameter name.</param>
     /// <returns>The parameter value if the parameter is found; <c>null</c> otherwise.</returns>
-    public static string GetQueryParameter(this HttpRequest httpRequest, string name)
+    public static string? GetQueryParameter(this HttpRequest httpRequest, string name)
     {
         if (!httpRequest.Query.TryGetValue(name, out var value))
         {
@@ -30,7 +30,7 @@ public static class HttpRequestExtensions
     /// <param name="httpRequest">HTTP request.</param>
     /// <param name="name">Parameter name.</param>
     /// <returns>The parameter value if the parameter is found; <c>null</c> otherwise.</returns>
-    public static string GetRouteParameter(this HttpRequest httpRequest, string name)
+    public static string? GetRouteParameter(this HttpRequest httpRequest, string name)
     {
         return httpRequest.RouteValues.TryGetValue(name, out var value)
             ? value?.ToString()
@@ -43,8 +43,13 @@ public static class HttpRequestExtensions
     /// <param name="httpRequest">HTTP request.</param>
     /// <param name="key">Header key.</param>
     /// <returns>The key value if the key is found in the header; <c>null</c> otherwise.</returns>
-    public static string GetHeaderKeyValue(this HttpRequest httpRequest, string key)
+    public static string? GetHeaderKeyValue(this HttpRequest httpRequest, string? key)
     {
+        if (key is null)
+        {
+            return null;
+        }
+
         return httpRequest.Headers.TryGetValue(key, out var value)
             ? value.FirstOrDefault()
             : null;

@@ -33,14 +33,14 @@ public static class ProblemDetailsExtensions
     public static string GetInvalidPropertyName(this ValidationProblemDetails problemDetails)
     {
         return problemDetails.Errors is not { Count: 1 }
-            ? throw new InvalidOperationException("Errors must contain exactly one key")
+            ? throw new InvalidOperationException("Errors must contain exactly one key.")
             : problemDetails.Errors.Keys.Single();
     }
 
     public static string GetErrorDescription(this ValidationProblemDetails problemDetails)
     {
         return problemDetails.Errors is not { Count: 1 }
-            ? throw new InvalidOperationException("Errors must contain exactly one key")
+            ? throw new InvalidOperationException("Errors must contain exactly one key.")
             : problemDetails.Errors.Values.Single()[^1];
     }
 }

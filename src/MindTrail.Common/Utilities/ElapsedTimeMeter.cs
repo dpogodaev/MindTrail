@@ -37,7 +37,7 @@ public class ElapsedTimeMeter : IElapsedTimeMeter
     {
         if (IsActive)
         {
-            throw new InvalidOperationException("The time meter has already been started");
+            throw new InvalidOperationException("The time meter has already been started.");
         }
 
         IsActive = true;
@@ -50,7 +50,7 @@ public class ElapsedTimeMeter : IElapsedTimeMeter
     {
         if (!IsActive)
         {
-            throw new InvalidOperationException("The time meter was not started");
+            throw new InvalidOperationException("The time meter was not started.");
         }
 
         _stopwatch.Reset(); // Resets the value of the elapsed time.
@@ -64,7 +64,7 @@ public class ElapsedTimeMeter : IElapsedTimeMeter
     {
         if (!IsActive)
         {
-            throw new InvalidOperationException("The time meter is not active");
+            throw new InvalidOperationException("The time meter is not active.");
         }
 
         _totalElapsedTimeInMs += GetElapsedTimeInMs();

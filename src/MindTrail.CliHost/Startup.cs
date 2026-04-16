@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using MindTrail.ApplicationConfigurator.Configs.Components;
+using MindTrail.ApplicationConfigurator.Interfaces.Logging;
 using MindTrail.CliHost.Configs.Components;
-using MindTrail.HostConfiguration.Configs.Components;
-using MindTrail.HostConfiguration.Interfaces.Logging;
 
 namespace MindTrail.CliHost;
 
@@ -23,7 +23,7 @@ internal static class Startup
     {
         builder.Services.AddCommonConfig();
         builder.Services.AddDomainServicesConfig();
-        builder.Services.AddAppServicesConfig();
+        builder.Services.AddApplicationConfig();
         builder.Services.AddEfCoreConfig(configuration, logger);
 
         builder.Services.AddCliHostConfig();

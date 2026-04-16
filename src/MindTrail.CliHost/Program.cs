@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.Extensions.Hosting;
+using MindTrail.ApplicationConfigurator.Providers;
 using MindTrail.CliHost;
 using MindTrail.Common.Providers;
-using MindTrail.HostConfiguration.Providers;
 
 LoggerProvider.Configure(false);
 var startupLogger = LoggerProvider.GetStartupLogger();

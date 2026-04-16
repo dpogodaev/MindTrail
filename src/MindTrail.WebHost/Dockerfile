@@ -17,7 +17,7 @@ WORKDIR /source
 COPY NuGet.Config .
 COPY MindTrail.sln .
 COPY src/MindTrail.WebHost/ src/MindTrail.WebHost/
-COPY src/MindTrail.HostConfiguration/ src/MindTrail.HostConfiguration/
+COPY src/MindTrail.ApplicationConfigurator/ src/MindTrail.ApplicationConfigurator/
 COPY src/MindTrail.WebApi/ src/MindTrail.WebApi/
 COPY src/MindTrail.WebAuth/ src/MindTrail.WebAuth/
 COPY src/MindTrail.Common/ src/MindTrail.Common/

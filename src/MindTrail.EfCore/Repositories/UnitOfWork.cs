@@ -55,7 +55,7 @@ public class UnitOfWork<TContext>(TContext dbContext)
     {
         if (_transaction == null)
         {
-            throw new InvalidOperationException("No active transaction to commit");
+            throw new InvalidOperationException("No active transaction to commit.");
         }
 
         await _transaction.CommitAsync();
@@ -66,7 +66,7 @@ public class UnitOfWork<TContext>(TContext dbContext)
     {
         if (_transaction == null)
         {
-            throw new InvalidOperationException("No active transaction to rollback");
+            throw new InvalidOperationException("No active transaction to rollback.");
         }
 
         await _transaction.RollbackAsync();

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
 using MindTrail.Cli.Commands;
 using MindTrail.Cli.Helpers;
 using MindTrail.Cli.Interfaces;
@@ -33,19 +34,30 @@ public class CommandFactory(IServiceScope scope)
     /// </summary>
     /// <param name="commandLine">Command line.</param>
     /// <returns>The command to execute.</returns>
-    public ICommand Build(string commandLine)
+    public ICommand Build(string? commandLine)
     {
-        var parsedCommandLine = commandLine.ToLower();
+        if (commandLine is null)
+        {
+            return new EmptyCommand();
+        }
 
-        var name = CommandHelper.GetCommandName(parsedCommandLine);
-        var options = CommandHelper.GetCommandOptions(parsedCommandLine.Replace(name, string.Empty), false);
+        var normalizedCommandLine = commandLine.ToLower();
+
+        var name = CommandHelper.GetCommandName(normalizedCommandLine);
+
+        if (name is null)
+        {
+            return new UnknownCommand(normalizedCommandLine, string.Empty, new Dictionary<string, string>());
+        }
+
+        var options = CommandHelper.GetCommandOptions(normalizedCommandLine.Replace(name, string.Empty), false);
 
         return name switch
         {
-            HelpCommandName => new HelpCommand(parsedCommandLine, name, options),
-            ExitCommandName => new ExitCommand(parsedCommandLine, name, options),
-            HistoryCommandName => new HistoryCommand(parsedCommandLine, name, options),
-            _ => new UnknownCommand(parsedCommandLine, name, options),
+            HelpCommandName => new HelpCommand(normalizedCommandLine, name, options),
+            ExitCommandName => new ExitCommand(normalizedCommandLine, name, options),
+            HistoryCommandName => new HistoryCommand(normalizedCommandLine, name, options),
+            _ => new UnknownCommand(normalizedCommandLine, name, options),
         };
     }
 }

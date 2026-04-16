@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -7,9 +6,10 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MindTrail.ApplicationConfigurator.Extensions;
 using MindTrail.ApplicationContracts.Dtos;
+using MindTrail.ApplicationContracts.Enums;
 using MindTrail.Domain.ValueObjects;
-using MindTrail.HostConfiguration.Extensions;
 using MindTrail.WebApi.Controllers;
 using MindTrail.WebApi.RequestModels;
 using MindTrail.WebApi.Tests.Extensions;
@@ -70,14 +70,10 @@ public class PersonApiTests
         await _personApiProvider!.CreatePersonAsync(_personCreationModel with { FullName = "Person B" });
         await _personApiProvider!.CreatePersonAsync(_personCreationModel with { FullName = "Person Z" });
 
-        var filterModel = new PersonFilterModel
-        {
-            PageNumber = 1,
-            PageSize = 10,
-        };
+        var queryModel = new PersonQueryModel();
 
         // Act
-        var response = await _personApiProvider!.GetPersonsAsync(filterModel);
+        var response = await _personApiProvider!.GetPersonsAsync(queryModel);
 
         // Assert
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -105,15 +101,14 @@ public class PersonApiTests
         await _personApiProvider!.CreatePersonAsync(_personCreationModel with { FullName = "Person B" });
         await _personApiProvider!.CreatePersonAsync(_personCreationModel with { FullName = "Person Z" });
 
-        var filterModel = new PersonFilterModel
+        var queryModel = new PersonQueryModel
         {
-            PageNumber = 1,
-            PageSize = 10,
-            Sorting = "FullName ASC",
+            SortField = PersonSortingFieldType.FullName,
+            SortDirection = SortDirectionType.Asc,
         };
 
         // Act
-        var response = await _personApiProvider!.GetPersonsAsync(filterModel);
+        var response = await _personApiProvider!.GetPersonsAsync(queryModel);
 
         // Assert
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -144,15 +139,14 @@ public class PersonApiTests
         await _personApiProvider!.CreatePersonAsync(
             _personCreationModel with { FullName = "Person Z", BirthYear = 2001 });
 
-        var filterModel = new PersonFilterModel
+        var queryModel = new PersonQueryModel
         {
-            PageNumber = 1,
-            PageSize = 10,
-            Sorting = "BirthYear ASC",
+            SortField = PersonSortingFieldType.BirthYear,
+            SortDirection = SortDirectionType.Asc,
         };
 
         // Act
-        var response = await _personApiProvider!.GetPersonsAsync(filterModel);
+        var response = await _personApiProvider!.GetPersonsAsync(queryModel);
 
         // Assert
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -180,15 +174,13 @@ public class PersonApiTests
         await _personApiProvider!.CreatePersonAsync(_personCreationModel with { FullName = "Person B v2" });
         await _personApiProvider!.CreatePersonAsync(_personCreationModel with { FullName = "Person Z v2" });
 
-        var filterModel = new PersonFilterModel
+        var queryModel = new PersonQueryModel
         {
-            PageNumber = 1,
-            PageSize = 10,
-            Search = "v2",
+            TextSearchQuery = "v2",
         };
 
         // Act
-        var response = await _personApiProvider!.GetPersonsAsync(filterModel);
+        var response = await _personApiProvider!.GetPersonsAsync(queryModel);
 
         // Assert
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -216,14 +208,14 @@ public class PersonApiTests
             await _personApiProvider!.CreatePersonAsync(_personCreationModel with { FullName = $"Person {i}" });
         }
 
-        var filterModel = new PersonFilterModel
+        var queryModel = new PersonQueryModel
         {
             PageNumber = 1,
             PageSize = 2,
         };
 
         // Act
-        var response = await _personApiProvider!.GetPersonsAsync(filterModel);
+        var response = await _personApiProvider!.GetPersonsAsync(queryModel);
 
         // Assert
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);

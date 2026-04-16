@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using MindTrail.HostConfiguration.Configs.Components;
-using MindTrail.HostConfiguration.Interfaces.Logging;
+using MindTrail.ApplicationConfigurator.Configs.Components;
+using MindTrail.ApplicationConfigurator.Interfaces.Logging;
 using MindTrail.WebHost.Configs.Common;
 using MindTrail.WebHost.Configs.Components;
 using MindTrail.WebHost.Middlewares;
@@ -28,7 +28,7 @@ internal static class Startup
     {
         builder.Services.AddCommonConfig();
         builder.Services.AddDomainServicesConfig();
-        builder.Services.AddAppServicesConfig();
+        builder.Services.AddApplicationConfig();
         builder.Services.AddEfCoreConfig(configuration, logger);
 
         builder.Services.AddWebHostConfig();

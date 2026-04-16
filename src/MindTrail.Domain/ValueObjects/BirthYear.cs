@@ -11,11 +11,6 @@ public sealed record BirthYear
     public const int MinBirthYear = 1600;
 
     public BirthYear(int birthYear, DateTime currentTime)
-        : this(checked((uint)birthYear), currentTime)
-    {
-    }
-
-    public BirthYear(uint birthYear, DateTime currentTime)
     {
         if (birthYear < MinBirthYear || birthYear > currentTime.Year)
         {
@@ -25,9 +20,7 @@ public sealed record BirthYear
         Value = birthYear;
     }
 
-    public uint Value { get; }
+    public int Value { get; }
 
-    public static explicit operator int(BirthYear x) => checked((int)x.Value);
-
-    public static implicit operator uint(BirthYear x) => x.Value;
+    public static implicit operator int(BirthYear x) => x.Value;
 }

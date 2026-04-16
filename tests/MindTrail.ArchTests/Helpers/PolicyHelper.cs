@@ -32,7 +32,7 @@ public static class PolicyHelper
     /// </summary>
     /// <param name="result">The result of testing the policy.</param>
     /// <returns>A failure message.</returns>
-    public static string BuildFailureMessage(PolicyResult result)
+    public static string? BuildFailureMessage(PolicyResult result)
     {
         return result.IsSuccessful
             ? null
@@ -42,7 +42,7 @@ public static class PolicyHelper
     public static string[] CreateAllowedDependenciesList(
         string currentNamespace,
         IEnumerable<string> libs,
-        IEnumerable<string> components = null)
+        IEnumerable<string>? components = null)
     {
         var allowedDependenciesList = new List<string> { currentNamespace };
 
@@ -57,7 +57,7 @@ public static class PolicyHelper
     }
 
     private static Types GetTypes(string workingNamespace) =>
-        Types.FromFile(Path.Combine(GetProjectPath(), $"{workingNamespace}.dll"));
+        Types.FromFile(Path.Combine(GetProjectPath()!, $"{workingNamespace}.dll"));
 
-    private static string GetProjectPath() => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+    private static string? GetProjectPath() => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 }

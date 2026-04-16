@@ -14,7 +14,7 @@ public record ComponentNamespaces
     public const string EfCore = $"{Solution}.{nameof(MindTrail.EfCore)}";
     public const string EfCoreMssql = $"{Solution}.{nameof(MindTrail.EfCoreMssql)}";
     public const string EfCorePostgreSql = $"{Solution}.{nameof(MindTrail.EfCorePostgreSql)}";
-    public const string HostConfiguration = $"{Solution}.{nameof(MindTrail.HostConfiguration)}";
+    public const string ApplicationConfigurator = $"{Solution}.{nameof(MindTrail.ApplicationConfigurator)}";
     public const string WebHost = $"{Solution}.{nameof(MindTrail.WebHost)}";
     public const string WebApi = $"{Solution}.{nameof(MindTrail.WebApi)}";
     public const string WebAuth = $"{Solution}.{nameof(MindTrail.WebAuth)}";

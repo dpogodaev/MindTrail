@@ -34,56 +34,6 @@ public abstract class BaseRepository(AppDbContext dbContext)
         SetCreationTime(entity);
     }
 
-    protected static (string? PropertyName, bool IsDescending) GetSortingOptions(string? sorting)
-    {
-        if (string.IsNullOrWhiteSpace(sorting))
-        {
-            return (null, false);
-        }
-
-        var normalizedParts = sorting
-            .Trim()
-            .ToUpperInvariant()
-            .Split(' ', StringSplitOptions.RemoveEmptyEntries);
-
-        if (normalizedParts.Length is < 1 or > 2)
-        {
-            return (null, false);
-        }
-
-        var propName = normalizedParts[0];
-        var isDescending = normalizedParts is [_, "DESC"];
-
-        return (propName, isDescending);
-    }
-
-    protected static async Task<PagedEntity<TEntity>> ApplyPaging<TEntity>(
-        IQueryable<TEntity> query,
-        uint pageNumber = 1,
-        uint pageSize = 10,
-        uint maxPageSize = 100)
-        where TEntity : class, IPersistentEntity
-    {
-        if (pageNumber == 0)
-        {
-            throw new InvalidOperationException("The page number must be greater than zero");
-        }
-
-        if (pageSize == 0)
-        {
-            throw new InvalidOperationException("The page size must be greater than zero");
-        }
-
-        var skip = pageNumber == 1 ? 0 : pageNumber * pageSize;
-        var take = Math.Min(pageSize, maxPageSize);
-
-        return new PagedEntity<TEntity>
-        {
-            Total = await query.CountAsync(),
-            Items = query.Skip((int)skip).Take((int)take),
-        };
-    }
-
     /// <summary>
     /// Returns a list of all entities from database.
     /// </summary>
