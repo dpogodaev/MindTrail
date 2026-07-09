@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Http;
+using Microsoft.OpenApi;
 
 namespace MindTrail.WebApi.Attributes;
 
@@ -28,7 +29,7 @@ public class ResponseHeaderAttribute : Attribute
         Name = name;
         Description = description;
         StatusCode = StatusCodes.Status200OK;
-        Type = "String";
+        Type = JsonSchemaType.String;
     }
 
     /// <summary>
@@ -42,9 +43,12 @@ public class ResponseHeaderAttribute : Attribute
     public int StatusCode { get; init; }
 
     /// <summary>
-    /// Gets the type of the response header value.
+    /// Gets the JSON Schema type of the response header value.
     /// </summary>
-    public string Type { get; init; }
+    /// <remarks>
+    /// Default value is <see cref="JsonSchemaType.String"/>.
+    /// </remarks>
+    public JsonSchemaType Type { get; init; }
 
     /// <summary>
     /// Gets the description of the response header.

@@ -2,7 +2,7 @@
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using MindTrail.WebAuth.Attributes;
 using MindTrail.WebAuth.Constants;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -25,7 +25,7 @@ public class SecurityRequirementOperationFilter : IOperationFilter
             return;
         }
 
-        AddSecurityRequirements(operation, isAuthAttributeUsed);
+        AddSecurityRequirements(operation, context.Document, isAuthAttributeUsed);
         AddOperationResponses(operation, isAuthAttributeUsed);
     }
 
@@ -47,11 +47,14 @@ public class SecurityRequirementOperationFilter : IOperationFilter
             .Any(x => x is ApiKeyRequiredAttribute) ?? false;
     }
 
-    private static void AddSecurityRequirements(OpenApiOperation operation, bool isAuthAttributeUsed)
+    private static void AddSecurityRequirements(
+        OpenApiOperation operation,
+        OpenApiDocument document,
+        bool isAuthAttributeUsed)
     {
         var securityRequirements = new List<OpenApiSecurityRequirement>();
 
-        AddApiKeySecurityRequirement(securityRequirements);
+        AddApiKeySecurityRequirement(document, securityRequirements);
 
         if (isAuthAttributeUsed)
         {
@@ -61,18 +64,13 @@ public class SecurityRequirementOperationFilter : IOperationFilter
         operation.Security = securityRequirements;
     }
 
-    private static void AddApiKeySecurityRequirement(ICollection<OpenApiSecurityRequirement> securityRequirements)
+    private static void AddApiKeySecurityRequirement(
+        OpenApiDocument document,
+        ICollection<OpenApiSecurityRequirement> securityRequirements)
     {
-        var apiKeyScheme = new OpenApiSecurityScheme
-        {
-            Reference = new OpenApiReference
-            {
-                Type = ReferenceType.SecurityScheme,
-                Id = ApiKeyConstants.ApiKeySchemeName,
-            },
-        };
+        var apiKeyScheme = new OpenApiSecuritySchemeReference(ApiKeyConstants.ApiKeySchemeName, document);
 
-        securityRequirements.Add(new OpenApiSecurityRequirement { [apiKeyScheme] = new List<string>() });
+        securityRequirements.Add(new OpenApiSecurityRequirement { [apiKeyScheme] = [] });
     }
 
     private static void AddOperationResponses(OpenApiOperation operation, bool isAuthAttributeUsed)
@@ -87,11 +85,11 @@ public class SecurityRequirementOperationFilter : IOperationFilter
 
     private static void AddForbiddenResponses(OpenApiOperation operation)
     {
-        operation.Responses.Add("403", new OpenApiResponse { Description = "Forbidden" });
+        operation.Responses!.Add("403", new OpenApiResponse { Description = "Forbidden" });
     }
 
     private static void AddUnauthorizedResponses(OpenApiOperation operation)
     {
-        operation.Responses.Add("401", new OpenApiResponse { Description = "Unauthorized" });
+        operation.Responses!.Add("401", new OpenApiResponse { Description = "Unauthorized" });
     }
 }

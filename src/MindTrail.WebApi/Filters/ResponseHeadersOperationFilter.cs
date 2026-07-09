@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using MindTrail.WebApi.Attributes;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -21,7 +22,7 @@ public class ResponseHeadersOperationFilter : IOperationFilter
             return;
         }
 
-        foreach (var operationResponseCode in operation.Responses.Keys)
+        foreach (var operationResponseCode in operation.Responses!.Keys)
         {
             var relevantAttributes = GetActionAttributesWithCode(operationAttributes, operationResponseCode);
             if (relevantAttributes.Length == 0)
@@ -54,19 +55,33 @@ public class ResponseHeadersOperationFilter : IOperationFilter
         return attributes.Where(x => x.StatusCode.ToString() == code).ToArray();
     }
 
-    private static OpenApiResponse GetActionResponseWithStatusCode(OpenApiOperation operation, string code)
+    private static IOpenApiResponse GetActionResponseWithStatusCode(OpenApiOperation operation, string code)
     {
-        var operationResponse = operation.Responses[code];
-        operationResponse.Headers ??= new Dictionary<string, OpenApiHeader>();
+        var operationResponse = operation.Responses![code];
 
         return operationResponse;
     }
 
-    private static void AddHeaderToResponse(OpenApiResponse response, ResponseHeaderAttribute header)
+    private static void AddHeaderToResponse(IOpenApiResponse response, ResponseHeaderAttribute header)
     {
-        response.Headers[header.Name] = new OpenApiHeader
+        // Если Headers null, создаем новый словарь
+        if (response.Headers == null)
         {
-            Schema = new OpenApiSchema { Type = header.Type.ToLower() },
+            // Приводим к конкретному типу, чтобы иметь возможность установить Headers
+            if (response is OpenApiResponse concreteResponse)
+            {
+                concreteResponse.Headers = new ConcurrentDictionary<string, IOpenApiHeader>();
+            }
+            else
+            {
+                // Если это интерфейс и Headers null, ничего не делаем
+                return;
+            }
+        }
+
+        response.Headers![header.Name] = new OpenApiHeader
+        {
+            Schema = new OpenApiSchema { Type = header.Type },
             Description = header.Description,
         };
     }
