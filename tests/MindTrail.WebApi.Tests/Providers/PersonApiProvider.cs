@@ -26,30 +26,30 @@ public class PersonApiProvider
     /// <summary>
     /// Request for endpoint <see cref="PersonController.GetPersons"/>.
     /// </summary>
-    /// <param name="query">Parameters for querying.</param>
+    /// <param name="model">The model to query a list of persons.</param>
     /// <returns>The HTTP response message received from the endpoint. </returns>
-    public async Task<HttpResponseMessage> GetPersonsAsync(PersonQueryModel query)
+    public async Task<HttpResponseMessage> GetPersonsAsync(PersonQueryModel model)
     {
-        ArgumentNullException.ThrowIfNull(query, nameof(query));
+        ArgumentNullException.ThrowIfNull(model);
 
         var queryParams = new Dictionary<string, string>();
 
-        queryParams.AddIfNotNull(nameof(query.PageNumber), query.PageNumber);
-        queryParams.AddIfNotNull(nameof(query.PageSize), query.PageSize);
+        queryParams.AddIfNotNull(nameof(model.PageNumber), model.PageNumber);
+        queryParams.AddIfNotNull(nameof(model.PageSize), model.PageSize);
 
-        if (!string.IsNullOrWhiteSpace(query.TextSearchQuery))
+        if (!string.IsNullOrWhiteSpace(model.TextSearchQuery))
         {
-            queryParams.AddIfNotNull(nameof(query.TextSearchQuery), query.TextSearchQuery);
-            queryParams.AddIfNotNull(nameof(query.TextSearchCaseSensitive), query.TextSearchCaseSensitive);
+            queryParams.AddIfNotNull(nameof(model.TextSearchQuery), model.TextSearchQuery);
+            queryParams.AddIfNotNull(nameof(model.TextSearchCaseSensitive), model.TextSearchCaseSensitive);
         }
 
-        queryParams.AddIfNotNull(nameof(query.FullName), query.FullName);
-        queryParams.AddIfNotNull(nameof(query.BirthYear), query.BirthYear);
+        queryParams.AddIfNotNull(nameof(model.FullName), model.FullName);
+        queryParams.AddIfNotNull(nameof(model.BirthYear), model.BirthYear);
 
-        if (query.SortField != null)
+        if (model.SortField != null)
         {
-            queryParams.AddIfNotNull(nameof(query.SortField), (int)query.SortField);
-            queryParams.AddIfNotNull(nameof(query.SortDirection), (int?)query.SortDirection);
+            queryParams.AddIfNotNull(nameof(model.SortField), (int)model.SortField);
+            queryParams.AddIfNotNull(nameof(model.SortDirection), (int?)model.SortDirection);
         }
 
         var request = new HttpRequestMessage(HttpMethod.Get, BaseUrl)

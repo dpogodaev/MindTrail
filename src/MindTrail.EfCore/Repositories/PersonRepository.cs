@@ -48,11 +48,13 @@ public class PersonRepository(AppDbContext dbContext)
         return await query.FirstOrDefaultAsync();
     }
 
-    public async Task<Person> CreatePersonAsync(Person person)
+    public async Task<Guid> CreatePersonAsync(Person person)
     {
         ArgumentNullException.ThrowIfNull(person);
 
-        return await CreateEntityAsync(person);
+        var createdPerson = await CreateEntityAsync(person);
+
+        return createdPerson.Id;
     }
 
     public async Task<Person?> UpdatePersonAsync(Person person, bool includeCountry = false)

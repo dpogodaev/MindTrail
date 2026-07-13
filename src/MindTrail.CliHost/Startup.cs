@@ -19,15 +19,18 @@ internal static class Startup
     /// <param name="configuration">The application configuration.</param>
     /// <param name="logger">The startup logger. Optional.</param>
     public static void ConfigureServices(
-        this IHostApplicationBuilder builder, IConfiguration configuration, IStartupLogger logger = null)
+        this IHostApplicationBuilder builder, IConfiguration configuration, IStartupLogger? logger = null)
     {
-        builder.Services.AddCommonConfig();
-        builder.Services.AddDomainServicesConfig();
-        builder.Services.AddApplicationConfig();
-        builder.Services.AddEfCoreConfig(configuration, logger);
+        builder.Services
+            .AddCommonConfig()
+            .AddDomainServicesConfig()
+            .AddApplicationConfig()
+            .AddApplicationContractsConfig()
+            .AddEfCoreConfig(configuration, logger);
 
-        builder.Services.AddCliHostConfig();
-        builder.Services.AddCliConfig();
+        builder.Services
+            .AddCliHostConfig()
+            .AddCliConfig();
     }
 
     /// <summary>
@@ -38,7 +41,9 @@ internal static class Startup
     /// <param name="logger">The startup logger. Optional.</param>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     public static async Task ApplyAutoMigrationAsync(
-        this IHost host, IConfiguration configuration, IStartupLogger logger)
+        this IHost host,
+        IConfiguration configuration,
+        IStartupLogger logger)
     {
         await host.ApplyMigrationAsync(configuration, logger);
     }

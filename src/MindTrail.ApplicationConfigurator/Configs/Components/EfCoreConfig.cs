@@ -6,9 +6,7 @@ using Microsoft.Extensions.Hosting;
 using MindTrail.ApplicationConfigurator.Extensions;
 using MindTrail.ApplicationConfigurator.Interfaces.Logging;
 using MindTrail.ApplicationConfigurator.Settings;
-using MindTrail.EfCore.Interfaces.QueryServices;
 using MindTrail.EfCore.Interfaces.Repositories;
-using MindTrail.EfCore.QueryServices;
 using MindTrail.EfCore.Repositories;
 using MindTrail.EfCoreMssql.Context;
 using MindTrail.EfCorePostgreSql.Context;
@@ -37,7 +35,6 @@ public static class EfCoreConfig
         IStartupLogger? logger = null)
     {
         services.AddRepositories();
-        services.AddQueryServices();
         services.AddDatabaseProvider(configuration, logger);
     }
 
@@ -75,13 +72,6 @@ public static class EfCoreConfig
                 HandleUnsupportedDatabaseProvider(databaseSettings);
                 break;
         }
-    }
-
-    private static void AddQueryServices(this IServiceCollection services)
-    {
-        services
-            .AddTransient<IPersonQueryService, PersonQueryService>()
-            .AddTransient<ICountryQueryService, CountryQueryService>();
     }
 
     private static void AddRepositories(this IServiceCollection services)

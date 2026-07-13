@@ -8,17 +8,25 @@ namespace MindTrail.ApplicationConfigurator.Configs.Components;
 public static class DomainConfig
 {
     /// <summary>
-    /// Adds a configuration for domain services.
+    /// Extension members for registering application services in the dependency injection container.
     /// </summary>
     /// <param name="services">Used to register application services.</param>
-    public static void AddDomainServicesConfig(
-        this IServiceCollection services)
+    extension(IServiceCollection services)
     {
-        services.AddServices();
-    }
+        /// <summary>
+        /// Adds a configuration for domain services.
+        /// </summary>
+        /// <returns>The same <see cref="IServiceCollection"/> instance, so that additional calls can be chained.</returns>
+        public IServiceCollection AddDomainServicesConfig()
+        {
+            services.AddServices();
 
-    private static void AddServices(this IServiceCollection services)
-    {
-        // Domain services.
+            return services;
+        }
+
+        private void AddServices()
+        {
+            // Domain services.
+        }
     }
 }

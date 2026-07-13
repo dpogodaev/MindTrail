@@ -1,4 +1,4 @@
-﻿using MindTrail.ApplicationContracts.Enums;
+using MindTrail.ApplicationContracts.Enums;
 
 namespace MindTrail.WebApi.RequestModels;
 

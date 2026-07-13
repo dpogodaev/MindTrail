@@ -18,8 +18,8 @@ public interface IPersonRepository
     /// Creates a new person.
     /// </summary>
     /// <param name="person">The person to create.</param>
-    /// <returns>The created person.</returns>
-    Task<Person> CreatePersonAsync(Person person);
+    /// <returns>The ID of the created person.</returns>
+    Task<Guid> CreatePersonAsync(Person person);
 
     /// <summary>
     /// Updates an existing person.

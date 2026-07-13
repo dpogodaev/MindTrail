@@ -321,7 +321,7 @@ public class PersonApiTests
         Assert.AreEqual("Duplicate person", problemDetails.Title);
         Assert.AreEqual(existingPerson!.Id.ToString(), problemDetails.GetStringParameter("personId"));
         Assert.AreEqual(model.FullName, problemDetails.GetStringParameter("specifiedFullName"));
-        Assert.AreEqual((int?)model.BirthYear, problemDetails.GetIntParameter("specifiedBirthYear"));
+        Assert.AreEqual(model.BirthYear, problemDetails.GetIntParameter("specifiedBirthYear"));
         Assert.AreEqual("mind_trail.person_duplicate", problemDetails.GetErrorCode());
     }
 }

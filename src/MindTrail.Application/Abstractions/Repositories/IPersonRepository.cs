@@ -10,7 +10,7 @@ public interface IPersonRepository
 
     Task<Person> GetRequiredPersonByIdAsync(Guid id);
 
-    Task<Person> CreatePersonAsync(Person entityToCreate);
+    Task<Guid> CreatePersonAsync(Person entityToCreate);
 
     Task<Person> UpdatePersonAsync(Person entityToUpdate);
 

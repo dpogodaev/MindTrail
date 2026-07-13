@@ -26,14 +26,16 @@ internal static class Startup
         IConfiguration configuration,
         IStartupLogger? logger = null)
     {
-        builder.Services.AddCommonConfig();
-        builder.Services.AddDomainServicesConfig();
-        builder.Services.AddApplicationConfig();
-        builder.Services.AddEfCoreConfig(configuration, logger);
+        builder.Services.AddCommonConfig()
+            .AddDomainServicesConfig()
+            .AddApplicationConfig()
+            .AddApplicationContractsConfig()
+            .AddEfCoreConfig(configuration, logger);
 
-        builder.Services.AddWebHostConfig();
-        builder.Services.AddWebAuthConfig(configuration, logger);
-        builder.Services.AddWebApiConfig(configuration, logger);
+        builder.Services
+            .AddWebHostConfig()
+            .AddWebAuthConfig(configuration, logger)
+            .AddWebApiConfig(configuration, logger);
     }
 
     /// <summary>

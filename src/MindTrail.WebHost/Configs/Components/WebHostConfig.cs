@@ -9,25 +9,31 @@ namespace MindTrail.WebHost.Configs.Components;
 /// </summary>
 internal static class WebHostConfig
 {
-    /// <summary>
-    /// Adds a configuration for the web host (infrastructure services, providers, adapters, etc.).
-    /// </summary>
     /// <param name="services">Used to register application services.</param>
-    public static void AddWebHostConfig(this IServiceCollection services)
+    extension(IServiceCollection services)
     {
-        AddProviders(services);
-        AddHostedServicesConfig(services);
-    }
+        /// <summary>
+        /// Adds a configuration for the web host (infrastructure services, providers, adapters, etc.).
+        /// </summary>
+        public IServiceCollection AddWebHostConfig()
+        {
+            services.AddProviders();
+            services.AddHostedServicesConfig();
 
-    private static void AddProviders(IServiceCollection services)
-    {
-        services.AddSingleton<TraceIdProvider>();
-        services.AddSingleton<ErrorCodeProvider>();
-        services.AddSingleton<ProblemInstanceProvider>();
-    }
+            return services;
+        }
 
-    private static void AddHostedServicesConfig(IServiceCollection services)
-    {
-        services.AddHostedService<AppLifetimeHostedService>();
+        private void AddProviders()
+        {
+            services
+                .AddSingleton<TraceIdProvider>()
+                .AddSingleton<ErrorCodeProvider>()
+                .AddSingleton<ProblemInstanceProvider>();
+        }
+
+        private void AddHostedServicesConfig()
+        {
+            services.AddHostedService<AppLifetimeHostedService>();
+        }
     }
 }

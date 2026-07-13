@@ -22,65 +22,72 @@ internal static class WebAuthConfig
     private const string DefaultAuthenticationScheme = ApiKeyConstants.ApiKeySchemeName;
     private const string ApiKeyClaimName = "FullAccessByApiKey";
 
-    /// <summary>
-    /// Adds a configuration for user authentication and authorization.
-    /// </summary>
     /// <param name="services">Used to register application services.</param>
-    /// <param name="configuration">The application configuration.</param>
-    /// <param name="logger">The startup logger. Optional.</param>
-    public static void AddWebAuthConfig(
-        this IServiceCollection services, IConfiguration configuration, IStartupLogger? logger = null)
+    extension(IServiceCollection services)
     {
-        AddAuthNConfig(services);
-        AddAuthZConfig(services);
-
-        AddSettings(services, configuration, logger);
-        AddFilters(services);
-        AddValidators(services);
-    }
-
-    private static void AddAuthNConfig(IServiceCollection services)
-    {
-        services.AddAuthentication(DefaultAuthenticationScheme)
-            .AddApiKey(
-                ApiKeyConstants.ApiKeySchemeName,
-                options =>
-                {
-                    options.ApiKeyHeaderName = ApiKeyConstants.ApiKeyHeaderName;
-                    options.ClaimName = ApiKeyClaimName;
-                });
-    }
-
-    private static void AddAuthZConfig(IServiceCollection services)
-    {
-        services.AddAuthorization();
-    }
-
-    private static void AddSettings(
-        IServiceCollection services, IConfiguration configuration, IStartupLogger? logger = null)
-    {
-        if (!configuration.TryGetProperty(ApiKeyConfigParam, out var apiKey))
+        /// <summary>
+        /// Adds a configuration for user authentication and authorization.
+        /// </summary>
+        /// <param name="configuration">The application configuration.</param>
+        /// <param name="logger">The startup logger. Optional.</param>
+        public IServiceCollection AddWebAuthConfig(
+            IConfiguration configuration,
+            IStartupLogger? logger = null)
         {
-            logger?.Warn($"The configuration parameter '{ApiKeyConfigParam}' is not specified");
+            services.AddAuthNConfig();
+            services.AddAuthZConfig();
+
+            services.AddSettings(configuration, logger);
+            services.AddFilters();
+            services.AddValidators();
+
+            return services;
         }
 
-        var additionalApiKeys = configuration.BindSection<Dictionary<string, string>>(AdditionalApiKeyConfigParam);
-
-        services.AddTransient(_ => new ApiKeySettings
+        private void AddAuthNConfig()
         {
-            ApiKey = apiKey!,
-            HeaderName = ApiKeyConstants.ApiKeyHeaderName,
-            AdditionalApiKeys = additionalApiKeys,
-        });
-    }
+            services.AddAuthentication(DefaultAuthenticationScheme)
+                .AddApiKey(
+                    ApiKeyConstants.ApiKeySchemeName,
+                    options =>
+                    {
+                        options.ApiKeyHeaderName = ApiKeyConstants.ApiKeyHeaderName;
+                        options.ClaimName = ApiKeyClaimName;
+                    });
+        }
 
-    private static void AddValidators(IServiceCollection services)
-    {
-        services.AddTransient<IApiKeyValidator, ApiKeyValidator>();
-    }
+        private void AddAuthZConfig()
+        {
+            services.AddAuthorization();
+        }
 
-    private static void AddFilters(IServiceCollection services)
-    {
-        services.AddTransient<ApiKeyAuthZFilter>();
+        private void AddSettings(
+            IConfiguration configuration,
+            IStartupLogger? logger = null)
+        {
+            if (!configuration.TryGetProperty(ApiKeyConfigParam, out var apiKey))
+            {
+                logger?.Warn($"The configuration parameter '{ApiKeyConfigParam}' is not specified");
+            }
+
+            var additionalApiKeys = configuration.BindSection<Dictionary<string, string>>(AdditionalApiKeyConfigParam);
+
+            services.AddTransient(_ => new ApiKeySettings
+            {
+                ApiKey = apiKey!,
+                HeaderName = ApiKeyConstants.ApiKeyHeaderName,
+                AdditionalApiKeys = additionalApiKeys,
+            });
+        }
+
+        private void AddValidators()
+        {
+            services.AddTransient<IApiKeyValidator, ApiKeyValidator>();
+        }
+
+        private void AddFilters()
+        {
+            services.AddTransient<ApiKeyAuthZFilter>();
+        }
     }
 }

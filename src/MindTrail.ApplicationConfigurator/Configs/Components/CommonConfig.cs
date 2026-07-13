@@ -10,19 +10,27 @@ namespace MindTrail.ApplicationConfigurator.Configs.Components;
 public static class CommonConfig
 {
     /// <summary>
-    /// Adds a configuration for all types of shared resources (providers, helpers, extensions, utils, etc.).
+    /// Extension members for registering application services in the dependency injection container.
     /// </summary>
     /// <param name="services">Used to register application services.</param>
-    public static void AddCommonConfig(
-        this IServiceCollection services)
+    extension(IServiceCollection services)
     {
-        services.AddProviders();
-    }
+        /// <summary>
+        /// Adds a configuration for all types of shared resources (providers, helpers, extensions, utils, etc.).
+        /// </summary>
+        /// <returns>The same <see cref="IServiceCollection"/> instance, so that additional calls can be chained.</returns>
+        public IServiceCollection AddCommonConfig()
+        {
+            services.AddProviders();
 
-    private static void AddProviders(this IServiceCollection services)
-    {
-        services
-            .AddTransient<ICurrentTimeProvider, CurrentTimeProvider>()
-            .AddTransient<IElapsedTimeMeterProvider, ElapsedTimeMeterProvider>();
+            return services;
+        }
+
+        private void AddProviders()
+        {
+            services
+                .AddTransient<ICurrentTimeProvider, CurrentTimeProvider>()
+                .AddTransient<IElapsedTimeMeterProvider, ElapsedTimeMeterProvider>();
+        }
     }
 }

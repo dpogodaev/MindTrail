@@ -29,11 +29,10 @@ public class PersonRepositoryAdapter(
             throw new PersonNotFoundException(id));
     }
 
-    public async Task<DomainEntities.Person> CreatePersonAsync(DomainEntities.Person entityToCreate)
+    public async Task<Guid> CreatePersonAsync(DomainEntities.Person entityToCreate)
     {
-        return ToDomainEntity(
-            await repository.CreatePersonAsync(
-                ToEfEntity(entityToCreate)));
+        return await repository.CreatePersonAsync(
+            ToEfEntity(entityToCreate));
     }
 
     public async Task<DomainEntities.Person> UpdatePersonAsync(DomainEntities.Person entityToUpdate)

@@ -1,13 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MindTrail.ApplicationContracts.Dtos;
-using MindTrail.ApplicationContracts.Interfaces.AppServices;
+using MindTrail.ApplicationContracts.Interfaces;
 using MindTrail.DomainShared.Exceptions;
 using MindTrail.DomainShared.Exceptions.Base;
 using MindTrail.WebApi.Abstractions.Providers;
-using MindTrail.WebApi.Mapping;
+using MindTrail.WebApi.Builders;
 using MindTrail.WebApi.RequestModels;
 using MindTrail.WebAuth.Attributes;
 
@@ -20,45 +22,81 @@ namespace MindTrail.WebApi.Controllers;
 [ApiKeyRequired]
 [Route("api/mind-trail/v1/persons")]
 public class PersonController(
-    IHttpErrorResultProvider errorProvider,
-    IPersonAppService personService)
+    IRequestSender requestSender,
+    IHttpErrorResultProvider errorProvider)
     : ControllerBase
 {
     /// <summary>
     /// Returns a paged list of <see cref="PersonDto"/>.
     /// </summary>
-    /// <param name="query">Parameters for querying.</param>
+    /// <param name="model">The model to query a list of persons.</param>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <returns>Paged <see cref="PersonDto"/> collection.</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedDto<PersonDto>))]
-    public async Task<IActionResult> GetPersons([FromQuery] PersonQueryModel query)
+    [Produces("application/json")]
+    public async Task<ActionResult<PagedDto<PersonDto>>> GetPersons(
+        [FromQuery] PersonQueryModel model,
+        CancellationToken cancellationToken)
     {
-        var persons = await personService.GetPersonsAsync(query.ToAppModel());
+        var query = PersonQueryBuilder.BuildGetPersonsQuery(model);
 
-        return Ok(persons);
+        var result = await requestSender.Send(query, cancellationToken);
+
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Returns a person by its identifier.
+    /// </summary>
+    /// <param name="id">The identifier of the person to retrieve.</param>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    /// <returns>The requested <see cref="PersonDto"/>.</returns>
+    [HttpGet("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PersonDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+    public async Task<ActionResult<PersonDto>> GetPersonById(
+        Guid id,
+        CancellationToken cancellationToken)
+    {
+        var query = PersonQueryBuilder.BuildGetPersonByIdQuery(id);
+
+        var person = await requestSender.Send(query, cancellationToken);
+
+        return person is null
+            ? errorProvider.ToNotFound()
+            : Ok(person);
     }
 
     /// <summary>
     /// Creates a new person.
     /// </summary>
     /// <param name="model">The model to create a person.</param>
-    /// <returns>The created person.</returns>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    /// <returns>The ID of the created person.</returns>
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(PersonDto))]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Guid))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
     [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(ProblemDetails))]
     [Produces("application/json")]
-    public async Task<IActionResult> CreatePerson([FromBody, Required] PersonCreationModel model)
+    public async Task<ActionResult<Guid>> CreatePerson(
+        [FromBody, Required] PersonCreationModel model,
+        CancellationToken cancellationToken)
     {
         try
         {
-            var createdPerson = await personService.CreatePersonAsync(model.ToAppModel());
+            var command = PersonCommandBuilder.BuildCreatePersonCommand(model);
 
-            return CreatedAtAction(nameof(CreatePerson), createdPerson);
+            var createdPersonId = await requestSender.Send(command, cancellationToken);
+
+            return CreatedAtAction(
+                nameof(GetPersonById),
+                new { id = createdPersonId },
+                createdPersonId);
         }
-        catch (DomainException ex)
+        catch (DomainException domainException)
         {
-            switch (ex)
+            switch (domainException)
             {
                 case BirthYearOutOfRangeException e:
                     return errorProvider.ToBadRequest(e, nameof(model.BirthYear));

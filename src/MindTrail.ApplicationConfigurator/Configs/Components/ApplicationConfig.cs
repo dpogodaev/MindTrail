@@ -1,11 +1,13 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using MindTrail.Application.Abstractions.QueryServices;
+﻿using System;
+using Microsoft.Extensions.DependencyInjection;
 using MindTrail.Application.Abstractions.Repositories;
-using MindTrail.Application.AppServices;
-using MindTrail.ApplicationConfigurator.Abstractions.Adapters.QueryServices;
+using MindTrail.Application.Handlers;
 using MindTrail.ApplicationConfigurator.Abstractions.Adapters.Repositories;
-using MindTrail.ApplicationConfigurator.Logging.Services;
-using MindTrail.ApplicationContracts.Interfaces.AppServices;
+using MindTrail.ApplicationConfigurator.Extensions;
+using MindTrail.ApplicationConfigurator.Logging.Handlers;
+using MindTrail.ApplicationContracts.Dtos;
+using MindTrail.ApplicationContracts.Interfaces.Commands;
+using MindTrail.ApplicationContracts.Requests.Commands;
 
 namespace MindTrail.ApplicationConfigurator.Configs.Components;
 
@@ -15,37 +17,37 @@ namespace MindTrail.ApplicationConfigurator.Configs.Components;
 public static class ApplicationConfig
 {
     /// <summary>
-    /// Adds a configuration for application services.
+    /// Extension members for registering application services in the dependency injection container.
     /// </summary>
     /// <param name="services">Used to register application services.</param>
-    public static void AddApplicationConfig(
-        this IServiceCollection services)
+    extension(IServiceCollection services)
     {
-        services.AddAppServices();
-        services.AddQueryServices();
-        services.AddRepositories();
-    }
+        /// <summary>
+        /// Adds a configuration for application services.
+        /// </summary>
+        /// <returns>The same <see cref="IServiceCollection"/> instance, so that additional calls can be chained.</returns>
+        public IServiceCollection AddApplicationConfig()
+        {
+            services.AddRepositories();
+            services.AddCommandHandlers();
 
-    private static void AddAppServices(this IServiceCollection services)
-    {
-        services
-            .AddScoped<ICountryAppService, CountryAppService>()
-            .AddScoped<IPersonAppService, PersonAppService>()
-            .Decorate<IPersonAppService, PersonAppServiceLogging>();
-    }
+            return services;
+        }
 
-    private static void AddQueryServices(this IServiceCollection services)
-    {
-        services
-            .AddScoped<ICountryQueryService, CountryQueryServiceAdapter>()
-            .AddScoped<IPersonQueryService, PersonQueryServiceAdapter>();
-    }
+        private void AddRepositories()
+        {
+            services
+                .AddScoped<IUnitOfWork, UnitOfWorkAdapter>()
+                .AddTransient<ICountryRepository, CountryRepositoryAdapter>()
+                .AddTransient<IPersonRepository, PersonRepositoryAdapter>();
+        }
 
-    private static void AddRepositories(this IServiceCollection services)
-    {
-        services
-            .AddScoped<IUnitOfWork, UnitOfWorkAdapter>()
-            .AddTransient<ICountryRepository, CountryRepositoryAdapter>()
-            .AddTransient<IPersonRepository, PersonRepositoryAdapter>();
+        private void AddCommandHandlers()
+        {
+            services.AddScopedDecorated<
+                ICommandHandler<CreatePersonCommand, Guid>,
+                CreatePersonCommandHandler,
+                PersonCreationCommandHandlerLogging>();
+        }
     }
 }

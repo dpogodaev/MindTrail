@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MindTrail.ApplicationContracts.Dtos;
-using MindTrail.ApplicationContracts.Interfaces.AppServices;
-using MindTrail.WebApi.Mapping;
+using MindTrail.ApplicationContracts.Interfaces;
+using MindTrail.WebApi.Builders;
 using MindTrail.WebApi.RequestModels;
 using MindTrail.WebAuth.Attributes;
 
@@ -15,20 +16,25 @@ namespace MindTrail.WebApi.Controllers;
 [ApiController]
 [ApiKeyRequired]
 [Route("api/mind-trail/v1/countries")]
-public class CountryController(ICountryAppService countryService)
+public class CountryController(IRequestSender requestSender)
     : ControllerBase
 {
     /// <summary>
     /// Returns a paged list of <see cref="CountryDto"/>.
     /// </summary>
-    /// <param name="query">Parameters for querying.</param>
+    /// <param name="model">The model to query a list of countries.</param>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <returns>Paged <see cref="CountryDto"/> collection.</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedDto<CountryDto>))]
     [Produces("application/json")]
-    public async Task<IActionResult> GetCountries([FromQuery] CountryQueryModel query)
+    public async Task<IActionResult> GetCountries(
+        [FromQuery] CountryQueryModel model,
+        CancellationToken cancellationToken)
     {
-        var result = await countryService.GetCountriesAsync(query.ToAppModel());
+        var query = CountryQueryBuilder.BuildGetCountriesQuery(model);
+
+        var result = await requestSender.Send(query, cancellationToken);
 
         return Ok(result);
     }

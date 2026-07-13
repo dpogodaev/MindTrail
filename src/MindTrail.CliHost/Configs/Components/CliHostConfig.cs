@@ -11,7 +11,9 @@ internal static class CliHostConfig
     /// Adds a configuration for the CLI host (infrastructure services, providers, adapters, etc.).
     /// </summary>
     /// <param name="services">Used to register application services.</param>
-    public static void AddCliHostConfig(this IServiceCollection services)
+    /// <returns>The same <see cref="IServiceCollection"/> instance, so that additional calls can be chained.</returns>
+    public static IServiceCollection AddCliHostConfig(this IServiceCollection services)
     {
+        return services;
     }
 }
