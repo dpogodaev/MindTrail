@@ -72,7 +72,7 @@ internal static class WebAuthConfig
 
             var additionalApiKeys = configuration.BindSection<Dictionary<string, string>>(AdditionalApiKeyConfigParam);
 
-            services.AddTransient(_ => new ApiKeySettings
+            services.AddScoped(_ => new ApiKeySettings
             {
                 ApiKey = apiKey!,
                 HeaderName = ApiKeyConstants.ApiKeyHeaderName,
@@ -82,12 +82,12 @@ internal static class WebAuthConfig
 
         private void AddValidators()
         {
-            services.AddTransient<IApiKeyValidator, ApiKeyValidator>();
+            services.AddScoped<IApiKeyValidator, ApiKeyValidator>();
         }
 
         private void AddFilters()
         {
-            services.AddTransient<ApiKeyAuthZFilter>();
+            services.AddScoped<ApiKeyAuthZFilter>();
         }
     }
 }

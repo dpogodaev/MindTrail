@@ -1,7 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace MindTrail.EfCore.Interfaces.Repositories;
 
+/// <summary>
+/// Coordinates persisting changes made through repositories and managing database transactions.
+/// </summary>
 public interface IUnitOfWork
 {
     /// <summary>
@@ -14,11 +18,27 @@ public interface IUnitOfWork
     /// </summary>
     void EnableAutoSave();
 
-    Task SaveChangesAsync();
+    /// <summary>
+    /// Persists all pending changes to the database.
+    /// </summary>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    Task SaveChangesAsync(CancellationToken cancellationToken = default);
 
-    Task BeginTransactionAsync();
+    /// <summary>
+    /// Begins a new database transaction.
+    /// </summary>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    Task BeginTransactionAsync(CancellationToken cancellationToken = default);
 
-    Task CommitTransactionAsync();
+    /// <summary>
+    /// Commits the current database transaction, making all changes made within it permanent.
+    /// </summary>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    Task CommitTransactionAsync(CancellationToken cancellationToken = default);
 
-    Task RollbackTransactionAsync();
+    /// <summary>
+    /// Rolls back the current database transaction, discarding all changes made within it.
+    /// </summary>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    Task RollbackTransactionAsync(CancellationToken cancellationToken = default);
 }

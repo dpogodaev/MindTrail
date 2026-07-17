@@ -1,4 +1,3 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MindTrail.Application.Abstractions.Repositories;
@@ -6,48 +5,48 @@ using MindTrail.Application.Helpers;
 using MindTrail.ApplicationContracts.Interfaces.Commands;
 using MindTrail.ApplicationContracts.Requests.Commands;
 using MindTrail.Common.Interfaces.Providers;
-using MindTrail.Domain.Entities;
 using MindTrail.Domain.ValueObjects;
 using MindTrail.DomainShared.Exceptions;
 
 namespace MindTrail.Application.Handlers;
 
-/// <inheritdoc cref="ICommandHandler{PersonCreationCommand,PersonDto}"/>
+/// <inheritdoc cref="ICommandHandler{UpdatePersonCommandHandler,VoidResult}"/>
 /// <param name="currentTimeProvider">Provides the current time.</param>
 /// <param name="unitOfWork">Coordinates persisting changes made during command handling.</param>
 /// <param name="countryRepository">Provides access to country data, used to validate the birth country.</param>
-/// <param name="personRepository">Provides access to person data, used to check for duplicates and persist the new person.</param>
-public class CreatePersonCommandHandler(
+/// <param name="personRepository">Provides access to person data, used to validate duplicates and persist changes.</param>
+public class UpdatePersonCommandHandler(
     ICurrentTimeProvider currentTimeProvider,
     IUnitOfWork unitOfWork,
     ICountryRepository countryRepository,
     IPersonRepository personRepository)
-    : ICommandHandler<CreatePersonCommand, Guid>
+    : ICommandHandler<UpdatePersonCommand, VoidResult>
 {
-    /// <inheritdoc cref="ICommandHandler{PersonCreationCommand,PersonDto}.HandleAsync"/>
+    /// <inheritdoc cref="ICommandHandler{PersonCreationCommand,VoidResult}.HandleAsync"/>
     /// <exception cref="PersonNameTooLongException">The person's name is too long.</exception>
     /// <exception cref="PersonDuplicateException">A person with the same name and date of birth already exists.</exception>
     /// <exception cref="CountryNotFoundException">The specified birth country does not exist.</exception>
-    public async Task<Guid> HandleAsync(
-        CreatePersonCommand command,
+    /// <exception cref="PersonNotFoundException">The person with the specified ID was not found.</exception>
+    public async Task<VoidResult> HandleAsync(
+        UpdatePersonCommand command,
         CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(command);
+        var personToUpdate = await personRepository.GetRequiredPersonByIdAsync(command.Id, cancellationToken);
 
-        var personToCreate = new Person(
-            PersonFullName.Create(command.FullName),
+        personToUpdate.Rename(new PersonFullName(command.FullName));
+        personToUpdate.ChangeBirthInformation(
             BirthYear.Create(command.BirthYear, currentTimeProvider.GetCurrentTime()),
             command.BirthCountryId);
 
         await PersonValidationHelper.ValidateCountryExistsAndThrowAsync(
-            personToCreate, countryRepository, cancellationToken);
+            personToUpdate, countryRepository, cancellationToken);
 
         await PersonValidationHelper.ValidatePersonDuplicatesAndThrowAsync(
-            personToCreate, personRepository, cancellationToken);
+            personToUpdate, personRepository, cancellationToken);
 
-        var createdPersonId = await personRepository.CreatePersonAsync(personToCreate, cancellationToken);
+        await personRepository.UpdatePersonAsync(personToUpdate, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return createdPersonId;
+        return VoidResult.Value;
     }
 }

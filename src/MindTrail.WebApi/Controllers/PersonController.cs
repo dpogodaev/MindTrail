@@ -110,4 +110,81 @@ public class PersonController(
             }
         }
     }
+
+    /// <summary>
+    /// Updates an existing person.
+    /// </summary>
+    /// <param name="id">The ID of the person to update.</param>
+    /// <param name="model">The model to update the person.</param>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    /// <returns>
+    /// A <see cref="NoContentResult"/> if the person was updated successfully;
+    /// otherwise, an appropriate error response.
+    /// </returns>
+    [HttpPut("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+    [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(ProblemDetails))]
+    public async Task<IActionResult> UpdatePerson(
+        Guid id,
+        [FromBody, Required] PersonUpdateModel model,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var command = PersonCommandBuilder.BuildUpdatePersonCommand(id, model);
+
+            await requestSender.Send(command, cancellationToken);
+
+            return NoContent();
+        }
+        catch (DomainException domainException)
+        {
+            switch (domainException)
+            {
+                case PersonNotFoundException e:
+                    return errorProvider.ToNotFound(e);
+                case BirthYearOutOfRangeException e:
+                    return errorProvider.ToBadRequest(e, nameof(model.BirthYear));
+                case PersonNameTooLongException e:
+                    return errorProvider.ToBadRequest(e, nameof(model.FullName));
+                case PersonDuplicateException e:
+                    return errorProvider.ToConflict(e);
+                case CountryNotFoundException e:
+                    return errorProvider.ToConflict(e);
+                default: throw;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Deletes a person.
+    /// </summary>
+    /// <param name="id">The ID of the person to delete.</param>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    /// <returns>
+    /// A <see cref="NoContentResult"/> if the person was deleted successfully;
+    /// otherwise, an appropriate error response.
+    /// </returns>
+    [HttpDelete("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+    public async Task<IActionResult> DeletePerson(
+        Guid id,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var command = PersonCommandBuilder.BuildDeletePersonCommand(id);
+
+            await requestSender.Send(command, cancellationToken);
+
+            return NoContent();
+        }
+        catch (PersonNotFoundException e)
+        {
+            return errorProvider.ToNotFound(e);
+        }
+    }
 }

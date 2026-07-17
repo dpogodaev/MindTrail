@@ -5,7 +5,6 @@ using MindTrail.Application.Handlers;
 using MindTrail.ApplicationConfigurator.Abstractions.Adapters.Repositories;
 using MindTrail.ApplicationConfigurator.Extensions;
 using MindTrail.ApplicationConfigurator.Logging.Handlers;
-using MindTrail.ApplicationContracts.Dtos;
 using MindTrail.ApplicationContracts.Interfaces.Commands;
 using MindTrail.ApplicationContracts.Requests.Commands;
 
@@ -29,7 +28,6 @@ public static class ApplicationConfig
         public IServiceCollection AddApplicationConfig()
         {
             services.AddRepositories();
-            services.AddCommandHandlers();
 
             return services;
         }
@@ -38,16 +36,8 @@ public static class ApplicationConfig
         {
             services
                 .AddScoped<IUnitOfWork, UnitOfWorkAdapter>()
-                .AddTransient<ICountryRepository, CountryRepositoryAdapter>()
-                .AddTransient<IPersonRepository, PersonRepositoryAdapter>();
-        }
-
-        private void AddCommandHandlers()
-        {
-            services.AddScopedDecorated<
-                ICommandHandler<CreatePersonCommand, Guid>,
-                CreatePersonCommandHandler,
-                PersonCreationCommandHandlerLogging>();
+                .AddScoped<ICountryRepository, CountryRepositoryAdapter>()
+                .AddScoped<IPersonRepository, PersonRepositoryAdapter>();
         }
     }
 }

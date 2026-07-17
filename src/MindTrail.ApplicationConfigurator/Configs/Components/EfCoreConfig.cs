@@ -45,8 +45,8 @@ public static class EfCoreConfig
     /// <param name="host">The application host.</param>
     /// <param name="configuration">The application configuration.</param>
     /// <param name="logger">The startup logger. Optional.</param>
-    /// <exception cref="Exception">Thrown when <see cref="MssqlDbContext"/> is not configured.</exception>
-    /// <exception cref="Exception">Thrown when <see cref="PostgreSqlDbContext"/> is not configured.</exception>
+    /// <exception cref="Exception">The <see cref="MssqlDbContext"/> is not configured.</exception>
+    /// <exception cref="Exception">The <see cref="PostgreSqlDbContext"/> is not configured.</exception>
     public static async Task ApplyMigrationAsync(
         this IHost host,
         IConfiguration configuration,
@@ -77,8 +77,8 @@ public static class EfCoreConfig
     private static void AddRepositories(this IServiceCollection services)
     {
         services
-            .AddTransient<IPersonRepository, PersonRepository>()
-            .AddTransient<ICountryRepository, CountryRepository>();
+            .AddScoped<IPersonRepository, PersonRepository>()
+            .AddScoped<ICountryRepository, CountryRepository>();
     }
 
     private static void AddDatabaseProvider(

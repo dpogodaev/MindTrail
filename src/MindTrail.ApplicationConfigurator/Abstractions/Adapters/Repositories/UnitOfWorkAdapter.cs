@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using AppRepositories = MindTrail.Application.Abstractions.Repositories;
 using EfRepositories = MindTrail.EfCore.Interfaces.Repositories;
 
@@ -8,28 +9,33 @@ public class UnitOfWorkAdapter(
     EfRepositories.IUnitOfWork unitOfWork)
     : AppRepositories.IUnitOfWork
 {
+    /// <inheritdoc/>
     public void EnableAutoSave()
     {
         unitOfWork.EnableAutoSave();
     }
 
-    public async Task SaveChangesAsync()
+    /// <inheritdoc/>
+    public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        await unitOfWork.SaveChangesAsync();
+        await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task BeginTransactionAsync()
+    /// <inheritdoc/>
+    public async Task BeginTransactionAsync(CancellationToken cancellationToken = default)
     {
-        await unitOfWork.BeginTransactionAsync();
+        await unitOfWork.BeginTransactionAsync(cancellationToken);
     }
 
-    public async Task CommitTransactionAsync()
+    /// <inheritdoc/>
+    public async Task CommitTransactionAsync(CancellationToken cancellationToken = default)
     {
-        await unitOfWork.CommitTransactionAsync();
+        await unitOfWork.CommitTransactionAsync(cancellationToken);
     }
 
-    public async Task RollbackTransactionAsync()
+    /// <inheritdoc/>
+    public async Task RollbackTransactionAsync(CancellationToken cancellationToken = default)
     {
-        await unitOfWork.RollbackTransactionAsync();
+        await unitOfWork.RollbackTransactionAsync(cancellationToken);
     }
 }

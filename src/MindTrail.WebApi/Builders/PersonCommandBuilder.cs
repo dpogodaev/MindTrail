@@ -17,4 +17,25 @@ public static class PersonCommandBuilder
             BirthCountryId = model.BirthCountryId,
         };
     }
+
+    public static UpdatePersonCommand BuildUpdatePersonCommand(Guid id, PersonUpdateModel model)
+    {
+        ArgumentNullException.ThrowIfNull(model);
+
+        return new UpdatePersonCommand
+        {
+            Id = id,
+            FullName = model.FullName,
+            BirthYear = model.BirthYear,
+            BirthCountryId = model.BirthCountryId,
+        };
+    }
+
+    public static DeletePersonCommand BuildDeletePersonCommand(Guid id)
+    {
+        return new DeletePersonCommand
+        {
+            Id = id,
+        };
+    }
 }

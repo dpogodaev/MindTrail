@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MindTrail.DomainShared.Exceptions;
 using MindTrail.EfCore.Entities;
@@ -10,32 +11,50 @@ namespace MindTrail.EfCore.Interfaces.Repositories;
 /// </summary>
 public interface IPersonRepository
 {
-    Task<Person?> GetPersonByIdAsync(Guid id, bool includeCountry = false);
+    Task<Person?> GetPersonByIdAsync(
+        Guid id,
+        bool includeCountry = false,
+        CancellationToken cancellationToken = default);
 
-    Task<Person?> GetPersonByNameAndBirthAsync(string fullName, int? birthYear, bool includeCountry = false);
+    Task<Person?> GetPersonByNameAndBirthAsync(
+        string fullName,
+        int? birthYear,
+        bool includeCountry = false,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Creates a new person.
     /// </summary>
     /// <param name="person">The person to create.</param>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <returns>The ID of the created person.</returns>
-    Task<Guid> CreatePersonAsync(Person person);
+    Task<Guid> CreatePersonAsync(
+        Person person,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Updates an existing person.
     /// </summary>
     /// <param name="person">The person to update.</param>
     /// <param name="includeCountry">If true, includes the <see cref="Country"/> navigation property.</param>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <returns>The updated person.</returns>
-    /// <exception cref="PersonNotFoundException">Thrown when the person was not found.</exception>
-    Task<Person?> UpdatePersonAsync(Person person, bool includeCountry = false);
+    /// <exception cref="PersonNotFoundException">The person with the specified ID was not found.</exception>
+    Task<Person?> UpdatePersonAsync(
+        Person person,
+        bool includeCountry = false,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Deletes an existing person.
     /// </summary>
     /// <param name="id">ID of the person to delete.</param>
     /// <param name="includeCountry">If true, includes the <see cref="Country"/> navigation property.</param>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <returns>The deleted person.</returns>
-    /// <exception cref="PersonNotFoundException">Thrown when the person was not found.</exception>
-    Task<Person?> DeletePersonAsync(Guid id, bool includeCountry = false);
+    /// <exception cref="PersonNotFoundException">The person with the specified ID was not found.</exception>
+    Task<Person?> DeletePersonAsync(
+        Guid id,
+        bool includeCountry = false,
+        CancellationToken cancellationToken = default);
 }

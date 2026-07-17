@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MindTrail.EfCore.Context;
@@ -16,7 +17,10 @@ namespace MindTrail.EfCore.Repositories;
 public class PersonRepository(AppDbContext dbContext)
     : BaseRepository(dbContext), IPersonRepository
 {
-    public async Task<Person?> GetPersonByIdAsync(Guid id, bool includeCountry = false)
+    public async Task<Person?> GetPersonByIdAsync(
+        Guid id,
+        bool includeCountry = false,
+        CancellationToken cancellationToken = default)
     {
         var query = GetEntities<Person>();
 
@@ -25,11 +29,14 @@ public class PersonRepository(AppDbContext dbContext)
             query = query.Include(p => p.BirthCountry);
         }
 
-        return await query.FirstOrDefaultAsync(p => p.Id == id);
+        return await query.FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
     }
 
     public async Task<Person?> GetPersonByNameAndBirthAsync(
-        string fullName, int? birthYear, bool includeCountry = false)
+        string fullName,
+        int? birthYear,
+        bool includeCountry = false,
+        CancellationToken cancellationToken = default)
     {
         var query = GetEntities<Person>();
 
@@ -45,19 +52,22 @@ public class PersonRepository(AppDbContext dbContext)
             query = query.Where(x => x.BirthYear == birthYear);
         }
 
-        return await query.FirstOrDefaultAsync();
+        return await query.FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<Guid> CreatePersonAsync(Person person)
+    public async Task<Guid> CreatePersonAsync(Person person, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(person);
 
-        var createdPerson = await CreateEntityAsync(person);
+        var createdPerson = await CreateEntityAsync(person, cancellationToken);
 
         return createdPerson.Id;
     }
 
-    public async Task<Person?> UpdatePersonAsync(Person person, bool includeCountry = false)
+    public async Task<Person?> UpdatePersonAsync(
+        Person person,
+        bool includeCountry = false,
+        CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(person);
 
@@ -68,20 +78,32 @@ public class PersonRepository(AppDbContext dbContext)
             query = query.Include(p => p.BirthCountry);
         }
 
-        var existingPerson = await query.FirstOrDefaultAsync(x => x.Id == person.Id);
+        var existingPerson = await query.FirstOrDefaultAsync(x => x.Id == person.Id, cancellationToken);
 
         if (existingPerson == null)
         {
             return null;
         }
 
+        var isCountryChanged = existingPerson.BirthCountryId != person.BirthCountryId;
+
         UpdateProperties(existingPerson, person);
         await UpdateEntity(existingPerson);
+
+        if (includeCountry && isCountryChanged)
+        {
+            await DbContext.Entry(existingPerson)
+                .Reference(p => p.BirthCountry)
+                .LoadAsync(cancellationToken);
+        }
 
         return existingPerson;
     }
 
-    public async Task<Person?> DeletePersonAsync(Guid id, bool includeCountry = false)
+    public async Task<Person?> DeletePersonAsync(
+        Guid id,
+        bool includeCountry = false,
+        CancellationToken cancellationToken = default)
     {
         var query = GetEntities<Person>();
 
@@ -90,7 +112,7 @@ public class PersonRepository(AppDbContext dbContext)
             query = query.Include(p => p.BirthCountry);
         }
 
-        var personToDelete = await query.FirstOrDefaultAsync(x => x.Id == id);
+        var personToDelete = await query.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
         if (personToDelete == null)
         {
@@ -102,11 +124,10 @@ public class PersonRepository(AppDbContext dbContext)
         return personToDelete;
     }
 
-    private static void UpdateProperties(Person source, Person target)
+    private static void UpdateProperties(Person existingPerson, Person newPerson)
     {
-        target.FullName = source.FullName;
-        target.BirthYear = source.BirthYear;
-        target.BirthCountryId = source.BirthCountryId;
-        target.BirthCountry = source.BirthCountry;
+        existingPerson.FullName = newPerson.FullName;
+        existingPerson.BirthYear = newPerson.BirthYear;
+        existingPerson.BirthCountryId = newPerson.BirthCountryId;
     }
 }

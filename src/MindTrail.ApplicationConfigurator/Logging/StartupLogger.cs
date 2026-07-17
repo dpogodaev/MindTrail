@@ -48,6 +48,6 @@ public class StartupLogger : IStartupLogger
     /// <inheritdoc cref="IStartupLogger.Error"/>
     public void Error(string msg, Exception? e = null)
     {
-        _logger.Error("{Title}", msg);
+        _logger.Error(e, "{Title}", msg);
     }
 }

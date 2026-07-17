@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using MindTrail.Application.Abstractions.Repositories;
 using EfRepositories = MindTrail.EfCore.Interfaces.Repositories;
 
@@ -8,8 +9,8 @@ public class CountryRepositoryAdapter(
     EfRepositories.ICountryRepository repository)
     : ICountryRepository
 {
-    public async Task<bool> ExistsByIdAsync(int id)
+    public async Task<bool> ExistsByIdAsync(int id, CancellationToken cancellationToken = default)
     {
-        return await repository.ExistsByIdAsync(id);
+        return await repository.ExistsByIdAsync(id, cancellationToken);
     }
 }

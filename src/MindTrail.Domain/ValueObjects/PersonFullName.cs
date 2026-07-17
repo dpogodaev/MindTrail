@@ -9,7 +9,7 @@ public class PersonFullName
 
     public PersonFullName(string value)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(value, nameof(value));
+        ArgumentException.ThrowIfNullOrWhiteSpace(value);
 
         if (value.Length > MaxNameLength)
         {
@@ -19,7 +19,19 @@ public class PersonFullName
         Value = value.Trim();
     }
 
+    private PersonFullName(string value, bool isPersistence)
+    {
+        Value = value;
+    }
+
     public string Value { get; }
 
     public static implicit operator string(PersonFullName x) => x.Value;
+
+    public static PersonFullName Create(string value) => new(value);
+
+    public static PersonFullName FromPersistence(string value)
+    {
+        return new PersonFullName(value, true);
+    }
 }

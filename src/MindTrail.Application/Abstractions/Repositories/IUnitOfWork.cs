@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace MindTrail.Application.Abstractions.Repositories;
 
@@ -15,20 +16,24 @@ public interface IUnitOfWork
     /// <summary>
     /// Persists all pending changes to the database.
     /// </summary>
-    Task SaveChangesAsync();
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    Task SaveChangesAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Begins a new database transaction.
     /// </summary>
-    Task BeginTransactionAsync();
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    Task BeginTransactionAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Commits the current database transaction, making all changes made within it permanent.
     /// </summary>
-    Task CommitTransactionAsync();
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    Task CommitTransactionAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Rolls back the current database transaction, discarding all changes made within it.
     /// </summary>
-    Task RollbackTransactionAsync();
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    Task RollbackTransactionAsync(CancellationToken cancellationToken = default);
 }

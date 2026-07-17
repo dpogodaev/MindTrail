@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MindTrail.EfCore.Context;
 using MindTrail.EfCore.Entities;
@@ -10,8 +11,8 @@ namespace MindTrail.EfCore.Repositories;
 public class CountryRepository(AppDbContext dbContext)
     : BaseRepository(dbContext), ICountryRepository
 {
-    public async Task<bool> ExistsByIdAsync(int id)
+    public async Task<bool> ExistsByIdAsync(int id, CancellationToken cancellationToken = default)
     {
-        return await GetEntities<Country>().AnyAsync(x => x.Id == id);
+        return await GetEntities<Country>().AnyAsync(x => x.Id == id, cancellationToken);
     }
 }

@@ -58,7 +58,7 @@ public static class LoggerProvider
     /// Returns instance of the <see cref="IStartupLogger"/> class.
     /// </summary>
     /// <returns>The startup logger.</returns>
-    /// <exception cref="Exception">Thrown when the logger provider is not configured.</exception>
+    /// <exception cref="Exception">The logger provider is not configured.</exception>
     public static IStartupLogger GetStartupLogger()
     {
         if (!_isConfigured)
@@ -94,7 +94,7 @@ public static class LoggerProvider
     /// <remarks>
     /// Adds the use of the logger provider for working with <see cref="Microsoft.Extensions.Logging.ILogger{TCategoryName}"/> objects.
     /// </remarks>
-    /// <exception cref="Exception">Thrown when the logger provider is not configured.</exception>
+    /// <exception cref="Exception">The logger provider is not configured.</exception>
     public static void UseLoggerProviderForDI(this IServiceCollection services)
     {
         if (!_isConfigured)

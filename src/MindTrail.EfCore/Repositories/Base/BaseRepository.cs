@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MindTrail.EfCore.Context;
-using MindTrail.EfCore.Entities;
 using MindTrail.EfCore.Interfaces.Entities;
 
 namespace MindTrail.EfCore.Repositories.Base;
@@ -22,10 +22,10 @@ public abstract class BaseRepository(AppDbContext dbContext)
     /// <summary>
     /// Prepares a persistent entity before adding it to the database.
     /// </summary>
-    /// <remarks>
-    /// If necessary, sets the <see cref="IHasCreationTime.CreationTime"/> and <see cref="IHasTenantId.TenantId"/>.
-    /// </remarks>
     /// <param name="entity">Persistent entity from the database.</param>
+    /// <remarks>
+    /// If necessary, sets the <see cref="IHasCreationTime.CreationTime"/>.
+    /// </remarks>
     /// <exception cref="ArgumentNullException">Thrown when persistent entity is not specified.</exception>
     protected static void SetAuditPropertiesToCreateEntity(IPersistentEntity entity)
     {
@@ -49,14 +49,17 @@ public abstract class BaseRepository(AppDbContext dbContext)
     /// Adds a new entity to the database context.
     /// </summary>
     /// <param name="entity">Persistent entity.</param>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <typeparam name="TEntity">Type of persistent entity.</typeparam>
     /// <returns>Created entity.</returns>
-    protected async Task<TEntity> CreateEntityAsync<TEntity>(TEntity entity)
+    protected async Task<TEntity> CreateEntityAsync<TEntity>(
+        TEntity entity,
+        CancellationToken cancellationToken = default)
         where TEntity : IPersistentEntity
     {
         SetAuditPropertiesToCreateEntity(entity);
 
-        var createdEntity = (TEntity)(await DbContext.AddAsync(entity)).Entity;
+        var createdEntity = (TEntity)(await DbContext.AddAsync(entity, cancellationToken)).Entity;
 
         await SaveChangesIfAutoSaveEnabledAsync();
 

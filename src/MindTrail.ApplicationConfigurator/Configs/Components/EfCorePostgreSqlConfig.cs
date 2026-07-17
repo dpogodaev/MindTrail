@@ -59,7 +59,7 @@ public static class EfCorePostgreSqlConfig
     /// <param name="host">The application host.</param>
     /// <param name="logger">The startup logger. Optional.</param>
     /// <typeparam name="TContext">The type of the database context.</typeparam>
-    /// <exception cref="Exception">Thrown when <see cref="DbContext"/> is not configured.</exception>
+    /// <exception cref="Exception">The <see cref="DbContext"/> is not configured.</exception>
     public static async Task ApplyPostgreSqlMigrationAsync<TContext>(
         this IHost host,
         IStartupLogger? logger = null)

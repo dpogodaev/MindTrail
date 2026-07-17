@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Storage;
 using MindTrail.EfCore.Context;
@@ -39,37 +40,37 @@ public class UnitOfWork<TContext>(TContext dbContext)
         IsAutoSaveEnabled = true;
     }
 
-    public async Task SaveChangesAsync()
+    public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        await dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 
     /// <inheritdoc cref="IUnitOfWork.BeginTransactionAsync"/>
-    public async Task BeginTransactionAsync()
+    public async Task BeginTransactionAsync(CancellationToken cancellationToken = default)
     {
-        _transaction = await dbContext.Database.BeginTransactionAsync();
+        _transaction = await dbContext.Database.BeginTransactionAsync(cancellationToken);
     }
 
     /// <inheritdoc cref="IUnitOfWork.CommitTransactionAsync"/>
-    public async Task CommitTransactionAsync()
+    public async Task CommitTransactionAsync(CancellationToken cancellationToken = default)
     {
         if (_transaction == null)
         {
             throw new InvalidOperationException("No active transaction to commit.");
         }
 
-        await _transaction.CommitAsync();
+        await _transaction.CommitAsync(cancellationToken);
     }
 
     /// <inheritdoc cref="IUnitOfWork.RollbackTransactionAsync"/>
-    public async Task RollbackTransactionAsync()
+    public async Task RollbackTransactionAsync(CancellationToken cancellationToken = default)
     {
         if (_transaction == null)
         {
             throw new InvalidOperationException("No active transaction to rollback.");
         }
 
-        await _transaction.RollbackAsync();
+        await _transaction.RollbackAsync(cancellationToken);
         await _transaction.DisposeAsync();
     }
 
@@ -88,7 +89,7 @@ public class UnitOfWork<TContext>(TContext dbContext)
     /// <param name="disposing">
     /// Indicates if the method call comes from a Dispose method (its value is true) or from a finalizer (its value is false).
     /// </param>
-    protected void Dispose(bool disposing)
+    private void Dispose(bool disposing)
     {
         if (_disposed)
         {
