@@ -5,7 +5,7 @@ Each card can reference other cards, as well as external sources like books and 
 
 ## Requirements
 
-* .NET 8 SDK
+* .NET 10 SDK
 
 ## Getting started
 

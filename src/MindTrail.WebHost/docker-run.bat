@@ -8,4 +8,4 @@ set configFile=%2
 if [%configFile%]==[] set configFile=mind-trail.env
 echo Configuration file: %configFile%
 
-docker run -it -p:%launchPort%:80 --env-file %configFile% mind-trail
+docker run -it -p:%launchPort%:8080 --env-file %configFile% mind-trail

@@ -1,7 +1,7 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0-bookworm-slim AS base
+﻿FROM mcr.microsoft.com/dotnet/aspnet:10.0-noble AS base
 ARG version=0.0.0
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0-noble AS build
 ARG version
 
 WORKDIR /app
@@ -16,11 +16,20 @@ RUN chmod +x docker-entrypoint.sh
 WORKDIR /source
 COPY NuGet.Config .
 COPY MindTrail.sln .
+COPY Directory.Build.props .
+COPY Directory.Packages.props .
 COPY src/MindTrail.WebHost/ src/MindTrail.WebHost/
 COPY src/MindTrail.ApplicationConfigurator/ src/MindTrail.ApplicationConfigurator/
 COPY src/MindTrail.WebApi/ src/MindTrail.WebApi/
 COPY src/MindTrail.WebAuth/ src/MindTrail.WebAuth/
 COPY src/MindTrail.Common/ src/MindTrail.Common/
+COPY src/MindTrail.Domain/ src/MindTrail.Domain/
+COPY src/MindTrail.DomainShared/ src/MindTrail.DomainShared/
+COPY src/MindTrail.Application/ src/MindTrail.Application/
+COPY src/MindTrail.ApplicationContracts/ src/MindTrail.ApplicationContracts/
+COPY src/MindTrail.EfCore/ src/MindTrail.EfCore/
+COPY src/MindTrail.EfCoreMssql/ src/MindTrail.EfCoreMssql/
+COPY src/MindTrail.EfCorePostgreSql/ src/MindTrail.EfCorePostgreSql/
 RUN dotnet build src/MindTrail.WebHost/MindTrail.WebHost.csproj
 
 FROM build AS publish
@@ -37,5 +46,5 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 EXPOSE 8080
-HEALTHCHECK --interval=10s --timeout=10s --retries=3 CMD curl -sS http://localhost/health || exit 1
+HEALTHCHECK --interval=10s --timeout=10s --retries=3 CMD curl -sS http://localhost:8080/health || exit 1
 ENTRYPOINT ["/app/docker-entrypoint.sh"]
