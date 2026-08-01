@@ -9,7 +9,7 @@ using MindTrail.WebApi.Dtos;
 namespace MindTrail.WebApi.Controllers;
 
 /// <summary>
-/// Used to get information about the application, such as version, build date, etc.
+/// Provides information about the application, such as version, build date, and configuration.
 /// </summary>
 [AllowAnonymous]
 [ApiController]
@@ -17,9 +17,9 @@ namespace MindTrail.WebApi.Controllers;
 public class BuildInfoController : ControllerBase
 {
     /// <summary>
-    /// Returns the build information.
+    /// Returns the build information as response headers, without a response body.
     /// </summary>
-    /// <returns>The build information.</returns>
+    /// <returns>An empty <see cref="OkResult"/> with the build information in the headers.</returns>
     [HttpHead("info")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ResponseHeader("X-Version", "Version number")]
@@ -39,9 +39,9 @@ public class BuildInfoController : ControllerBase
     }
 
     /// <summary>
-    /// Returns the build information.
+    /// Returns the build information as a <see cref="BuildInfoDto"/> in the response body.
     /// </summary>
-    /// <returns>The build information.</returns>
+    /// <returns>The <see cref="BuildInfoDto"/> for the application.</returns>
     [HttpGet("info")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BuildInfoDto))]
     public IActionResult GetInfo()
@@ -52,9 +52,9 @@ public class BuildInfoController : ControllerBase
     }
 
     /// <summary>
-    /// Default action.
+    /// Returns the build information for the application root, hidden from the API documentation.
     /// </summary>
-    /// <returns>The build information.</returns>
+    /// <returns>The <see cref="BuildInfoDto"/> for the application. Same as <see cref="GetInfo"/>.</returns>
     [ApiExplorerSettings(IgnoreApi = true)]
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BuildInfoDto))]

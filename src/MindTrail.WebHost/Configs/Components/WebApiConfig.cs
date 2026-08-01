@@ -25,8 +25,11 @@ internal static class WebApiConfig
     /// <param name="services">Used to register application services.</param>
     /// <param name="configuration">The application configuration.</param>
     /// <param name="logger">The startup logger. Optional.</param>
-    public static void AddWebApiConfig(
-        this IServiceCollection services, IConfiguration configuration, IStartupLogger? logger = null)
+    /// <returns>The same <see cref="IServiceCollection"/> instance, so that additional calls can be chained.</returns>
+    public static IServiceCollection AddWebApiConfig(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        IStartupLogger? logger = null)
     {
         AddFactories(services);
         AddProviders(services);
@@ -46,6 +49,8 @@ internal static class WebApiConfig
             AppTitle = "Mind Trail API",
             XmlFilesNames = ["MindTrail.WebApi"],
         });
+
+        return services;
     }
 
     private static void AddFactories(IServiceCollection services)

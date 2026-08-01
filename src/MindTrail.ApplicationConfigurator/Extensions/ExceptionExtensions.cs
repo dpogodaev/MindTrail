@@ -17,8 +17,10 @@ public static class ExceptionExtensions
     /// <c>LogLevel.Warning</c> if the exception is a handled exception;
     /// otherwise, <c>LogLevel.Error</c>.
     /// </returns>
-    public static LogLevel GetLogLevel(this Exception e)
+    public static LogLevel GetExceptionLogLevel(this Exception e)
     {
-        return e is DomainException ? LogLevel.Warning : LogLevel.Error;
+        return e is DomainException
+            ? LogLevel.Warning
+            : LogLevel.Error;
     }
 }

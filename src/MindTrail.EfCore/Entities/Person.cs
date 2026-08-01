@@ -31,10 +31,10 @@ public class Person : IPersistentEntity, IHasCreationTime, IHasModificationTime
     public int? BirthCountryId { get; set; }
 
     /// <summary>
-    /// Gets or sets country of birth.
+    /// Gets country of birth.
     /// </summary>
     [ForeignKey(nameof(BirthCountryId))]
-    public Country? BirthCountry { get; set; }
+    public Country? BirthCountry { get; init; }
 
     /// <inheritdoc cref="IHasCreationTime.CreationTime"/>
     public DateTime CreationTime { get; set; }

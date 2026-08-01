@@ -20,6 +20,8 @@ public abstract class AppDbContext(DbContextOptions options)
 
     public DbSet<Person> Persons { get; set; }
 
+    public DbSet<Card> Cards { get; set; }
+
     /// <summary>
     /// Applies shared (base) configuration for the EF Core model
     /// such as entity mappings,  relationships, constraints, and database schema settings
@@ -30,5 +32,6 @@ public abstract class AppDbContext(DbContextOptions options)
     {
         modelBuilder.ApplyConfiguration(new CountryConfig());
         modelBuilder.ApplyConfiguration(new PersonConfig());
+        modelBuilder.ApplyConfiguration(new CardConfig());
     }
 }

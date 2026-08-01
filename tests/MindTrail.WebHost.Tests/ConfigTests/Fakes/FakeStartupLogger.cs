@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using MindTrail.ApplicationConfigurator.Interfaces;
 using MindTrail.ApplicationConfigurator.Interfaces.Logging;
 
 namespace MindTrail.WebHost.Tests.ConfigTests.Fakes;

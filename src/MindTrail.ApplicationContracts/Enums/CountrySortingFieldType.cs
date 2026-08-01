@@ -6,12 +6,12 @@
 public enum CountrySortingFieldType
 {
     /// <summary>
-    /// Sorting by country name.
+    /// Sorting by name.
     /// </summary>
     Name,
 
     /// <summary>
-    /// Sorting by country code.
+    /// Sorting by code.
     /// </summary>
     Code,
 }

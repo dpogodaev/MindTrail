@@ -13,22 +13,22 @@ public record PersonDto
     public Guid Id { get; init; }
 
     /// <summary>
-    /// Gets or sets the full name.
+    /// Gets the full name.
     /// </summary>
-    public required string FullName { get; set; }
+    public required string FullName { get; init; }
 
     /// <summary>
-    /// Gets or sets the year of birth.
+    /// Gets the year of birth.
     /// </summary>
-    public int? BirthYear { get; set; }
+    public int? BirthYear { get; init; }
 
     /// <summary>
-    /// Gets or sets the ID of the country in which the person was born.
+    /// Gets the ID of the country in which the person was born.
     /// </summary>
-    public int? BirthCountryId { get; set; }
+    public int? BirthCountryId { get; init; }
 
     /// <summary>
-    /// Gets or sets the name of the country where the person was born.
+    /// Gets the name of the country where the person was born.
     /// </summary>
-    public string? BirthCountryName { get; set; }
+    public string? BirthCountryName { get; init; }
 }

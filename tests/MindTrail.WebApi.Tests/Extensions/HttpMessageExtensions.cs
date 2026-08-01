@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -62,6 +61,16 @@ public static class HttpMessageExtensions
         };
 
         return JsonSerializer.Deserialize<T>(content, options);
+    }
+
+    public static async Task<Guid> GetGuidAsync(this HttpResponseMessage response)
+    {
+        var content = await response.Content.ReadAsStringAsync();
+
+        return Guid.TryParse(content.Trim('\"', ' ', '\r', '\n'), out var guid)
+            ? guid
+            : throw new InvalidOperationException(
+                $"Failed to parse the Guid from the API response. Received: {content}");
     }
 
     private static UriBuilder GetUriBuilder(HttpRequestMessage request, string baseUrl)

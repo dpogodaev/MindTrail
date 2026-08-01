@@ -26,7 +26,8 @@ public static class EfCorePostgreSqlConfig
     /// <param name="configuration">The application configuration.</param>
     /// <param name="logger">The startup logger. Optional.</param>
     /// <typeparam name="TContext">The type of the database context.</typeparam>
-    public static void AddEfCorePostgreSqlConfig<TContext>(
+    /// <returns>The same <see cref="IServiceCollection"/> instance, so that additional calls can be chained.</returns>
+    public static IServiceCollection AddEfCorePostgreSqlConfig<TContext>(
         this IServiceCollection services,
         IConfiguration configuration,
         IStartupLogger? logger = null)
@@ -37,7 +38,7 @@ public static class EfCorePostgreSqlConfig
         if (string.IsNullOrEmpty(connectionString))
         {
             logger?.Warn($"Connection string '{ConnectionString}' for the PostgreSQL database is not specified");
-            return;
+            return services;
         }
 
         var settings = configuration.BindSection<EfCoreSettings>(EfCoreConfig.EfCoreConfigSection);
@@ -51,6 +52,8 @@ public static class EfCorePostgreSqlConfig
                 options.EnableSensitiveDataLogging();
             }
         });
+
+        return services;
     }
 
     /// <summary>

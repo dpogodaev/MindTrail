@@ -10,11 +10,17 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 namespace MindTrail.WebApi.Filters;
 
 /// <summary>
-/// Security requirement operation filter.
+/// Adds security requirements and unauthorized/forbidden responses to the Swagger document,
+/// based on the authorization attributes applied to the operation.
 /// </summary>
 public class SecurityRequirementOperationFilter : IOperationFilter
 {
-    /// <inheritdoc cref="IOperationFilter.Apply"/>
+    /// <summary>
+    /// Adds security requirements and unauthorized/forbidden responses to the specified Swagger operation,
+    /// if it has <see cref="AuthorizeAttribute"/> or <see cref="ApiKeyRequiredAttribute"/> applied.
+    /// </summary>
+    /// <param name="operation">The Swagger operation to update.</param>
+    /// <param name="context">The context for the operation.</param>
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
         var isAuthAttributeUsed = IsAuthAttributeUsed(context);

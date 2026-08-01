@@ -10,7 +10,7 @@ public sealed record BirthYear
 {
     public const int MinBirthYear = 1600;
 
-    public BirthYear(int birthYear, DateTime currentTime)
+    private BirthYear(int birthYear, DateTime currentTime)
     {
         if (birthYear < MinBirthYear || birthYear > currentTime.Year)
         {
@@ -28,6 +28,11 @@ public sealed record BirthYear
 
     public static implicit operator int?(BirthYear? x) => x?.Value;
 
+    public static BirthYear Create(int birthYear, DateTime currentTime)
+    {
+        return new BirthYear(birthYear, currentTime);
+    }
+
     public static BirthYear? Create(int? birthYear, DateTime currentTime)
     {
         return birthYear != null
@@ -35,7 +40,7 @@ public sealed record BirthYear
             : null;
     }
 
-    public static BirthYear? FromPersistence(int? value)
+    internal static BirthYear? FromPersistence(int? value)
     {
         return value == null ? null : new BirthYear(value.Value);
     }

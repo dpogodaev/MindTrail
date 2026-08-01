@@ -22,7 +22,7 @@ public class BirthYearTests
         var currentTime = new DateTime(2020, 1, 1);
 
         // Act
-        var birthYear = new BirthYear(originalYear, currentTime);
+        var birthYear = BirthYear.Create(originalYear, currentTime);
         var retrievedValue = birthYear.Value;
 
         // Assert
@@ -40,7 +40,7 @@ public class BirthYearTests
         var currentYear = currentTime.Year;
 
         // Act
-        var birthYear = new BirthYear(currentYear, currentTime);
+        var birthYear = BirthYear.Create(currentYear, currentTime);
 
         // Assert
         Assert.AreEqual(currentYear, birthYear.Value);
@@ -57,7 +57,7 @@ public class BirthYearTests
         const int minYear = BirthYear.MinBirthYear;
 
         // Act
-        var birthYear = new BirthYear(minYear, currentTime);
+        var birthYear = BirthYear.Create(minYear, currentTime);
 
         // Assert
         Assert.AreEqual(minYear, birthYear.Value);
@@ -74,7 +74,7 @@ public class BirthYearTests
         const int validYear = BirthYear.MinBirthYear + 10;
 
         // Act
-        var birthYear = new BirthYear(validYear, currentTime);
+        var birthYear = BirthYear.Create(validYear, currentTime);
 
         // Assert
         Assert.AreEqual(validYear, birthYear.Value);
@@ -92,7 +92,7 @@ public class BirthYearTests
         const int invalidYear = BirthYear.MinBirthYear - 1;
 
         // Act
-        BirthYear CreateBirthYear() => new(invalidYear, currentTime);
+        BirthYear CreateBirthYear() => BirthYear.Create(invalidYear, currentTime);
 
         // Assert
         var exception = Assert.Throws<BirthYearOutOfRangeException>(CreateBirthYear);
@@ -113,7 +113,7 @@ public class BirthYearTests
         var invalidYear = currentTime.Year + 1;
 
         // Act
-        BirthYear CreateBirthYear() => new BirthYear(invalidYear, currentTime);
+        BirthYear CreateBirthYear() => BirthYear.Create(invalidYear, currentTime);
 
         // Assert
         var exception = Assert.Throws<BirthYearOutOfRangeException>(CreateBirthYear);
@@ -130,7 +130,7 @@ public class BirthYearTests
         // Arrange
         var currentTime = new DateTime(2020, 1, 1);
         const int validYear = 1985;
-        var birthYear = new BirthYear(validYear, currentTime);
+        var birthYear = BirthYear.Create(validYear, currentTime);
 
         // Act
         int result = birthYear;

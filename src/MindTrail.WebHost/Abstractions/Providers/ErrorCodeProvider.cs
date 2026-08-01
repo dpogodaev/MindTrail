@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using MindTrail.DomainShared.Exceptions;
 using MindTrail.DomainShared.Exceptions.Base;
@@ -12,12 +13,13 @@ public class ErrorCodeProvider
 {
     private const string ServiceName = "mind_trail";
 
-    private static readonly Dictionary<Type, string> ExceptionCodeMap = new()
-    {
-        { typeof(PersonNameTooLongException), $"{ServiceName}.person_name_too_long" },
-        { typeof(PersonDuplicateException), $"{ServiceName}.person_duplicate" },
-        { typeof(BirthYearOutOfRangeException), $"{ServiceName}.birth_year_outside_range" },
-    };
+    private static readonly FrozenDictionary<Type, string> ExceptionCodeMap = new Dictionary<Type, string>
+        {
+            { typeof(PersonNameTooLongException), $"{ServiceName}.person_name_too_long" },
+            { typeof(PersonDuplicateException), $"{ServiceName}.person_duplicate" },
+            { typeof(BirthYearOutOfRangeException), $"{ServiceName}.birth_year_out_of_range" },
+        }
+        .ToFrozenDictionary();
 
     /// <summary>
     /// Tries to provide an error code for the specified domain exception.

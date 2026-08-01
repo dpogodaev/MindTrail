@@ -12,11 +12,19 @@ public interface IPersonRepository
         int? birthYear,
         CancellationToken cancellationToken = default);
 
-    Task<Person> GetRequiredPersonByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<Person> GetRequiredPersonByIdAsync(
+        Guid id,
+        CancellationToken cancellationToken = default);
 
-    Task<Guid> CreatePersonAsync(Person entityToCreate, CancellationToken cancellationToken = default);
+    Task<Guid> CreatePersonAsync(
+        Person personToCreate,
+        CancellationToken cancellationToken = default);
 
-    Task<Person> UpdatePersonAsync(Person entityToUpdate, CancellationToken cancellationToken = default);
+    Task<Person> UpdatePersonAsync(
+        Person personToUpdate,
+        CancellationToken cancellationToken = default);
 
-    Task<Person> DeletePersonAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<Person> DeletePersonAsync(
+        Guid id,
+        CancellationToken cancellationToken = default);
 }

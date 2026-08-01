@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using MindTrail.Common.Extensions;
 using MindTrail.DomainShared.Exceptions;
 using MindTrail.DomainShared.Exceptions.Base;
+using MindTrail.WebApi.Abstractions.Builders;
 using MindTrail.WebApi.Abstractions.Factories;
 using MindTrail.WebApi.Abstractions.Providers;
 using MindTrail.WebApi.Handlers;
@@ -14,6 +15,13 @@ using MindTrail.WebApi.Interfaces.Handlers;
 
 namespace MindTrail.WebHost.Abstractions.Providers;
 
+/// <inheritdoc/>
+/// <param name="logger">The logger.</param>
+/// <param name="traceIdProvider">The provider of the current request's trace ID.</param>
+/// <param name="errorCodeProvider">The provider of application-specific error codes for domain exceptions.</param>
+/// <param name="instanceProvider">The provider of the <see cref="ProblemDetails"/> instance URI.</param>
+/// <param name="problemDetailsBuilderFactory">The factory for creating <see cref="IProblemDetailsBuilder"/> instances.</param>
+/// <param name="exceptionHandlers">The registered handlers for converting domain exceptions to <see cref="IProblemDetailsBuilder"/>.</param>
 public class HttpErrorResultProvider(
     ILogger<HttpErrorResultProvider> logger,
     TraceIdProvider traceIdProvider,
@@ -23,6 +31,7 @@ public class HttpErrorResultProvider(
     IEnumerable<IDomainExceptionHandler<DomainException>> exceptionHandlers)
     : IHttpErrorResultProvider
 {
+    /// <inheritdoc/>
     public NotFoundObjectResult ToNotFound(DomainException? e)
     {
         var problemDetailsBuilder = problemDetailsBuilderFactory
@@ -40,6 +49,7 @@ public class HttpErrorResultProvider(
         return new NotFoundObjectResult(problemDetails);
     }
 
+    /// <inheritdoc/>
     public BadRequestObjectResult ToBadRequest(string invalidPropertyName, string? errorDescription = null)
     {
         var problemDetailsBuilder = problemDetailsBuilderFactory
@@ -58,6 +68,7 @@ public class HttpErrorResultProvider(
         return new BadRequestObjectResult(problemDetails);
     }
 
+    /// <inheritdoc/>
     public BadRequestObjectResult ToBadRequest(DomainException e, string? invalidPropertyName = null)
     {
         var (handler, ex) = GetMatchingHandler(e);
@@ -76,6 +87,7 @@ public class HttpErrorResultProvider(
         return new BadRequestObjectResult(problemDetails);
     }
 
+    /// <inheritdoc/>
     public ConflictObjectResult ToConflict(DomainException e)
     {
         var (handler, ex) = GetMatchingHandler(e);
@@ -94,6 +106,13 @@ public class HttpErrorResultProvider(
         return new ConflictObjectResult(problemDetails);
     }
 
+    private static SimpleDomainException BuildSimpleDomainException(DomainException? e = null)
+    {
+        return e == null
+            ? new SimpleDomainException()
+            : new SimpleDomainException(e.Message, e);
+    }
+
     private (IDomainExceptionHandler<DomainException> Handler, DomainException ExceptionToHadle)
         GetMatchingHandler(DomainException e)
     {
@@ -109,12 +128,5 @@ public class HttpErrorResultProvider(
         return simpleExceptionHandler == null
             ? throw new InvalidOperationException($"The {nameof(SimpleExceptionHandler)} is not registered.")
             : (simpleExceptionHandler, simpleDomainException);
-    }
-
-    private SimpleDomainException BuildSimpleDomainException(DomainException? e = null)
-    {
-        return e == null
-            ? new SimpleDomainException()
-            : new SimpleDomainException(e.Message, e);
     }
 }

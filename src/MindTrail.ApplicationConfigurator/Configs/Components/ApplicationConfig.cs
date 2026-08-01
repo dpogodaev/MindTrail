@@ -1,12 +1,6 @@
-﻿using System;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using MindTrail.Application.Abstractions.Repositories;
-using MindTrail.Application.Handlers;
-using MindTrail.ApplicationConfigurator.Abstractions.Adapters.Repositories;
-using MindTrail.ApplicationConfigurator.Extensions;
-using MindTrail.ApplicationConfigurator.Logging.Handlers;
-using MindTrail.ApplicationContracts.Interfaces.Commands;
-using MindTrail.ApplicationContracts.Requests.Commands;
+using MindTrail.EfCore.Repositories;
 
 namespace MindTrail.ApplicationConfigurator.Configs.Components;
 
@@ -16,28 +10,22 @@ namespace MindTrail.ApplicationConfigurator.Configs.Components;
 public static class ApplicationConfig
 {
     /// <summary>
-    /// Extension members for registering application services in the dependency injection container.
+    /// Adds a configuration for the application implementation.
     /// </summary>
     /// <param name="services">Used to register application services.</param>
-    extension(IServiceCollection services)
+    /// <returns>The same <see cref="IServiceCollection"/> instance, so that additional calls can be chained.</returns>
+    public static IServiceCollection AddApplicationConfig(this IServiceCollection services)
     {
-        /// <summary>
-        /// Adds a configuration for application services.
-        /// </summary>
-        /// <returns>The same <see cref="IServiceCollection"/> instance, so that additional calls can be chained.</returns>
-        public IServiceCollection AddApplicationConfig()
-        {
-            services.AddRepositories();
+        AddRepositories(services);
 
-            return services;
-        }
+        return services;
+    }
 
-        private void AddRepositories()
-        {
-            services
-                .AddScoped<IUnitOfWork, UnitOfWorkAdapter>()
-                .AddScoped<ICountryRepository, CountryRepositoryAdapter>()
-                .AddScoped<IPersonRepository, PersonRepositoryAdapter>();
-        }
+    private static void AddRepositories(IServiceCollection services)
+    {
+        services
+            .AddScoped<ICountryRepository, CountryRepository>()
+            .AddScoped<IPersonRepository, PersonRepository>()
+            .AddScoped<ICardRepository, CardRepository>();
     }
 }

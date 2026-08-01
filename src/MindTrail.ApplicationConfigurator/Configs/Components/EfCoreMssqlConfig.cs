@@ -26,7 +26,8 @@ public static class EfCoreMssqlConfig
     /// <param name="configuration">The application configuration.</param>
     /// <param name="logger">The startup logger. Optional.</param>
     /// <typeparam name="TContext">The type of the database context.</typeparam>
-    public static void AddEfCoreMssqlConfig<TContext>(
+    /// <returns>The same <see cref="IServiceCollection"/> instance, so that additional calls can be chained.</returns>
+    public static IServiceCollection AddEfCoreMssqlConfig<TContext>(
         this IServiceCollection services,
         IConfiguration configuration,
         IStartupLogger? logger = null)
@@ -37,7 +38,7 @@ public static class EfCoreMssqlConfig
         if (string.IsNullOrEmpty(connectionString))
         {
             logger?.Warn($"Connection string '{ConnectionString}' for the SQL Server database is not specified");
-            return;
+            return services;
         }
 
         var settings = configuration.BindSection<EfCoreSettings>(EfCoreConfig.EfCoreConfigSection);
@@ -51,6 +52,8 @@ public static class EfCoreMssqlConfig
                 options.EnableSensitiveDataLogging();
             }
         });
+
+        return services;
     }
 
     /// <summary>

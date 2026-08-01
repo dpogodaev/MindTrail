@@ -25,6 +25,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\MindTrail.ApplicationContracts\MindTrail.ApplicationContracts.csproj"/>
+        <ProjectReference Include="..\MindTrail.Application\MindTrail.Application.csproj" />
     </ItemGroup>
 
 </Project>

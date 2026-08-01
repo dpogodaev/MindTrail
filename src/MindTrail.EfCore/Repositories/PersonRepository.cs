@@ -3,131 +3,128 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using MindTrail.Application.Abstractions.Repositories;
+using MindTrail.DomainShared.Exceptions.Persons;
 using MindTrail.EfCore.Context;
-using MindTrail.EfCore.Entities;
-using MindTrail.EfCore.Interfaces.Repositories;
 using MindTrail.EfCore.Repositories.Base;
+using DomainEntities = MindTrail.Domain.Entities;
+using EfEntities = MindTrail.EfCore.Entities;
 
 namespace MindTrail.EfCore.Repositories;
 
-/// <summary>
 /// <inheritdoc cref="IPersonRepository"/>
-/// </summary>
 /// <param name="dbContext">Application database context.</param>
 public class PersonRepository(AppDbContext dbContext)
     : BaseRepository(dbContext), IPersonRepository
 {
-    public async Task<Person?> GetPersonByIdAsync(
+    public async Task<DomainEntities.Person> GetRequiredPersonByIdAsync(
         Guid id,
-        bool includeCountry = false,
         CancellationToken cancellationToken = default)
     {
-        var query = GetEntities<Person>();
+        var person = await GetEntities<EfEntities.Person>()
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
-        if (includeCountry)
-        {
-            query = query.Include(p => p.BirthCountry);
-        }
-
-        return await query.FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
+        return person != null
+            ? MapToDomainEntity(person)
+            : throw new PersonNotFoundException(id);
     }
 
-    public async Task<Person?> GetPersonByNameAndBirthAsync(
+    public async Task<DomainEntities.Person?> GetPersonByNameAndBirthAsync(
         string fullName,
         int? birthYear,
-        bool includeCountry = false,
         CancellationToken cancellationToken = default)
     {
-        var query = GetEntities<Person>();
-
-        if (includeCountry)
-        {
-            query = query.Include(p => p.BirthCountry);
-        }
-
-        query = query.Where(x => x.FullName.ToLower() == fullName.ToLower());
+        var filteredPersons = GetEntities<EfEntities.Person>()
+            .Where(x => x.FullName.ToLower() == fullName.ToLower());
 
         if (birthYear != null)
         {
-            query = query.Where(x => x.BirthYear == birthYear);
+            filteredPersons = filteredPersons.Where(x => x.BirthYear == birthYear);
         }
 
-        return await query.FirstOrDefaultAsync(cancellationToken);
+        var person = await filteredPersons.FirstOrDefaultAsync(cancellationToken);
+
+        return person != null
+            ? MapToDomainEntity(person)
+            : null;
     }
 
-    public async Task<Guid> CreatePersonAsync(Person person, CancellationToken cancellationToken = default)
+    public async Task<Guid> CreatePersonAsync(
+        DomainEntities.Person personToCreate,
+        CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(person);
+        ArgumentNullException.ThrowIfNull(personToCreate);
 
-        var createdPerson = await CreateEntityAsync(person, cancellationToken);
+        var createdPerson = await CreateEntityAsync(
+            MapToEfEntity(personToCreate),
+            cancellationToken);
 
         return createdPerson.Id;
     }
 
-    public async Task<Person?> UpdatePersonAsync(
-        Person person,
-        bool includeCountry = false,
+    public async Task<DomainEntities.Person> UpdatePersonAsync(
+        DomainEntities.Person personToUpdate,
         CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(person);
+        ArgumentNullException.ThrowIfNull(personToUpdate);
 
-        var query = GetEntities<Person>();
-
-        if (includeCountry)
-        {
-            query = query.Include(p => p.BirthCountry);
-        }
-
-        var existingPerson = await query.FirstOrDefaultAsync(x => x.Id == person.Id, cancellationToken);
+        var existingPerson = await GetEntities<EfEntities.Person>()
+            .FirstOrDefaultAsync(x => x.Id == personToUpdate.Id, cancellationToken);
 
         if (existingPerson == null)
         {
-            return null;
+            throw new PersonNotFoundException(personToUpdate.Id);
         }
 
-        var isCountryChanged = existingPerson.BirthCountryId != person.BirthCountryId;
-
-        UpdateProperties(existingPerson, person);
+        UpdateProperties(existingPerson, MapToEfEntity(personToUpdate));
         await UpdateEntity(existingPerson);
 
-        if (includeCountry && isCountryChanged)
-        {
-            await DbContext.Entry(existingPerson)
-                .Reference(p => p.BirthCountry)
-                .LoadAsync(cancellationToken);
-        }
-
-        return existingPerson;
+        return MapToDomainEntity(existingPerson);
     }
 
-    public async Task<Person?> DeletePersonAsync(
+    public async Task<DomainEntities.Person> DeletePersonAsync(
         Guid id,
-        bool includeCountry = false,
         CancellationToken cancellationToken = default)
     {
-        var query = GetEntities<Person>();
+        var existingPersonToDelete = await GetEntities<EfEntities.Person>()
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
-        if (includeCountry)
+        if (existingPersonToDelete == null)
         {
-            query = query.Include(p => p.BirthCountry);
+            throw new PersonNotFoundException(id);
         }
 
-        var personToDelete = await query.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        await DeleteEntity(existingPersonToDelete);
 
-        if (personToDelete == null)
-        {
-            return null;
-        }
-
-        await DeleteEntity(personToDelete);
-
-        return personToDelete;
+        return MapToDomainEntity(existingPersonToDelete);
     }
 
-    private static void UpdateProperties(Person existingPerson, Person newPerson)
+    private static void UpdateProperties(
+        EfEntities.Person existingPerson,
+        EfEntities.Person newPerson)
     {
         existingPerson.FullName = newPerson.FullName;
         existingPerson.BirthYear = newPerson.BirthYear;
         existingPerson.BirthCountryId = newPerson.BirthCountryId;
+    }
+
+    private static DomainEntities.Person MapToDomainEntity(EfEntities.Person efEntity)
+    {
+        return DomainEntities.Person.FromPersistence(
+            efEntity.Id,
+            efEntity.FullName,
+            efEntity.BirthYear,
+            efEntity.BirthCountryId);
+    }
+
+    private static EfEntities.Person MapToEfEntity(DomainEntities.Person domainEntity)
+    {
+        return new EfEntities.Person
+        {
+            Id = domainEntity.Id,
+            FullName = domainEntity.FullName,
+            BirthYear = domainEntity.BirthYear,
+            BirthCountryId = domainEntity.BirthCountryId,
+        };
     }
 }

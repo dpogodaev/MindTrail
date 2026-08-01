@@ -5,7 +5,7 @@ using Microsoft.OpenApi;
 namespace MindTrail.WebApi.Attributes;
 
 /// <summary>
-/// Custom attribute for controller actions, which is used to provide the description of response header.
+/// Specifies the name, HTTP status code, and description of a response header for the annotated controller action.
 /// </summary>
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
 public class ResponseHeaderAttribute : Attribute
@@ -13,7 +13,7 @@ public class ResponseHeaderAttribute : Attribute
     /// <summary>
     /// Initializes a new instance of the <see cref="ResponseHeaderAttribute"/> class.
     /// </summary>
-    /// <param name="name">Response header name.</param>
+    /// <param name="name">The response header name.</param>
     public ResponseHeaderAttribute(string name)
         : this(name, string.Empty)
     {
@@ -22,8 +22,8 @@ public class ResponseHeaderAttribute : Attribute
     /// <summary>
     /// Initializes a new instance of the <see cref="ResponseHeaderAttribute"/> class.
     /// </summary>
-    /// <param name="name">Response header name.</param>
-    /// <param name="description">Response header description.</param>
+    /// <param name="name">The response header name.</param>
+    /// <param name="description">The response header description.</param>
     public ResponseHeaderAttribute(string name, string description)
     {
         Name = name;
@@ -38,8 +38,11 @@ public class ResponseHeaderAttribute : Attribute
     public string Name { get; }
 
     /// <summary>
-    /// Gets the HTTP status code.
+    /// Gets the HTTP status code the response header is associated with.
     /// </summary>
+    /// <remarks>
+    /// Default value is <see cref="StatusCodes.Status200OK"/>.
+    /// </remarks>
     public int StatusCode { get; init; }
 
     /// <summary>

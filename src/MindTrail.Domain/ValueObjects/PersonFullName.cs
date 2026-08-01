@@ -3,11 +3,11 @@ using MindTrail.DomainShared.Exceptions;
 
 namespace MindTrail.Domain.ValueObjects;
 
-public class PersonFullName
+public sealed record PersonFullName
 {
     public const int MaxNameLength = 64;
 
-    public PersonFullName(string value)
+    private PersonFullName(string value)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(value);
 
@@ -30,7 +30,7 @@ public class PersonFullName
 
     public static PersonFullName Create(string value) => new(value);
 
-    public static PersonFullName FromPersistence(string value)
+    internal static PersonFullName FromPersistence(string value)
     {
         return new PersonFullName(value, true);
     }

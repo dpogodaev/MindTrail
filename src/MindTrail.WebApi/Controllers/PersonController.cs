@@ -8,9 +8,10 @@ using MindTrail.ApplicationContracts.Dtos;
 using MindTrail.ApplicationContracts.Interfaces;
 using MindTrail.DomainShared.Exceptions;
 using MindTrail.DomainShared.Exceptions.Base;
+using MindTrail.DomainShared.Exceptions.Persons;
 using MindTrail.WebApi.Abstractions.Providers;
 using MindTrail.WebApi.Builders;
-using MindTrail.WebApi.RequestModels;
+using MindTrail.WebApi.Models.Persons;
 using MindTrail.WebAuth.Attributes;
 
 namespace MindTrail.WebApi.Controllers;
@@ -34,22 +35,20 @@ public class PersonController(
     /// <returns>Paged <see cref="PersonDto"/> collection.</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedDto<PersonDto>))]
-    [Produces("application/json")]
     public async Task<ActionResult<PagedDto<PersonDto>>> GetPersons(
         [FromQuery] PersonQueryModel model,
         CancellationToken cancellationToken)
     {
         var query = PersonQueryBuilder.BuildGetPersonsQuery(model);
+        var persons = await requestSender.Send(query, cancellationToken);
 
-        var result = await requestSender.Send(query, cancellationToken);
-
-        return Ok(result);
+        return Ok(persons);
     }
 
     /// <summary>
-    /// Returns a person by its identifier.
+    /// Returns a <see cref="PersonDto"/> by ID.
     /// </summary>
-    /// <param name="id">The identifier of the person to retrieve.</param>
+    /// <param name="id">The ID of the person to retrieve.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <returns>The requested <see cref="PersonDto"/>.</returns>
     [HttpGet("{id:guid}")]
@@ -60,7 +59,6 @@ public class PersonController(
         CancellationToken cancellationToken)
     {
         var query = PersonQueryBuilder.BuildGetPersonByIdQuery(id);
-
         var person = await requestSender.Send(query, cancellationToken);
 
         return person is null
@@ -78,7 +76,6 @@ public class PersonController(
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Guid))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
     [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(ProblemDetails))]
-    [Produces("application/json")]
     public async Task<ActionResult<Guid>> CreatePerson(
         [FromBody, Required] PersonCreationModel model,
         CancellationToken cancellationToken)
@@ -86,13 +83,12 @@ public class PersonController(
         try
         {
             var command = PersonCommandBuilder.BuildCreatePersonCommand(model);
-
-            var createdPersonId = await requestSender.Send(command, cancellationToken);
+            var personId = await requestSender.Send(command, cancellationToken);
 
             return CreatedAtAction(
                 nameof(GetPersonById),
-                new { id = createdPersonId },
-                createdPersonId);
+                new { id = personId },
+                personId);
         }
         catch (DomainException domainException)
         {
@@ -134,7 +130,6 @@ public class PersonController(
         try
         {
             var command = PersonCommandBuilder.BuildUpdatePersonCommand(id, model);
-
             await requestSender.Send(command, cancellationToken);
 
             return NoContent();
@@ -177,7 +172,6 @@ public class PersonController(
         try
         {
             var command = PersonCommandBuilder.BuildDeletePersonCommand(id);
-
             await requestSender.Send(command, cancellationToken);
 
             return NoContent();

@@ -25,7 +25,7 @@ public interface IProblemDetailsBuilder
     /// Automatically applies all added title, detail, trace ID, error code, parameters, and validation errors.
     /// </summary>
     /// <param name="statusCode">
-    /// HTTP status code: <c>400</c> (Bad Request), <c>404</c> (Not Found), <c>409</c> (Conflict).
+    /// HTTP status code: <c>400 (Bad Request)</c>, <c>404 (Not Found)</c>, <c>409 (Conflict)</c>.
     /// </param>
     /// <returns>The ready <see cref="ProblemDetails"/> for the HTTP response.</returns>
     /// <exception cref="ArgumentOutOfRangeException">The specified status code is not supported.</exception>
@@ -74,7 +74,7 @@ public interface IProblemDetailsBuilder
     /// </summary>
     /// <param name="invalidPropName">The invalid property name. Ignored if <c>null</c> or empty.</param>
     /// <param name="errorDescription">
-    /// The short message for UI. The default value is <c>"Invalid value"</c>.
+    /// The short description of the validation error. If <c>null</c> or empty, a default message is used.
     /// </param>
     /// <returns>The current builder instance for fluent API.</returns>
     IProblemDetailsBuilder AddValidationErrorDescription(string? invalidPropName, string? errorDescription = null);

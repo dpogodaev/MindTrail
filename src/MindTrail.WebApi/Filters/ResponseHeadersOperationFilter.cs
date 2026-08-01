@@ -9,11 +9,16 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 namespace MindTrail.WebApi.Filters;
 
 /// <summary>
-/// Swagger operation filter which is used to add the description of produced response headers to swagger document.
+/// Adds the description of produced response headers to the Swagger document.
 /// </summary>
 public class ResponseHeadersOperationFilter : IOperationFilter
 {
-    /// <inheritdoc cref="IOperationFilter.Apply"/>
+    /// <summary>
+    /// Adds the response headers declared via <see cref="ResponseHeaderAttribute"/>
+    /// to the matching responses of the specified Swagger operation.
+    /// </summary>
+    /// <param name="operation">The Swagger operation to update.</param>
+    /// <param name="context">The context for the operation.</param>
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
         var operationAttributes = GetCustomAttributes<ResponseHeaderAttribute>(context).ToArray();
@@ -64,17 +69,14 @@ public class ResponseHeadersOperationFilter : IOperationFilter
 
     private static void AddHeaderToResponse(IOpenApiResponse response, ResponseHeaderAttribute header)
     {
-        // Если Headers null, создаем новый словарь
         if (response.Headers == null)
         {
-            // Приводим к конкретному типу, чтобы иметь возможность установить Headers
             if (response is OpenApiResponse concreteResponse)
             {
                 concreteResponse.Headers = new ConcurrentDictionary<string, IOpenApiHeader>();
             }
             else
             {
-                // Если это интерфейс и Headers null, ничего не делаем
                 return;
             }
         }

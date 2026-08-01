@@ -8,7 +8,7 @@ namespace MindTrail.CliHost.Configs.Components;
 internal static class CliHostConfig
 {
     /// <summary>
-    /// Adds a configuration for the CLI host (infrastructure services, providers, adapters, etc.).
+    /// Adds a configuration for the CLI host (hosted services, providers, adapters, etc.).
     /// </summary>
     /// <param name="services">Used to register application services.</param>
     /// <returns>The same <see cref="IServiceCollection"/> instance, so that additional calls can be chained.</returns>

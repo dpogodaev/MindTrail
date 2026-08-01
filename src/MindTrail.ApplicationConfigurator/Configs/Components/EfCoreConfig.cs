@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MindTrail.Application.Abstractions.Repositories;
 using MindTrail.ApplicationConfigurator.Extensions;
 using MindTrail.ApplicationConfigurator.Interfaces.Logging;
 using MindTrail.ApplicationConfigurator.Settings;
-using MindTrail.EfCore.Interfaces.Repositories;
 using MindTrail.EfCore.Repositories;
 using MindTrail.EfCoreMssql.Context;
 using MindTrail.EfCorePostgreSql.Context;
@@ -29,13 +29,15 @@ public static class EfCoreConfig
     /// <param name="services">Used to register application services.</param>
     /// <param name="configuration">The application configuration.</param>
     /// <param name="logger">The startup logger. Optional.</param>
-    public static void AddEfCoreConfig(
+    /// <returns>The same <see cref="IServiceCollection"/> instance, so that additional calls can be chained.</returns>
+    public static IServiceCollection AddEfCoreConfig(
         this IServiceCollection services,
         IConfiguration configuration,
         IStartupLogger? logger = null)
     {
-        services.AddRepositories();
         services.AddDatabaseProvider(configuration, logger);
+
+        return services;
     }
 
     /// <summary>
@@ -72,13 +74,6 @@ public static class EfCoreConfig
                 HandleUnsupportedDatabaseProvider(databaseSettings);
                 break;
         }
-    }
-
-    private static void AddRepositories(this IServiceCollection services)
-    {
-        services
-            .AddScoped<IPersonRepository, PersonRepository>()
-            .AddScoped<ICountryRepository, CountryRepository>();
     }
 
     private static void AddDatabaseProvider(

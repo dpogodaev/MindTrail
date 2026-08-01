@@ -6,12 +6,12 @@
 public enum PersonSortingFieldType
 {
     /// <summary>
-    /// Sort by the person's full name.
+    /// Sorting by full name.
     /// </summary>
     FullName,
 
     /// <summary>
-    /// Sorting by the person's year of birth.
+    /// Sorting by year of birth.
     /// </summary>
     BirthYear,
 

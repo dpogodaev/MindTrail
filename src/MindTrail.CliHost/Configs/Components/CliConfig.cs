@@ -8,23 +8,20 @@ namespace MindTrail.CliHost.Configs.Components;
 /// </summary>
 internal static class CliConfig
 {
+    /// <summary>
+    /// Adds a configuration for command line interface (hosted services, etc.).
+    /// </summary>
     /// <param name="services">Used to register application services.</param>
-    extension(IServiceCollection services)
+    /// <returns>The same <see cref="IServiceCollection"/> instance, so that additional calls can be chained.</returns>
+    public static IServiceCollection AddCliConfig(this IServiceCollection services)
     {
-        /// <summary>
-        /// Adds a configuration for command line interface (hosted services, etc.).
-        /// </summary>
-        /// <returns>The same <see cref="IServiceCollection"/> instance, so that additional calls can be chained.</returns>
-        public IServiceCollection AddCliConfig()
-        {
-            services.AddServices();
+        AddServices(services);
 
-            return services;
-        }
+        return services;
+    }
 
-        private void AddServices()
-        {
-            services.AddHostedService<CliService>();
-        }
+    private static void AddServices(IServiceCollection services)
+    {
+        services.AddHostedService<CliService>();
     }
 }

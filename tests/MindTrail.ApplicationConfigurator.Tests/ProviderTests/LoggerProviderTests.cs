@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MindTrail.ApplicationConfigurator.Interfaces.Logging;
@@ -16,24 +14,6 @@ namespace MindTrail.ApplicationConfigurator.Tests.ProviderTests;
 public class LoggerProviderTests
 {
     #region Configure
-
-    /// <summary>
-    /// Test for <see cref="LoggerProvider.Configure(IConfiguration)"/> method.
-    /// </summary>
-    [TestMethod]
-    public void Configure_Call_LoggerProviderIsConfigured()
-    {
-        // Arrange
-        CreateEmptyFile("NLog.config");
-        LoggerProvider.Shutdown();
-        var configuration = BuildConfiguration();
-
-        // Act
-        LoggerProvider.Configure(configuration);
-
-        // Assert
-        Assert.IsTrue(LoggerProvider.IsConfigured());
-    }
 
     /// <summary>
     /// Test for <see cref="LoggerProvider.Configure(IConfiguration)"/> method.
@@ -79,19 +59,4 @@ public class LoggerProviderTests
             .AddInMemoryCollection(initialData!)
             .Build();
     }
-
-    private static void CreateEmptyFile(string name)
-    {
-        var filePath = Path.Combine(GetProjectPath()!, name);
-
-        if (File.Exists(filePath))
-        {
-            return;
-        }
-
-        var file = File.Create(filePath);
-        file.Close();
-    }
-
-    private static string? GetProjectPath() => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 }

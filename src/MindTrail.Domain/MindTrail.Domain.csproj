@@ -15,6 +15,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <InternalsVisibleTo Include="MindTrail.EfCore"/>
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="StyleCop.Analyzers">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -22,7 +26,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MindTrail.DomainShared\MindTrail.DomainShared.csproj" />
+        <ProjectReference Include="..\MindTrail.Common\MindTrail.Common.csproj"/>
+        <ProjectReference Include="..\MindTrail.DomainShared\MindTrail.DomainShared.csproj"/>
     </ItemGroup>
 
 </Project>

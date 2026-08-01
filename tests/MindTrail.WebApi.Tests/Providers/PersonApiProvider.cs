@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using MindTrail.WebApi.Controllers;
-using MindTrail.WebApi.RequestModels;
+using MindTrail.WebApi.Models.Persons;
 using MindTrail.WebApi.Tests.Extensions;
 
 namespace MindTrail.WebApi.Tests.Providers;

@@ -2,8 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Storage;
+using MindTrail.Application.Abstractions.Repositories;
 using MindTrail.EfCore.Context;
-using MindTrail.EfCore.Interfaces.Repositories;
 
 namespace MindTrail.EfCore.Repositories;
 
@@ -30,48 +30,86 @@ public class UnitOfWork<TContext>(TContext dbContext)
     /// <inheritdoc cref="IUnitOfWork.IsAutoSaveEnabled"/>
     public bool IsAutoSaveEnabled
     {
-        get => dbContext.IsAutoSaveEnabled;
-        private set => dbContext.IsAutoSaveEnabled = value;
+        get
+        {
+            ThrowIfDisposed();
+            return dbContext.IsAutoSaveEnabled;
+        }
+
+        private set
+        {
+            ThrowIfDisposed();
+            dbContext.IsAutoSaveEnabled = value;
+        }
     }
 
     /// <inheritdoc cref="IUnitOfWork.EnableAutoSave"/>
     public void EnableAutoSave()
     {
+        ThrowIfDisposed();
         IsAutoSaveEnabled = true;
     }
 
     public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
+        ThrowIfDisposed();
+
         await dbContext.SaveChangesAsync(cancellationToken);
     }
 
     /// <inheritdoc cref="IUnitOfWork.BeginTransactionAsync"/>
     public async Task BeginTransactionAsync(CancellationToken cancellationToken = default)
     {
+        ThrowIfDisposed();
+
+        if (_transaction is not null)
+        {
+            throw new InvalidOperationException("A transaction is already active.");
+        }
+
         _transaction = await dbContext.Database.BeginTransactionAsync(cancellationToken);
     }
 
     /// <inheritdoc cref="IUnitOfWork.CommitTransactionAsync"/>
     public async Task CommitTransactionAsync(CancellationToken cancellationToken = default)
     {
-        if (_transaction == null)
+        ThrowIfDisposed();
+
+        if (_transaction is null)
         {
             throw new InvalidOperationException("No active transaction to commit.");
         }
 
-        await _transaction.CommitAsync(cancellationToken);
+        try
+        {
+            await _transaction.CommitAsync(cancellationToken);
+        }
+        finally
+        {
+            await _transaction.DisposeAsync();
+            _transaction = null;
+        }
     }
 
     /// <inheritdoc cref="IUnitOfWork.RollbackTransactionAsync"/>
     public async Task RollbackTransactionAsync(CancellationToken cancellationToken = default)
     {
-        if (_transaction == null)
+        ThrowIfDisposed();
+
+        if (_transaction is null)
         {
             throw new InvalidOperationException("No active transaction to rollback.");
         }
 
-        await _transaction.RollbackAsync(cancellationToken);
-        await _transaction.DisposeAsync();
+        try
+        {
+            await _transaction.RollbackAsync(cancellationToken);
+        }
+        finally
+        {
+            await _transaction.DisposeAsync();
+            _transaction = null;
+        }
     }
 
     /// <summary>
@@ -98,9 +136,18 @@ public class UnitOfWork<TContext>(TContext dbContext)
 
         if (disposing)
         {
-            dbContext.Dispose();
+            _transaction?.Dispose();
+            _transaction = null;
         }
 
         _disposed = true;
+    }
+
+    private void ThrowIfDisposed()
+    {
+        if (_disposed)
+        {
+            throw new ObjectDisposedException(nameof(UnitOfWork<>));
+        }
     }
 }

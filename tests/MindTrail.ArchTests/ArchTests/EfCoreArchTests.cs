@@ -36,22 +36,6 @@ public class EfCoreArchTests
             definition: types => types
                 .That().ResideInNamespace(CurrentNamespace)
                 .ShouldNot().HaveDependencyOnAny(
-                    ComponentNamespaces.Domain),
-            name: "Restriction of dependency on Domain layer",
-            description: "Abstraction above the persistence layer (EF) should not have any dependencies on the domain core");
-
-        policyDefinition.Add(
-            definition: types => types
-                .That().ResideInNamespace(CurrentNamespace)
-                .ShouldNot().HaveDependencyOnAny(
-                    ComponentNamespaces.Application),
-            name: "Restriction of dependency on Application layer",
-            description: "Abstraction above the persistence layer (EF) should not have any dependencies on the application implementation");
-
-        policyDefinition.Add(
-            definition: types => types
-                .That().ResideInNamespace(CurrentNamespace)
-                .ShouldNot().HaveDependencyOnAny(
                     ComponentNamespaces.Cli,
                     ComponentNamespaces.WebApi,
                     ComponentNamespaces.WebAuth),
@@ -85,12 +69,14 @@ public class EfCoreArchTests
                         CurrentNamespace,
                         UsingLibs,
                         [
-                            ComponentNamespaces.ApplicationContracts,
+                            ComponentNamespaces.Domain,
                             ComponentNamespaces.DomainShared,
+                            ComponentNamespaces.Application,
+                            ComponentNamespaces.ApplicationContracts,
                             ComponentNamespaces.Common
                         ])),
             name: "Allowed dependencies",
-            description: "Abstraction above the persistence layer (EF) can only depend on the application contracts, shared domain types and common utilities");
+            description: "Abstraction above the persistence layer (EF) can only depend on the domain layer, application layer, and common utilities");
 
         // Act
         var results = policyDefinition.Evaluate().Results;

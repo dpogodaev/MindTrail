@@ -11,7 +11,7 @@ Each card can reference other cards, as well as external sources like books and 
 
 To build the application, go to the root folder of the application and run the `dotnet build` command.
 
-To run the unit tests, go to the root folder of the application and run the `dotnet tests` command.
+To run the unit tests, go to the root folder of the application and run the `dotnet test` command.
 
 To run the application, go to the `src/MindTrail.WebHost` folder of the application
 and run the `dotnet run` command.
@@ -25,7 +25,7 @@ in the [appsettings.json](src/MindTrail.WebHost/appsettings.json) file.
 
 ## External dependencies
 
-There are no external dependencies yet.
+* MS SQL Server or PostgreSQL are used as relational databases to save the state of domain entities.
 
 ## Logging
 
@@ -75,3 +75,37 @@ By default, port `12345` and configuration
 file [mind-trail.env](src/MindTrail.WebHost/mind-trail.env) are used.
 Therefore, by default, the URL of the running application will be as follows:
 http://localhost:12345/swagger.
+
+## Database Migration
+
+First, set the common variables used by the commands below: 
+the name of the new migration and the path to the root folder of the application.
+
+```powershell
+$migrationName="AddCardTable"
+$rootPath = "C:\path\to\MindTrail"
+```
+
+To create a migration for MS SQL Server, run the following command:
+
+```powershell
+cd $rootPath
+dotnet ef migrations add $migrationName `
+   --project "src/MindTrail.EfCoreMssql" `
+   --startup-project "src/MindTrail.WebHost" `
+   --context "MssqlDbContext" `
+   -- `
+   --environment MigrationMssql
+```
+
+To create a migration for PostgreSQL, run the following command:
+
+```powershell
+cd $rootPath
+dotnet ef migrations add $migrationName `
+   --project "src/MindTrail.EfCorePostgreSql" `
+   --startup-project "src/MindTrail.WebHost" `
+   --context "PostgreSqlDbContext" `
+   -- `
+   --environment MigrationPostgreSql
+```

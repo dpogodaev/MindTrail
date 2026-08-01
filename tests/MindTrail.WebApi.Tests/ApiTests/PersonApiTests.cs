@@ -11,7 +11,7 @@ using MindTrail.ApplicationContracts.Dtos;
 using MindTrail.ApplicationContracts.Enums;
 using MindTrail.Domain.ValueObjects;
 using MindTrail.WebApi.Controllers;
-using MindTrail.WebApi.RequestModels;
+using MindTrail.WebApi.Models.Persons;
 using MindTrail.WebApi.Tests.Extensions;
 using MindTrail.WebApi.Tests.Factories;
 using MindTrail.WebApi.Tests.Providers;
@@ -260,7 +260,7 @@ public class PersonApiTests
             problemDetails.GetErrorDescription());
         Assert.AreEqual(BirthYear.MinBirthYear, problemDetails.GetIntParameter("minBirthYear"));
         Assert.AreEqual(invalidBirthYear, problemDetails.GetIntParameter("specifiedBirthYear"));
-        Assert.AreEqual("mind_trail.birth_year_outside_range", problemDetails.GetErrorCode());
+        Assert.AreEqual("mind_trail.birth_year_out_of_range", problemDetails.GetErrorCode());
     }
 
     [TestMethod]
@@ -303,8 +303,7 @@ public class PersonApiTests
             BirthYear = 2000,
         };
 
-        var existingPerson = await (await _personApiProvider!.CreatePersonAsync(model))
-            .GetContentAsync<PersonDto>();
+        var existingPersonId = await (await _personApiProvider!.CreatePersonAsync(model)).GetGuidAsync();
 
         // Act
         var response = await _personApiProvider.CreatePersonAsync(model);
@@ -319,7 +318,7 @@ public class PersonApiTests
             $"The person with the name {model.FullName} and birth year {model.BirthYear} already exists.",
             problemDetails.Detail);
         Assert.AreEqual("Duplicate person", problemDetails.Title);
-        Assert.AreEqual(existingPerson!.Id.ToString(), problemDetails.GetStringParameter("personId"));
+        Assert.AreEqual(existingPersonId.ToString(), problemDetails.GetStringParameter("personId"));
         Assert.AreEqual(model.FullName, problemDetails.GetStringParameter("specifiedFullName"));
         Assert.AreEqual(model.BirthYear, problemDetails.GetIntParameter("specifiedBirthYear"));
         Assert.AreEqual("mind_trail.person_duplicate", problemDetails.GetErrorCode());

@@ -16,7 +16,8 @@ public class EfCorePostgreSqlArchTests
     private static readonly string[] UsingLibs =
     [
         "System",
-        "Microsoft"
+        "Microsoft",
+        "Npgsql"
     ];
 
     /// <summary>

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using MindTrail.ApplicationContracts.Dtos;
 using MindTrail.ApplicationContracts.Interfaces;
 using MindTrail.WebApi.Builders;
-using MindTrail.WebApi.RequestModels;
+using MindTrail.WebApi.Models.Countries;
 using MindTrail.WebAuth.Attributes;
 
 namespace MindTrail.WebApi.Controllers;
@@ -33,9 +33,8 @@ public class CountryController(IRequestSender requestSender)
         CancellationToken cancellationToken)
     {
         var query = CountryQueryBuilder.BuildGetCountriesQuery(model);
+        var countries = await requestSender.Send(query, cancellationToken);
 
-        var result = await requestSender.Send(query, cancellationToken);
-
-        return Ok(result);
+        return Ok(countries);
     }
 }

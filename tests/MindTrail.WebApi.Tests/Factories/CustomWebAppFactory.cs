@@ -1,54 +1,50 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using MindTrail.Common.Interfaces.Providers;
 using MindTrail.EfCoreMssql.Context;
 
 namespace MindTrail.WebApi.Tests.Factories;
 
-public class CustomWebAppFactory<TProgram>(
-    Dictionary<string, string>? redefinedConfiguration = null,
-    ICurrentTimeProvider? currentTimeProvider = null)
+public class CustomWebAppFactory<TProgram>(ICurrentTimeProvider? currentTimeProvider = null)
     : WebApplicationFactory<TProgram>
     where TProgram : class
 {
-    private readonly Dictionary<string, string> _redefinedConfiguration =
-        redefinedConfiguration ?? new Dictionary<string, string>();
-
     private SqliteConnection? _connection;
-    private IServiceScopeFactory? _scopeFactory;
 
     public void ResetDatabase()
     {
-        using var scope = _scopeFactory!.CreateScope();
+        using var scope = Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<MssqlDbContext>();
 
         db.Database.EnsureDeleted();
         db.Database.EnsureCreated();
     }
 
-    /// <inheritdoc />
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.ConfigureAppConfiguration((_, configBuilder) =>
-        {
-            DisableAutoMigration(_redefinedConfiguration);
-            DisableOpenTelemetry(_redefinedConfiguration);
-
-            configBuilder.AddInMemoryCollection(_redefinedConfiguration!);
-        });
+        builder.UseEnvironment("Testing");
 
         builder.ConfigureServices(services =>
         {
-            OverrideDbContext(services);
             OverrideCurrentTimeProvider(services);
-            InitializeDatabase(services);
+            OverrideDbContext(services);
         });
+    }
+
+    protected override IHost CreateHost(IHostBuilder builder)
+    {
+        var host = base.CreateHost(builder);
+
+        using var scope = host.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<MssqlDbContext>();
+        db.Database.EnsureCreated();
+
+        return host;
     }
 
     protected override void Dispose(bool disposing)
@@ -62,32 +58,6 @@ public class CustomWebAppFactory<TProgram>(
         base.Dispose(disposing);
     }
 
-    private static void DisableAutoMigration(Dictionary<string, string> configuration)
-    {
-        configuration["EfCore:ApplyMigrationsAutomatically"] = "false";
-    }
-
-    private static void DisableOpenTelemetry(Dictionary<string, string> configuration)
-    {
-        configuration["OpenTelemetry:Logs:Enable"] = "false";
-        configuration["OpenTelemetry:Tracing:Enable"] = "false";
-        configuration["OpenTelemetry:Metrics:Enable"] = "false";
-    }
-
-    private void OverrideDbContext(IServiceCollection services)
-    {
-        _connection = new SqliteConnection("DataSource=:memory:");
-        _connection.Open();
-
-        var descriptor = services.SingleOrDefault(x => x.ServiceType == typeof(DbContextOptions<MssqlDbContext>));
-        if (descriptor != null)
-        {
-            services.Remove(descriptor);
-        }
-
-        services.AddDbContext<MssqlDbContext>(options => { options.UseSqlite(_connection); });
-    }
-
     private void OverrideCurrentTimeProvider(IServiceCollection services)
     {
         if (currentTimeProvider == null)
@@ -96,7 +66,6 @@ public class CustomWebAppFactory<TProgram>(
         }
 
         var descriptor = services.FirstOrDefault(x => x.ServiceType == typeof(ICurrentTimeProvider));
-
         if (descriptor != null)
         {
             services.Remove(descriptor);
@@ -105,14 +74,23 @@ public class CustomWebAppFactory<TProgram>(
         services.AddSingleton(currentTimeProvider);
     }
 
-    private void InitializeDatabase(IServiceCollection services)
+    private void OverrideDbContext(IServiceCollection services)
     {
-        var sp = services.BuildServiceProvider();
-        _scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
+        var descriptorsToRemove = services
+            .Where(x =>
+                x.ServiceType.FullName != null &&
+                (x.ServiceType.FullName.Contains("Microsoft.EntityFrameworkCore") ||
+                 x.ServiceType.FullName.Contains("SqlServer")))
+            .ToList();
 
-        using var scope = _scopeFactory.CreateScope();
-        var db = scope.ServiceProvider.GetRequiredService<MssqlDbContext>();
+        foreach (var descriptor in descriptorsToRemove)
+        {
+            services.Remove(descriptor);
+        }
 
-        db.Database.EnsureCreated();
+        _connection = new SqliteConnection("DataSource=:memory:");
+        _connection.Open();
+
+        services.AddDbContext<MssqlDbContext>(options => options.UseSqlite(_connection));
     }
 }

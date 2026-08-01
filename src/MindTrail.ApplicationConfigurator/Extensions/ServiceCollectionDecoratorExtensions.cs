@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using MindTrail.ApplicationConfigurator.Logging;
 
 namespace MindTrail.ApplicationConfigurator.Extensions;
 
@@ -22,7 +23,7 @@ public static class ServiceCollectionDecoratorExtensions
         where TImplementation : class, TService
         where TDecorator : class, TService
     {
-        services.AddKeyedScoped<TService, TImplementation>(Logging.DecoratorKeys.Inner);
+        services.AddKeyedScoped<TService, TImplementation>(DecoratorKeys.Inner);
         services.AddScoped<TService, TDecorator>();
 
         return services;
