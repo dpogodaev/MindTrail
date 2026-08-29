@@ -17,7 +17,7 @@ public static class LoggerProvider
     private static bool _isConfigured;
 
     /// <summary>
-    /// Indicates if the logger provider is configured.
+    /// Indicates whether the logger provider is configured.
     /// </summary>
     /// <returns><c>true</c> if the logger provider is configured; <c>false</c> otherwise.</returns>
     public static bool IsConfigured() => _isConfigured;
@@ -36,7 +36,7 @@ public static class LoggerProvider
     /// <summary>
     /// Configures the logger provider with the default application configuration.
     /// </summary>
-    /// <param name="isWebHost">Indicates if it is a web host.</param>
+    /// <param name="isWebHost">Indicates whether it is a web host.</param>
     public static void Configure(bool isWebHost)
     {
         NLogConfig.AddNLogConfig(BuildDefaultConfiguration(isWebHost));
@@ -55,7 +55,7 @@ public static class LoggerProvider
     }
 
     /// <summary>
-    /// Returns instance of the <see cref="IStartupLogger"/> class.
+    /// Returns a new instance of the <see cref="IStartupLogger"/> class.
     /// </summary>
     /// <returns>The startup logger.</returns>
     /// <exception cref="Exception">The logger provider is not configured.</exception>
@@ -70,13 +70,13 @@ public static class LoggerProvider
     }
 
     /// <summary>
-    /// Setups the logger provider for dependency injection.
+    /// Sets up the logger provider for dependency injection.
     /// </summary>
     /// <param name="builder">The builder used to configure application services.</param>
     /// <remarks>
     /// Adds the use of the logger provider for working with <see cref="Microsoft.Extensions.Logging.ILogger{TCategoryName}"/> objects.
     /// </remarks>
-    /// <exception cref="Exception">Thrown when the logger provider is not configured.</exception>
+    /// <exception cref="Exception">The logger provider is not configured.</exception>
     public static void UseLoggerProviderForDI(this IHostBuilder builder)
     {
         if (!_isConfigured)
@@ -88,9 +88,9 @@ public static class LoggerProvider
     }
 
     /// <summary>
-    /// Setups the logger provider for dependency injection.
+    /// Sets up the logger provider for dependency injection.
     /// </summary>
-    /// <param name="services">Used to register application services.</param>
+    /// <param name="services">The service collection used to register application services.</param>
     /// <remarks>
     /// Adds the use of the logger provider for working with <see cref="Microsoft.Extensions.Logging.ILogger{TCategoryName}"/> objects.
     /// </remarks>
@@ -108,7 +108,7 @@ public static class LoggerProvider
     /// <summary>
     /// Sets the instance ID in the scope context.
     /// </summary>
-    /// <param name="id">Instance ID.</param>
+    /// <param name="id">The instance ID.</param>
     public static void SetInstanceId(string id)
     {
         NLogConfig.SetInstanceId(id);

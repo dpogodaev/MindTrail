@@ -11,17 +11,17 @@ using MindTrail.DomainShared.Exceptions.Cards;
 
 namespace MindTrail.Application.Handlers.Cards;
 
-/// <inheritdoc cref="ICommandHandler{CreateCardCommand,CardDto}"/>
-/// <param name="currentTimeProvider">Provides the current time.</param>
-/// <param name="unitOfWork">Coordinates persisting changes made during command handling.</param>
-/// <param name="cardRepository">Provides access to card data, used to create a new card.</param>
+/// <inheritdoc/>
+/// <param name="currentTimeProvider">The provider of the current time.</param>
+/// <param name="unitOfWork">The unit of work used to persist changes made during command handling.</param>
+/// <param name="cardRepository">The repository providing access to card data, used to create a card.</param>
 public class CreateCardCommandHandler(
     ICurrentTimeProvider currentTimeProvider,
     IUnitOfWork unitOfWork,
     ICardRepository cardRepository)
     : ICommandHandler<CreateCardCommand, int>
 {
-    /// <inheritdoc cref="ICommandHandler{CreateCardCommand,CardDto}.HandleAsync"/>
+    /// <inheritdoc/>
     /// <exception cref="CardTitleTooLongException">The card's title is too long.</exception>
     /// <exception cref="CardContentTooLongException">The card's content is too long.</exception>
     /// <returns>The number of the created card.</returns>

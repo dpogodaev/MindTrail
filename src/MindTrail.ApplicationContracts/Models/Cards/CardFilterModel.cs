@@ -6,7 +6,7 @@ namespace MindTrail.ApplicationContracts.Models.Cards;
 public sealed record CardFilterModel
 {
     /// <summary>
-    /// Gets the filter value by number.
+    /// Gets a filter value by number.
     /// </summary>
     /// <remarks>
     /// Performs a partial, case-insensitive match.
@@ -15,7 +15,7 @@ public sealed record CardFilterModel
     public int? Number { get; init; }
 
     /// <summary>
-    /// Gets the filter value by title.
+    /// Gets a filter value by title.
     /// </summary>
     /// <remarks>
     /// Performs a partial, case-insensitive match.
@@ -24,7 +24,7 @@ public sealed record CardFilterModel
     public string? Title { get; init; }
 
     /// <summary>
-    /// Gets the filter value by content.
+    /// Gets a filter value by content.
     /// </summary>
     /// <remarks>
     /// Performs an exact match.

@@ -11,22 +11,22 @@ namespace MindTrail.EfCore.Repositories.Base;
 /// <summary>
 /// Database repository with implementation of CRUD operations.
 /// </summary>
-/// <param name="dbContext">Application database context.</param>
+/// <param name="dbContext">The application database context.</param>
 public abstract class BaseRepository(AppDbContext dbContext)
 {
     /// <summary>
-    /// Provides access to database entities and saving changes to the database.
+    /// The database context that provides access to database entities and saves changes to the database.
     /// </summary>
     protected readonly AppDbContext DbContext = dbContext;
 
     /// <summary>
     /// Prepares a persistent entity before adding it to the database.
     /// </summary>
-    /// <param name="entity">Persistent entity from the database.</param>
+    /// <param name="entity">The persistent entity to create.</param>
     /// <remarks>
     /// If necessary, sets the <see cref="IHasCreationTime.CreationTime"/>.
     /// </remarks>
-    /// <exception cref="ArgumentNullException">Thrown when persistent entity is not specified.</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="entity"/> is <c>null</c>.</exception>
     protected static void SetAuditPropertiesToCreateEntity(IPersistentEntity entity)
     {
         ArgumentNullException.ThrowIfNull(entity);
@@ -35,10 +35,10 @@ public abstract class BaseRepository(AppDbContext dbContext)
     }
 
     /// <summary>
-    /// Returns a list of all entities from database.
+    /// Returns a list of all entities from the database.
     /// </summary>
-    /// <typeparam name="TEntity">Type of persistent entity.</typeparam>
-    /// <returns>List of all entities.</returns>
+    /// <typeparam name="TEntity">The type of the persistent entity.</typeparam>
+    /// <returns>The list of all entities.</returns>
     protected IQueryable<TEntity> GetEntities<TEntity>()
         where TEntity : class, IPersistentEntity
     {
@@ -48,10 +48,10 @@ public abstract class BaseRepository(AppDbContext dbContext)
     /// <summary>
     /// Adds a new entity to the database context.
     /// </summary>
-    /// <param name="entity">Persistent entity.</param>
+    /// <param name="entity">The persistent entity to create.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-    /// <typeparam name="TEntity">Type of persistent entity.</typeparam>
-    /// <returns>Created entity.</returns>
+    /// <typeparam name="TEntity">The type of the persistent entity.</typeparam>
+    /// <returns>The created entity.</returns>
     protected async Task<TEntity> CreateEntityAsync<TEntity>(
         TEntity entity,
         CancellationToken cancellationToken = default)
@@ -69,9 +69,10 @@ public abstract class BaseRepository(AppDbContext dbContext)
     /// <summary>
     /// Updates an entity in the database context.
     /// </summary>
-    /// <param name="entity">Persistent entity.</param>
-    /// <typeparam name="TEntity">Type of persistent entity.</typeparam>
+    /// <param name="entity">The persistent entity to update.</param>
+    /// <typeparam name="TEntity">The type of the persistent entity.</typeparam>
     /// <remarks>Supports tracked and untracked entities.</remarks>
+    /// <returns>A task that represents the asynchronous operation.</returns>
     protected async Task UpdateEntity<TEntity>(TEntity entity)
         where TEntity : IPersistentEntity
     {
@@ -87,10 +88,11 @@ public abstract class BaseRepository(AppDbContext dbContext)
     }
 
     /// <summary>
-    /// Removes a tracked entity from the database context.
+    /// Removes an entity from the database context.
     /// </summary>
-    /// <param name="entity">Persistent tracked entity.</param>
-    /// <typeparam name="TEntity">Type of persistent entity.</typeparam>
+    /// <param name="entity">The persistent entity to delete.</param>
+    /// <typeparam name="TEntity">The type of the persistent entity.</typeparam>
+    /// <returns>A task that represents the asynchronous operation.</returns>
     protected async Task DeleteEntity<TEntity>(TEntity entity)
         where TEntity : IPersistentEntity
     {
@@ -111,8 +113,8 @@ public abstract class BaseRepository(AppDbContext dbContext)
     /// If necessary, sets the <see cref="IHasModificationTime.LastModificationTime"/>.
     /// It also sets ignoring changes in the values of all audit properties.
     /// </remarks>
-    /// <param name="entity">Persistent entity from the database.</param>
-    /// <exception cref="ArgumentNullException">Thrown when persistent entity is not specified.</exception>
+    /// <param name="entity">The persistent entity to update.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="entity"/> is <c>null</c>.</exception>
     protected void SetAuditPropertiesToUpdateEntity(IPersistentEntity entity)
     {
         ArgumentNullException.ThrowIfNull(entity);
@@ -128,8 +130,8 @@ public abstract class BaseRepository(AppDbContext dbContext)
     /// <remarks>
     /// If necessary, sets the <see cref="IHasDeletionTime.DeletionTime"/>.
     /// </remarks>
-    /// <param name="entity">Persistent entity from the database.</param>
-    /// <exception cref="ArgumentNullException">Thrown when persistent entity is not specified.</exception>
+    /// <param name="entity">The persistent entity to delete.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="entity"/> is <c>null</c>.</exception>
     protected void SetAuditPropertiesToDeleteEntity(IPersistentEntity entity)
     {
         ArgumentNullException.ThrowIfNull(entity);

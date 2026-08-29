@@ -2,7 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MindTrail.Application.Abstractions.Repositories;
 using MindTrail.Application.Helpers;
-using MindTrail.ApplicationContracts.Commands.Common;
+using MindTrail.ApplicationContracts.Commands;
 using MindTrail.ApplicationContracts.Commands.Persons;
 using MindTrail.ApplicationContracts.Interfaces.Commands;
 using MindTrail.Common.Interfaces.Providers;
@@ -12,11 +12,11 @@ using MindTrail.DomainShared.Exceptions.Persons;
 
 namespace MindTrail.Application.Handlers.Persons;
 
-/// <inheritdoc cref="ICommandHandler{UpdatePersonCommandHandler,VoidResult}"/>
-/// <param name="currentTimeProvider">Provides the current time.</param>
-/// <param name="unitOfWork">Coordinates persisting changes made during command handling.</param>
-/// <param name="countryRepository">Provides access to country data, used to validate the birth country.</param>
-/// <param name="personRepository">Provides access to person data, used to validate duplicates and update it.</param>
+/// <inheritdoc/>
+/// <param name="currentTimeProvider">The provider of the current time.</param>
+/// <param name="unitOfWork">The unit of work used to persist changes made during command handling.</param>
+/// <param name="countryRepository">The repository providing access to country data, used to validate the birth country.</param>
+/// <param name="personRepository">The repository providing access to person data, used to validate duplicates and update a person.</param>
 public class UpdatePersonCommandHandler(
     ICurrentTimeProvider currentTimeProvider,
     IUnitOfWork unitOfWork,
@@ -24,9 +24,9 @@ public class UpdatePersonCommandHandler(
     IPersonRepository personRepository)
     : ICommandHandler<UpdatePersonCommand, VoidResult>
 {
-    /// <inheritdoc cref="ICommandHandler{PersonCreationCommand,VoidResult}.HandleAsync"/>
+    /// <inheritdoc/>
     /// <exception cref="PersonNameTooLongException">The person's name is too long.</exception>
-    /// <exception cref="PersonDuplicateException">A person with the same name and date of birth already exists.</exception>
+    /// <exception cref="PersonDuplicateException">The person with the same name and year of birth already exists.</exception>
     /// <exception cref="CountryNotFoundException">The specified birth country does not exist.</exception>
     /// <exception cref="PersonNotFoundException">The person with the specified ID was not found.</exception>
     public async Task<VoidResult> HandleAsync(

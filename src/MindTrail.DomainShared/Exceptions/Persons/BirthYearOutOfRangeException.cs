@@ -3,8 +3,10 @@
 namespace MindTrail.DomainShared.Exceptions;
 
 /// <summary>
-/// Thrown when the birth year is outside the valid range.
+/// An exception thrown when the birth year is outside the valid range.
 /// </summary>
+/// <param name="birthYear">The specified year of birth.</param>
+/// <param name="minBirthYear">The minimum valid year of birth.</param>
 public sealed class BirthYearOutOfRangeException(int birthYear, int minBirthYear)
     : DomainException(
         $"The birth year must be greater than {minBirthYear} " +

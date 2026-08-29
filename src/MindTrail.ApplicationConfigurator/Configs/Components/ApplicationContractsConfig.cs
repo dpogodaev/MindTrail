@@ -5,8 +5,8 @@ using MindTrail.Application.Handlers.Persons;
 using MindTrail.ApplicationConfigurator.Abstractions.Providers;
 using MindTrail.ApplicationConfigurator.Extensions;
 using MindTrail.ApplicationConfigurator.Logging.Commands;
+using MindTrail.ApplicationContracts.Commands;
 using MindTrail.ApplicationContracts.Commands.Cards;
-using MindTrail.ApplicationContracts.Commands.Common;
 using MindTrail.ApplicationContracts.Commands.Persons;
 using MindTrail.ApplicationContracts.Dtos;
 using MindTrail.ApplicationContracts.Interfaces;
@@ -27,7 +27,7 @@ public static class ApplicationContractsConfig
     /// <summary>
     /// Adds a configuration for application contracts.
     /// </summary>
-    /// <param name="services">Used to register application services.</param>
+    /// <param name="services">The service collection used to register application services.</param>
     /// <returns>The same <see cref="IServiceCollection"/> instance, so that additional calls can be chained.</returns>
     public static IServiceCollection AddApplicationContractsConfig(this IServiceCollection services)
     {

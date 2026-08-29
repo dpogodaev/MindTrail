@@ -52,6 +52,7 @@ public class ApiKeyValidatorTests
     /// <summary>
     /// Test for <see cref="ApiKeyValidator.IsValid"/> method.
     /// </summary>
+    /// <param name="apiKeyIndex">The index of the additional API key to test.</param>
     [TestMethod]
     [DataRow(0)]
     [DataRow(1)]

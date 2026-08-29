@@ -8,8 +8,8 @@ public static class StringExtensions
     /// <summary>
     /// Makes the first character lower case.
     /// </summary>
-    /// <param name="source">Source string.</param>
-    /// <returns>Returns the source string with the first character in lowercase.</returns>
+    /// <param name="source">The source string.</param>
+    /// <returns>The source string with the first character in lowercase.</returns>
     public static string FirstCharToLowerCase(this string? source)
     {
         if (string.IsNullOrEmpty(source))

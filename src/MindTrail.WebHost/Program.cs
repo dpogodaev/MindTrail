@@ -16,7 +16,7 @@ try
     var builder = WebApplication.CreateBuilder(args);
     builder.Host.UseLoggerProviderForDI();
     builder.ConfigureServices(builder.Configuration, startupLogger);
-    startupLogger.Info("The application's services was successfully configured", timer.ElapsedTimeInMs);
+    startupLogger.Info("The application's services were successfully configured", timer.ElapsedTimeInMs);
 
     timer.Restart();
     var app = builder.Build();

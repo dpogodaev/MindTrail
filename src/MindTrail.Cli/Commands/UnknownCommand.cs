@@ -8,13 +8,13 @@ namespace MindTrail.Cli.Commands;
 /// <summary>
 /// The unknown command that could not be executed.
 /// </summary>
-/// <param name="line">Command line.</param>
-/// <param name="name">Command name.</param>
-/// <param name="options">Command options.</param>
+/// <param name="line">The command line.</param>
+/// <param name="name">The command name.</param>
+/// <param name="options">The command options.</param>
 public class UnknownCommand(string line, string name, Dictionary<string, string> options)
     : Command(line, name, options)
 {
-    /// <inheritdoc cref="Command.Execute"/>
+    /// <inheritdoc/>
     public override void Execute(CommandControl control)
     {
         Console.ForegroundColor = ColorConstants.ErrorOutputColor;

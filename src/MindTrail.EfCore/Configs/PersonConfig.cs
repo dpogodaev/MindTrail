@@ -5,8 +5,12 @@ using MindTrail.EfCore.Entities;
 
 namespace MindTrail.EfCore.Configs;
 
+/// <summary>
+/// Configures the entity type mapping for <see cref="Person"/>.
+/// </summary>
 public class PersonConfig : IEntityTypeConfiguration<Person>
 {
+    /// <inheritdoc/>
     public void Configure(EntityTypeBuilder<Person> entity)
     {
         entity.HasIndex(x => x.FullName);

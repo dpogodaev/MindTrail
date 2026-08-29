@@ -15,8 +15,8 @@ public static class AuthNExtensions
     /// Adds authentication using the API key.
     /// </summary>
     /// <param name="builder">The builder used to configure authentication.</param>
-    /// <param name="authenticationScheme">Name of the authentication scheme.</param>
-    /// <param name="configureOptions">Used to configure the scheme options.</param>
+    /// <param name="authenticationScheme">The name of the authentication scheme.</param>
+    /// <param name="configureOptions">The action used to configure the scheme options.</param>
     /// <remarks>It is applied when using the attribute <see cref="ApiKeyRequiredAttribute"/>.</remarks>
     public static void AddApiKey(
         this AuthenticationBuilder builder, string authenticationScheme, Action<ApiKeyAuthNOptions> configureOptions)

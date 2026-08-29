@@ -11,8 +11,8 @@ public class AssemblyHelper
     /// <summary>
     /// Returns a list of application assembly names.
     /// </summary>
-    /// <param name="namePrefix">Prefix of the assembly name for filtering.</param>
-    /// <returns>List of application assembly names</returns>
+    /// <param name="namePrefix">The prefix of the assembly name used for filtering. Optional.</param>
+    /// <returns>The list of application assembly names.</returns>
     public static IEnumerable<string> GetAssemblyNames(string? namePrefix = null)
     {
         var assemblyNames = new HashSet<string>();

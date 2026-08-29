@@ -1,22 +1,22 @@
 ﻿namespace MindTrail.ApplicationContracts.Dtos;
 
 /// <summary>
-/// Information about the country.
+/// Information about a country.
 /// </summary>
 public record CountryDto
 {
     /// <summary>
-    /// Gets a unique identifier (primary key).
+    /// The unique identifier (primary key) of the country.
     /// </summary>
     public int Id { get; init; }
 
     /// <summary>
-    /// Gets the country code.
+    /// The country code.
     /// </summary>
     public required string Code { get; init; }
 
     /// <summary>
-    /// Gets the name of the country.
+    /// The name of the country.
     /// </summary>
     public required string Name { get; init; }
 }

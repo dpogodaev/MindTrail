@@ -8,7 +8,7 @@ using MindTrail.ApplicationConfigurator.Providers;
 namespace MindTrail.WebHost.Services.Hosted;
 
 /// <summary>
-/// Used to handle events related to the application lifetime.
+/// Handles events related to the application lifetime.
 /// </summary>
 /// <param name="logger">The logger.</param>
 public class AppLifetimeHostedService(ILogger<AppLifetimeHostedService> logger)
@@ -24,7 +24,7 @@ public class AppLifetimeHostedService(ILogger<AppLifetimeHostedService> logger)
     /// </summary>
     public static string InstanceId { get; }
 
-    /// <inheritdoc cref="IHostedService.StartAsync"/>
+    /// <inheritdoc/>
     public Task StartAsync(CancellationToken cancellationToken)
     {
         LoggerProvider.SetInstanceId(InstanceId);
@@ -34,7 +34,7 @@ public class AppLifetimeHostedService(ILogger<AppLifetimeHostedService> logger)
         return Task.CompletedTask;
     }
 
-    /// <inheritdoc cref="IHostedService.StopAsync"/>
+    /// <inheritdoc/>
     public Task StopAsync(CancellationToken cancellationToken)
     {
         LoggerProvider.SetInstanceId(InstanceId);

@@ -3,29 +3,29 @@ using MindTrail.Cli.Interfaces;
 
 namespace MindTrail.Cli.Commands.Base;
 
-/// <inheritdoc cref="ICommand"/>
-/// <param name="line">Command line.</param>
-/// <param name="name">Command name.</param>
-/// <param name="options">Command options.</param>
+/// <inheritdoc/>
+/// <param name="line">The command line.</param>
+/// <param name="name">The command name.</param>
+/// <param name="options">The command options.</param>
 public abstract class Command(string line, string name, Dictionary<string, string> options)
     : ICommand
 {
-    /// <inheritdoc cref="ICommand.Line"/>
+    /// <inheritdoc/>
     public string Line { get; } = line;
 
-    /// <inheritdoc cref="ICommand.Name"/>
+    /// <inheritdoc/>
     public string Name { get; } = name;
 
-    /// <inheritdoc cref="ICommand.Options"/>
+    /// <inheritdoc/>
     public Dictionary<string, string> Options { get; } = options;
 
-    /// <inheritdoc cref="ICommand.Execute"/>
+    /// <inheritdoc/>
     public abstract void Execute(CommandControl control);
 
     /// <summary>
     /// Adds an executable command to the history.
     /// </summary>
-    /// <param name="control">Command control.</param>
+    /// <param name="control">The command execution controller.</param>
     protected void AddToHistory(CommandControl control)
     {
         control.ExecutionCounter++;

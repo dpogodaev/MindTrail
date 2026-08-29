@@ -6,7 +6,7 @@
 public sealed record PersonFilterModel
 {
     /// <summary>
-    /// Gets the filter value by full name.
+    /// Gets a filter value by full name.
     /// </summary>
     /// <remarks>
     /// Performs a partial, case-insensitive match.
@@ -15,7 +15,7 @@ public sealed record PersonFilterModel
     public string? FullName { get; init; }
 
     /// <summary>
-    /// Gets the filter value by year of birth.
+    /// Gets a filter value by year of birth.
     /// </summary>
     /// <remarks>
     /// Performs an exact match.

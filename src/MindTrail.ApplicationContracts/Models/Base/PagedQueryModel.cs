@@ -1,5 +1,8 @@
 namespace MindTrail.ApplicationContracts.Models.Base;
 
+/// <summary>
+/// The base model for a paged query.
+/// </summary>
 public abstract record PagedQueryModel
 {
     /// <summary>

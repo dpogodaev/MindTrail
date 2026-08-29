@@ -12,15 +12,15 @@ namespace MindTrail.WebAuth.Filters;
 /// Filter for authorization by API key.
 /// The key must be sent in the request header.
 /// </summary>
-/// <param name="settings">API key settings.</param>
-/// <param name="validator">Used to validate API key.</param>
+/// <param name="settings">The API key settings.</param>
+/// <param name="validator">The validator used to validate the API key.</param>
 /// <remarks>It is applied when using the attribute <see cref="ApiKeyRequiredAttribute"/>.</remarks>
 public class ApiKeyAuthZFilter(
     ApiKeySettings settings,
     IApiKeyValidator validator)
     : IAuthorizationFilter
 {
-    /// <inheritdoc cref="IAuthorizationFilter.OnAuthorization"/>
+    /// <inheritdoc/>
     public void OnAuthorization(AuthorizationFilterContext context)
     {
         var apiKey = context.HttpContext.Request.GetHeaderKeyValue(settings.HeaderName);

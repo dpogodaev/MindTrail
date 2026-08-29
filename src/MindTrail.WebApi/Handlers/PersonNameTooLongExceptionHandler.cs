@@ -5,10 +5,15 @@ using MindTrail.WebApi.Handlers.Base;
 
 namespace MindTrail.WebApi.Handlers;
 
+/// <summary>
+/// Handles a <see cref="PersonNameTooLongException"/>.
+/// </summary>
+/// <param name="problemDetailsBuilderFactory">The factory for creating <see cref="IProblemDetailsBuilder"/> instances.</param>
 public sealed class PersonNameTooLongExceptionHandler(
     IProblemDetailsBuilderFactory problemDetailsBuilderFactory)
     : DomainExceptionHandler<PersonNameTooLongException>(problemDetailsBuilderFactory)
 {
+    /// <inheritdoc/>
     protected override IProblemDetailsBuilder Handle(
         PersonNameTooLongException e,
         string? invalidPropName = null)

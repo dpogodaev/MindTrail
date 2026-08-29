@@ -29,11 +29,11 @@ internal static class HttpLoggingConfig
     /// <summary>
     /// Adds a configuration for HTTP logging.
     /// </summary>
-    /// <param name="services">Used to register application services.</param>
+    /// <param name="services">The service collection used to register application services.</param>
     /// <param name="configuration">The application configuration.</param>
     /// <param name="logger">The startup logger. Optional.</param>
     /// <remarks>
-    /// Also need to add the use of the <see cref="HttpLoggingBuilderExtensions.UseHttpLogging"/> method.
+    /// You must also add a call to the <see cref="HttpLoggingBuilderExtensions.UseHttpLogging"/> method.
     /// </remarks>
     public static void AddHttpLoggingConfig(
         this IServiceCollection services, IConfiguration configuration, IStartupLogger? logger = null)

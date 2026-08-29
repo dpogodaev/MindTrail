@@ -6,6 +6,6 @@ namespace MindTrail.EfCoreMssql.Context;
 /// <summary>
 /// Application database context for SQL Server.
 /// </summary>
-/// <param name="options">Configuration options for the database context (connection, provider, etc.).</param>
+/// <param name="options">The configuration options for the database context (connection, provider, etc.).</param>
 public class MssqlDbContext(DbContextOptions options)
     : AppDbContext(options);

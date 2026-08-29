@@ -13,10 +13,10 @@ public static class PolicyExtensions
     /// <summary>
     /// Adds a naming rule for classes used as adapters.
     /// </summary>
-    /// <param name="policyDefinition">Source policy definition.</param>
-    /// <param name="workingNamespace">Working namespace.</param>
-    /// <param name="exceptionsToRule">Names of classes that are exceptions to the rule.</param>
-    /// <returns>Policy definition with an added rule.</returns>
+    /// <param name="policyDefinition">The source policy definition.</param>
+    /// <param name="workingNamespace">The working namespace.</param>
+    /// <param name="exceptionsToRule">The names of classes that are exceptions to the rule. Optional.</param>
+    /// <returns>The policy definition with an added rule.</returns>
     public static PolicyDefinition AddAdapterNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
@@ -41,10 +41,10 @@ public static class PolicyExtensions
     /// <summary>
     /// Adds a naming rule for classes derived from the <see cref="Attribute"/> class.
     /// </summary>
-    /// <param name="policyDefinition">Source policy definition.</param>
-    /// <param name="workingNamespace">Working namespace.</param>
-    /// <param name="exceptionsToRule">Names of classes that are exceptions to the rule.</param>
-    /// <returns>Policy definition with an added rule.</returns>
+    /// <param name="policyDefinition">The source policy definition.</param>
+    /// <param name="workingNamespace">The working namespace.</param>
+    /// <param name="exceptionsToRule">The names of classes that are exceptions to the rule. Optional.</param>
+    /// <returns>The policy definition with an added rule.</returns>
     public static PolicyDefinition AddAttributeNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
@@ -70,10 +70,10 @@ public static class PolicyExtensions
     /// <summary>
     /// Adds a naming rule for classes used as builders.
     /// </summary>
-    /// <param name="policyDefinition">Source policy definition.</param>
-    /// <param name="workingNamespace">Working namespace.</param>
-    /// <param name="exceptionsToRule">Names of classes that are exceptions to the rule.</param>
-    /// <returns>Policy definition with an added rule.</returns>
+    /// <param name="policyDefinition">The source policy definition.</param>
+    /// <param name="workingNamespace">The working namespace.</param>
+    /// <param name="exceptionsToRule">The names of classes that are exceptions to the rule. Optional.</param>
+    /// <returns>The policy definition with an added rule.</returns>
     public static PolicyDefinition AddBuilderNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
@@ -98,10 +98,10 @@ public static class PolicyExtensions
     /// <summary>
     /// Adds a naming rule for classes used as commands.
     /// </summary>
-    /// <param name="policyDefinition">Source policy definition.</param>
-    /// <param name="workingNamespace">Working namespace.</param>
-    /// <param name="exceptionsToRule">Names of classes that are exceptions to the rule.</param>
-    /// <returns>Policy definition with an added rule.</returns>
+    /// <param name="policyDefinition">The source policy definition.</param>
+    /// <param name="workingNamespace">The working namespace.</param>
+    /// <param name="exceptionsToRule">The names of classes that are exceptions to the rule. Optional.</param>
+    /// <returns>The policy definition with an added rule.</returns>
     public static PolicyDefinition AddCommandNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
@@ -126,10 +126,10 @@ public static class PolicyExtensions
     /// <summary>
     /// Adds a naming rule for configuration classes.
     /// </summary>
-    /// <param name="policyDefinition">Source policy definition.</param>
-    /// <param name="workingNamespace">Working namespace.</param>
-    /// <param name="exceptionsToRule">Names of classes that are exceptions to the rule.</param>
-    /// <returns>Policy definition with an added rule.</returns>
+    /// <param name="policyDefinition">The source policy definition.</param>
+    /// <param name="workingNamespace">The working namespace.</param>
+    /// <param name="exceptionsToRule">The names of classes that are exceptions to the rule. Optional.</param>
+    /// <returns>The policy definition with an added rule.</returns>
     public static PolicyDefinition AddConfigNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
@@ -154,10 +154,10 @@ public static class PolicyExtensions
     /// <summary>
     /// Adds a naming rule for context classes.
     /// </summary>
-    /// <param name="policyDefinition">Source policy definition.</param>
-    /// <param name="workingNamespace">Working namespace.</param>
-    /// <param name="exceptionsToRule">Names of classes that are exceptions to the rule.</param>
-    /// <returns>Policy definition with an added rule.</returns>
+    /// <param name="policyDefinition">The source policy definition.</param>
+    /// <param name="workingNamespace">The working namespace.</param>
+    /// <param name="exceptionsToRule">The names of classes that are exceptions to the rule. Optional.</param>
+    /// <returns>The policy definition with an added rule.</returns>
     public static PolicyDefinition AddContextNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
@@ -182,10 +182,10 @@ public static class PolicyExtensions
     /// <summary>
     /// Adds a naming rule for classes containing constants.
     /// </summary>
-    /// <param name="policyDefinition">Source policy definition.</param>
-    /// <param name="workingNamespace">Working namespace.</param>
-    /// <param name="exceptionsToRule">Names of classes that are exceptions to the rule.</param>
-    /// <returns>Policy definition with an added rule.</returns>
+    /// <param name="policyDefinition">The source policy definition.</param>
+    /// <param name="workingNamespace">The working namespace.</param>
+    /// <param name="exceptionsToRule">The names of classes that are exceptions to the rule. Optional.</param>
+    /// <returns>The policy definition with an added rule.</returns>
     public static PolicyDefinition AddConstantNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
@@ -210,10 +210,10 @@ public static class PolicyExtensions
     /// <summary>
     /// Adds a naming rule for classes derived from the <see cref="ControllerBase"/> class.
     /// </summary>
-    /// <param name="policyDefinition">Source policy definition.</param>
-    /// <param name="workingNamespace">Working namespace.</param>
-    /// <param name="exceptionsToRule">Names of classes that are exceptions to the rule.</param>
-    /// <returns>Policy definition with an added rule.</returns>
+    /// <param name="policyDefinition">The source policy definition.</param>
+    /// <param name="workingNamespace">The working namespace.</param>
+    /// <param name="exceptionsToRule">The names of classes that are exceptions to the rule. Optional.</param>
+    /// <returns>The policy definition with an added rule.</returns>
     public static PolicyDefinition AddControllerNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
@@ -239,10 +239,10 @@ public static class PolicyExtensions
     /// <summary>
     /// Adds a naming rule for classes used as DTOs.
     /// </summary>
-    /// <param name="policyDefinition">Source policy definition.</param>
-    /// <param name="workingNamespace">Working namespace.</param>
-    /// <param name="exceptionsToRule">Names of classes that are exceptions to the rule.</param>
-    /// <returns>Policy definition with an added rule.</returns>
+    /// <param name="policyDefinition">The source policy definition.</param>
+    /// <param name="workingNamespace">The working namespace.</param>
+    /// <param name="exceptionsToRule">The names of classes that are exceptions to the rule. Optional.</param>
+    /// <returns>The policy definition with an added rule.</returns>
     public static PolicyDefinition AddDtoNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
@@ -267,10 +267,10 @@ public static class PolicyExtensions
     /// <summary>
     /// Adds a naming rule for enum types.
     /// </summary>
-    /// <param name="policyDefinition">Source policy definition.</param>
-    /// <param name="workingNamespace">Working namespace.</param>
-    /// <param name="exceptionsToRule">Names of classes that are exceptions to the rule.</param>
-    /// <returns>Policy definition with an added rule.</returns>
+    /// <param name="policyDefinition">The source policy definition.</param>
+    /// <param name="workingNamespace">The working namespace.</param>
+    /// <param name="exceptionsToRule">The names of classes that are exceptions to the rule. Optional.</param>
+    /// <returns>The policy definition with an added rule.</returns>
     public static PolicyDefinition AddEnumNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
@@ -295,10 +295,10 @@ public static class PolicyExtensions
     /// <summary>
     /// Adds a naming rule for classes derived from the <see cref="Exception"/> class.
     /// </summary>
-    /// <param name="policyDefinition">Source policy definition.</param>
-    /// <param name="workingNamespace">Working namespace.</param>
-    /// <param name="exceptionsToRule">Names of classes that are exceptions to the rule.</param>
-    /// <returns>Policy definition with an added rule.</returns>
+    /// <param name="policyDefinition">The source policy definition.</param>
+    /// <param name="workingNamespace">The working namespace.</param>
+    /// <param name="exceptionsToRule">The names of classes that are exceptions to the rule. Optional.</param>
+    /// <returns>The policy definition with an added rule.</returns>
     public static PolicyDefinition AddExceptionNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
@@ -324,10 +324,10 @@ public static class PolicyExtensions
     /// <summary>
     /// Adds a naming rule for classes containing extension methods.
     /// </summary>
-    /// <param name="policyDefinition">Source policy definition.</param>
-    /// <param name="workingNamespace">Working namespace.</param>
-    /// <param name="exceptionsToRule">Names of classes that are exceptions to the rule.</param>
-    /// <returns>Policy definition with an added rule.</returns>
+    /// <param name="policyDefinition">The source policy definition.</param>
+    /// <param name="workingNamespace">The working namespace.</param>
+    /// <param name="exceptionsToRule">The names of classes that are exceptions to the rule. Optional.</param>
+    /// <returns>The policy definition with an added rule.</returns>
     public static PolicyDefinition AddExtensionNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
@@ -352,10 +352,10 @@ public static class PolicyExtensions
     /// <summary>
     /// Adds a naming rule for classes used as factories.
     /// </summary>
-    /// <param name="policyDefinition">Source policy definition.</param>
-    /// <param name="workingNamespace">Working namespace.</param>
-    /// <param name="exceptionsToRule">Names of classes that are exceptions to the rule.</param>
-    /// <returns>Policy definition with an added rule.</returns>
+    /// <param name="policyDefinition">The source policy definition.</param>
+    /// <param name="workingNamespace">The working namespace.</param>
+    /// <param name="exceptionsToRule">The names of classes that are exceptions to the rule. Optional.</param>
+    /// <returns>The policy definition with an added rule.</returns>
     public static PolicyDefinition AddFactoryNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
@@ -380,10 +380,10 @@ public static class PolicyExtensions
     /// <summary>
     /// Adds a naming rule for classes used as filters.
     /// </summary>
-    /// <param name="policyDefinition">Source policy definition.</param>
-    /// <param name="workingNamespace">Working namespace.</param>
-    /// <param name="exceptionsToRule">Names of classes that are exceptions to the rule.</param>
-    /// <returns>Policy definition with an added rule.</returns>
+    /// <param name="policyDefinition">The source policy definition.</param>
+    /// <param name="workingNamespace">The working namespace.</param>
+    /// <param name="exceptionsToRule">The names of classes that are exceptions to the rule. Optional.</param>
+    /// <returns>The policy definition with an added rule.</returns>
     public static PolicyDefinition AddFilterNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
@@ -408,10 +408,10 @@ public static class PolicyExtensions
     /// <summary>
     /// Adds a naming rule for classes used as handlers.
     /// </summary>
-    /// <param name="policyDefinition">Source policy definition.</param>
-    /// <param name="workingNamespace">Working namespace.</param>
-    /// <param name="exceptionsToRule">Names of classes that are exceptions to the rule.</param>
-    /// <returns>Policy definition with an added rule.</returns>
+    /// <param name="policyDefinition">The source policy definition.</param>
+    /// <param name="workingNamespace">The working namespace.</param>
+    /// <param name="exceptionsToRule">The names of classes that are exceptions to the rule. Optional.</param>
+    /// <returns>The policy definition with an added rule.</returns>
     public static PolicyDefinition AddHandlerNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
@@ -436,10 +436,10 @@ public static class PolicyExtensions
     /// <summary>
     /// Adds a naming rule for helper classes.
     /// </summary>
-    /// <param name="policyDefinition">Source policy definition.</param>
-    /// <param name="workingNamespace">Working namespace.</param>
-    /// <param name="exceptionsToRule">Names of classes that are exceptions to the rule.</param>
-    /// <returns>Policy definition with an added rule.</returns>
+    /// <param name="policyDefinition">The source policy definition.</param>
+    /// <param name="workingNamespace">The working namespace.</param>
+    /// <param name="exceptionsToRule">The names of classes that are exceptions to the rule. Optional.</param>
+    /// <returns>The policy definition with an added rule.</returns>
     public static PolicyDefinition AddHelperNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
@@ -464,10 +464,10 @@ public static class PolicyExtensions
     /// <summary>
     /// Adds a naming rule for interfaces.
     /// </summary>
-    /// <param name="policyDefinition">Source policy definition.</param>
-    /// <param name="workingNamespace">Working namespace.</param>
-    /// <param name="exceptionsToRule">Names of classes that are exceptions to the rule.</param>
-    /// <returns>Policy definition with an added rule.</returns>
+    /// <param name="policyDefinition">The source policy definition.</param>
+    /// <param name="workingNamespace">The working namespace.</param>
+    /// <param name="exceptionsToRule">The names of classes that are exceptions to the rule. Optional.</param>
+    /// <returns>The policy definition with an added rule.</returns>
     public static PolicyDefinition AddInterfaceNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
@@ -492,10 +492,10 @@ public static class PolicyExtensions
     /// <summary>
     /// Adds a naming rule for external dependencies.
     /// </summary>
-    /// <param name="policyDefinition">Source policy definition.</param>
-    /// <param name="workingNamespace">Working namespace.</param>
-    /// <param name="exceptionsToRule">Names of classes that are exceptions to the rule.</param>
-    /// <returns>Policy definition with an added rule.</returns>
+    /// <param name="policyDefinition">The source policy definition.</param>
+    /// <param name="workingNamespace">The working namespace.</param>
+    /// <param name="exceptionsToRule">The names of classes that are exceptions to the rule. Optional.</param>
+    /// <returns>The policy definition with an added rule.</returns>
     public static PolicyDefinition AddAbstractionNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
@@ -520,10 +520,10 @@ public static class PolicyExtensions
     /// <summary>
     /// Adds a naming rule for classes used as request models.
     /// </summary>
-    /// <param name="policyDefinition">Source policy definition.</param>
-    /// <param name="workingNamespace">Working namespace.</param>
-    /// <param name="exceptionsToRule">Names of classes that are exceptions to the rule.</param>
-    /// <returns>Policy definition with an added rule.</returns>
+    /// <param name="policyDefinition">The source policy definition.</param>
+    /// <param name="workingNamespace">The working namespace.</param>
+    /// <param name="exceptionsToRule">The names of classes that are exceptions to the rule. Optional.</param>
+    /// <returns>The policy definition with an added rule.</returns>
     public static PolicyDefinition AddRequestModelNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
@@ -548,10 +548,10 @@ public static class PolicyExtensions
     /// <summary>
     /// Adds a naming rule for mapping classes.
     /// </summary>
-    /// <param name="policyDefinition">Source policy definition.</param>
-    /// <param name="workingNamespace">Working namespace.</param>
-    /// <param name="exceptionsToRule">Names of classes that are exceptions to the rule.</param>
-    /// <returns>Policy definition with an added rule.</returns>
+    /// <param name="policyDefinition">The source policy definition.</param>
+    /// <param name="workingNamespace">The working namespace.</param>
+    /// <param name="exceptionsToRule">The names of classes that are exceptions to the rule. Optional.</param>
+    /// <returns>The policy definition with an added rule.</returns>
     public static PolicyDefinition AddMappingNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
@@ -576,10 +576,10 @@ public static class PolicyExtensions
     /// <summary>
     /// Adds a naming rule for classes containing options.
     /// </summary>
-    /// <param name="policyDefinition">Source policy definition.</param>
-    /// <param name="workingNamespace">Working namespace.</param>
-    /// <param name="exceptionsToRule">Names of classes that are exceptions to the rule.</param>
-    /// <returns>Policy definition with an added rule.</returns>
+    /// <param name="policyDefinition">The source policy definition.</param>
+    /// <param name="workingNamespace">The working namespace.</param>
+    /// <param name="exceptionsToRule">The names of classes that are exceptions to the rule. Optional.</param>
+    /// <returns>The policy definition with an added rule.</returns>
     public static PolicyDefinition AddOptionNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
@@ -604,10 +604,10 @@ public static class PolicyExtensions
     /// <summary>
     /// Adds a naming rule for classes used as providers.
     /// </summary>
-    /// <param name="policyDefinition">Source policy definition.</param>
-    /// <param name="workingNamespace">Working namespace.</param>
-    /// <param name="exceptionsToRule">Names of classes that are exceptions to the rule.</param>
-    /// <returns>Policy definition with an added rule.</returns>
+    /// <param name="policyDefinition">The source policy definition.</param>
+    /// <param name="workingNamespace">The working namespace.</param>
+    /// <param name="exceptionsToRule">The names of classes that are exceptions to the rule. Optional.</param>
+    /// <returns>The policy definition with an added rule.</returns>
     public static PolicyDefinition AddProviderNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
@@ -632,10 +632,10 @@ public static class PolicyExtensions
     /// <summary>
     /// Adds a naming rule for classes used as repositories.
     /// </summary>
-    /// <param name="policyDefinition">Source policy definition.</param>
-    /// <param name="workingNamespace">Working namespace.</param>
-    /// <param name="exceptionsToRule">Names of classes that are exceptions to the rule.</param>
-    /// <returns>Policy definition with an added rule.</returns>
+    /// <param name="policyDefinition">The source policy definition.</param>
+    /// <param name="workingNamespace">The working namespace.</param>
+    /// <param name="exceptionsToRule">The names of classes that are exceptions to the rule. Optional.</param>
+    /// <returns>The policy definition with an added rule.</returns>
     public static PolicyDefinition AddRepositoryNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
@@ -660,10 +660,10 @@ public static class PolicyExtensions
     /// <summary>
     /// Adds a naming rule for classes used as services.
     /// </summary>
-    /// <param name="policyDefinition">Source policy definition.</param>
-    /// <param name="workingNamespace">Working namespace.</param>
-    /// <param name="exceptionsToRule">Names of classes that are exceptions to the rule.</param>
-    /// <returns>Policy definition with an added rule.</returns>
+    /// <param name="policyDefinition">The source policy definition.</param>
+    /// <param name="workingNamespace">The working namespace.</param>
+    /// <param name="exceptionsToRule">The names of classes that are exceptions to the rule. Optional.</param>
+    /// <returns>The policy definition with an added rule.</returns>
     public static PolicyDefinition AddServiceNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
@@ -688,10 +688,10 @@ public static class PolicyExtensions
     /// <summary>
     /// Adds a naming rule for classes containing settings.
     /// </summary>
-    /// <param name="policyDefinition">Source policy definition.</param>
-    /// <param name="workingNamespace">Working namespace.</param>
-    /// <param name="exceptionsToRule">Names of classes that are exceptions to the rule.</param>
-    /// <returns>Policy definition with an added rule.</returns>
+    /// <param name="policyDefinition">The source policy definition.</param>
+    /// <param name="workingNamespace">The working namespace.</param>
+    /// <param name="exceptionsToRule">The names of classes that are exceptions to the rule. Optional.</param>
+    /// <returns>The policy definition with an added rule.</returns>
     public static PolicyDefinition AddSettingNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,
@@ -716,10 +716,10 @@ public static class PolicyExtensions
     /// <summary>
     /// Adds a naming rule for classes used as validators.
     /// </summary>
-    /// <param name="policyDefinition">Source policy definition.</param>
-    /// <param name="workingNamespace">Working namespace.</param>
-    /// <param name="exceptionsToRule">Names of classes that are exceptions to the rule.</param>
-    /// <returns>Policy definition with an added rule.</returns>
+    /// <param name="policyDefinition">The source policy definition.</param>
+    /// <param name="workingNamespace">The working namespace.</param>
+    /// <param name="exceptionsToRule">The names of classes that are exceptions to the rule. Optional.</param>
+    /// <returns>The policy definition with an added rule.</returns>
     public static PolicyDefinition AddValidatorNamingRule(
         this PolicyDefinition policyDefinition,
         string workingNamespace,

@@ -16,7 +16,7 @@ public class SettingInstanceIdMiddleware(RequestDelegate next)
     /// This method is called by the ASP.NET Core pipeline.
     /// </summary>
     /// <param name="context">The HTTP context for the current request.</param>
-    /// <returns>A task representing the asynchronous operation.</returns>
+    /// <returns>A task that represents the asynchronous operation.</returns>
     /// <remarks>
     /// The <c>Invoke</c> method is part of the middleware invocation convention in ASP.NET Core.
     /// For more information, see <see href="https://learn.microsoft.com/en-us/aspnet/core/fundamentals/middleware/write">Writing custom middleware</see>.

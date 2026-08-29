@@ -11,7 +11,7 @@ public sealed record TextSearchModel
     /// Initializes a new instance of the <see cref="TextSearchModel"/> class.
     /// </summary>
     /// <param name="query">The text search query.</param>
-    /// <param name="caseSensitive">A value indicating whether the text search should be case-sensitive.</param>
+    /// <param name="caseSensitive">A value indicating whether the text search should be case-sensitive. Optional.</param>
     /// <remarks>If <paramref name="caseSensitive"/> is <c>null</c>, the search is case-insensitive.</remarks>
     public TextSearchModel(string query, bool? caseSensitive = DefaultCaseSensitive)
     {
@@ -20,7 +20,7 @@ public sealed record TextSearchModel
     }
 
     /// <summary>
-    /// Gets a text search query.
+    /// Gets the text search query.
     /// </summary>
     public string Query { get; }
 

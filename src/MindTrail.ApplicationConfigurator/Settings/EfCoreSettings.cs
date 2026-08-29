@@ -6,17 +6,17 @@
 public record EfCoreSettings
 {
     /// <summary>
-    /// Database provider ("SQLServer" or "PostgreSQL"). Case-insensitive.
+    /// The database provider ("SQLServer" or "PostgreSQL"). Case-insensitive.
     /// </summary>
     public required string DatabaseProvider { get; init; }
 
     /// <summary>
-    /// Indicates if migration should be applied to databases automatically.
+    /// Whether migrations should be applied to databases automatically.
     /// </summary>
     public bool ApplyMigrationsAutomatically { get; init; }
 
     /// <summary>
-    /// Tells EF Core to include the parameter values of SQL query in its logging messages.
+    /// Whether EF Core should include the parameter values of SQL queries in its logging messages.
     /// </summary>
     public bool EnableSensitiveDataLogging { get; init; }
 }

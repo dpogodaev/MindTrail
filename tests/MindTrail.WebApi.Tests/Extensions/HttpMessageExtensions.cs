@@ -9,8 +9,17 @@ using MindTrail.WebAuth.Constants;
 
 namespace MindTrail.WebApi.Tests.Extensions;
 
+/// <summary>
+/// Provides extension methods for building requests and reading responses in tests.
+/// </summary>
 public static class HttpMessageExtensions
 {
+    /// <summary>
+    /// Adds the API key header to the request.
+    /// </summary>
+    /// <param name="request">The request to add the header to.</param>
+    /// <param name="apiKey">The API key value.</param>
+    /// <returns>The same request instance, so that additional calls can be chained.</returns>
     public static HttpRequestMessage AddApiKey(this HttpRequestMessage request, string apiKey)
     {
         request.Headers.Add(ApiKeyConstants.ApiKeyHeaderName, apiKey);
@@ -18,6 +27,14 @@ public static class HttpMessageExtensions
         return request;
     }
 
+    /// <summary>
+    /// Adds a query parameter to the request URI.
+    /// </summary>
+    /// <param name="request">The request to add the query parameter to.</param>
+    /// <param name="baseUrl">The base URL used to resolve a relative request URI.</param>
+    /// <param name="paramName">The query parameter name.</param>
+    /// <param name="paramValue">The query parameter value.</param>
+    /// <returns>The same request instance, so that additional calls can be chained.</returns>
     public static HttpRequestMessage AddQueryParam(
         this HttpRequestMessage request, string baseUrl, string paramName, string paramValue)
     {
@@ -28,6 +45,13 @@ public static class HttpMessageExtensions
         return request;
     }
 
+    /// <summary>
+    /// Adds multiple query parameters to the request URI.
+    /// </summary>
+    /// <param name="request">The request to add the query parameters to.</param>
+    /// <param name="baseUrl">The base URL used to resolve a relative request URI.</param>
+    /// <param name="parameters">The query parameters to add.</param>
+    /// <returns>The same request instance, so that additional calls can be chained.</returns>
     public static HttpRequestMessage AddQueryParams(
         this HttpRequestMessage request, string baseUrl, Dictionary<string, string> parameters)
     {
@@ -38,6 +62,12 @@ public static class HttpMessageExtensions
         return request;
     }
 
+    /// <summary>
+    /// Adds a JSON string as the request content.
+    /// </summary>
+    /// <param name="request">The request to add the content to.</param>
+    /// <param name="content">The JSON content.</param>
+    /// <returns>The same request instance, so that additional calls can be chained.</returns>
     public static HttpRequestMessage AddContent(this HttpRequestMessage request, string content)
     {
         request.Content = new StringContent(content, Encoding.UTF8, "application/json");
@@ -45,12 +75,24 @@ public static class HttpMessageExtensions
         return request;
     }
 
+    /// <summary>
+    /// Adds the specified content to the request.
+    /// </summary>
+    /// <param name="request">The request to add the content to.</param>
+    /// <param name="content">The content to add.</param>
+    /// <returns>The same request instance, so that additional calls can be chained.</returns>
     public static HttpRequestMessage AddContent(this HttpRequestMessage request, HttpContent content)
     {
         request.Content = content;
         return request;
     }
 
+    /// <summary>
+    /// Deserializes the response content into the specified type.
+    /// </summary>
+    /// <typeparam name="T">The type to deserialize the content into.</typeparam>
+    /// <param name="response">The response to read the content from.</param>
+    /// <returns>The deserialized content, or <c>null</c> if deserialization fails.</returns>
     public static async Task<T?> GetContentAsync<T>(this HttpResponseMessage response)
         where T : class
     {
@@ -63,6 +105,12 @@ public static class HttpMessageExtensions
         return JsonSerializer.Deserialize<T>(content, options);
     }
 
+    /// <summary>
+    /// Parses the response content as a <see cref="Guid"/>.
+    /// </summary>
+    /// <param name="response">The response to read the content from.</param>
+    /// <returns>The parsed <see cref="Guid"/>.</returns>
+    /// <exception cref="InvalidOperationException">The response content is not a valid <see cref="Guid"/>.</exception>
     public static async Task<Guid> GetGuidAsync(this HttpResponseMessage response)
     {
         var content = await response.Content.ReadAsStringAsync();

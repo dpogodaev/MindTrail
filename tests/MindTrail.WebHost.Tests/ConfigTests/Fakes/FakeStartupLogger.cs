@@ -5,7 +5,7 @@ using MindTrail.ApplicationConfigurator.Interfaces.Logging;
 namespace MindTrail.WebHost.Tests.ConfigTests.Fakes;
 
 /// <summary>
-/// Fake to implement the interface <see cref="IStartupLogger"/>.
+/// A fake implementation of <see cref="IStartupLogger"/> for use in tests.
 /// </summary>
 public class FakeStartupLogger : IStartupLogger
 {
@@ -29,25 +29,25 @@ public class FakeStartupLogger : IStartupLogger
     /// </summary>
     public List<string> ErrorMsgList { get; } = [];
 
-    /// <inheritdoc cref="IStartupLogger.Debug"/>
+    /// <inheritdoc/>
     public void Debug(string msg)
     {
         DebugMsgList.Add(msg);
     }
 
-    /// <inheritdoc cref="IStartupLogger.Info"/>
+    /// <inheritdoc/>
     public void Info(string msg, long? elapsedTimeInMs = null, long? totalElapsedTimeInMs = null)
     {
         InfoMsgList.Add(msg);
     }
 
-    /// <inheritdoc cref="IStartupLogger.Warn"/>
+    /// <inheritdoc/>
     public void Warn(string msg)
     {
         WarnMsgList.Add(msg);
     }
 
-    /// <inheritdoc cref="IStartupLogger.Error"/>
+    /// <inheritdoc/>
     public void Error(string msg, Exception? e = null)
     {
         ErrorMsgList.Add(msg);

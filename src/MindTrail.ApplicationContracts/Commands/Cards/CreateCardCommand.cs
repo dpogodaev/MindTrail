@@ -4,7 +4,7 @@ using MindTrail.DomainShared.Exceptions.Cards;
 namespace MindTrail.ApplicationContracts.Commands.Cards;
 
 /// <summary>
-/// Command for creating a card with a note.
+/// Command for creating a note-taking card.
 /// </summary>
 /// <returns>The number of the created card.</returns>
 /// <exception cref="CardTitleTooLongException">The card's title is too long.</exception>

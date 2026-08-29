@@ -5,22 +5,20 @@ namespace MindTrail.WebApi.Models.Countries;
 /// <summary>
 /// Model for querying a list of countries.
 /// </summary>
-public record CountryQueryModel
+public sealed record CountryQueryModel
 {
     /// <summary>
-    /// Gets the page number.<br/>
-    /// The default value is <c>1</c>.
+    /// A page number. The default value is <c>1</c>.
     /// </summary>
     public int? PageNumber { get; init; } = 1;
 
     /// <summary>
-    /// Gets the page size.<br/>
-    /// The default value is <c>10</c>.
+    /// A page size. The default value is <c>10</c>.
     /// </summary>
     public int? PageSize { get; init; } = 10;
 
     /// <summary>
-    /// Gets the filter value by country code.
+    /// A filter value by country code.
     /// </summary>
     /// <remarks>
     /// Performs a partial, case-insensitive match.
@@ -29,7 +27,7 @@ public record CountryQueryModel
     public string? Code { get; init; }
 
     /// <summary>
-    /// Gets the filter value by the name of the country.
+    /// A filter value by the name of the country.
     /// </summary>
     /// <remarks>
     /// Performs a partial, case-insensitive match.
@@ -38,16 +36,16 @@ public record CountryQueryModel
     public string? Name { get; init; }
 
     /// <summary>
-    /// Gets a query for text search across multiple fields.
+    /// A query for text search across multiple fields.
     /// </summary>
     /// <remarks>
-    /// Supports partial match by country name and country code.<br/>
+    /// Supports partial match by country name and country code.
     /// If <c>null</c>, no text search is applied.
     /// </remarks>
     public string? TextSearchQuery { get; init; }
 
     /// <summary>
-    /// Gets a value indicating whether the text search should be case-sensitive.
+    /// Whether the text search should be case-sensitive.
     /// </summary>
     /// <remarks>
     /// Ignored if <see cref="TextSearchQuery"/> is <c>null</c>.
@@ -55,7 +53,7 @@ public record CountryQueryModel
     public bool? TextSearchCaseSensitive { get; init; }
 
     /// <summary>
-    /// Gets a field for sorting countries.
+    /// A field for sorting countries.
     /// </summary>
     /// <remarks>
     /// If <c>null</c>, sorting is applied by name in ascending order.
@@ -63,7 +61,7 @@ public record CountryQueryModel
     public CountrySortingFieldType? SortField { get; init; }
 
     /// <summary>
-    /// Gets the direction for sorting operations.
+    /// A direction for sorting operations.
     /// </summary>
     /// <remarks>
     /// Ignored if <see cref="SortField"/> is <c>null</c>.

@@ -12,11 +12,11 @@ using MindTrail.DomainShared.Exceptions;
 
 namespace MindTrail.Application.Handlers.Persons;
 
-/// <inheritdoc cref="ICommandHandler{CreatePersonCommand,PersonDto}"/>
-/// <param name="currentTimeProvider">Provides the current time.</param>
-/// <param name="unitOfWork">Coordinates persisting changes made during command handling.</param>
-/// <param name="countryRepository">Provides access to country data, used to validate the birth country.</param>
-/// <param name="personRepository">Provides access to person data, used to check for duplicates and create a new person.</param>
+/// <inheritdoc/>
+/// <param name="currentTimeProvider">The provider of the current time.</param>
+/// <param name="unitOfWork">The unit of work used to persist changes made during command handling.</param>
+/// <param name="countryRepository">The repository providing access to country data, used to validate the birth country.</param>
+/// <param name="personRepository">The repository providing access to person data, used to check for duplicates and create a person.</param>
 public class CreatePersonCommandHandler(
     ICurrentTimeProvider currentTimeProvider,
     IUnitOfWork unitOfWork,
@@ -24,9 +24,9 @@ public class CreatePersonCommandHandler(
     IPersonRepository personRepository)
     : ICommandHandler<CreatePersonCommand, Guid>
 {
-    /// <inheritdoc cref="ICommandHandler{CreatePersonCommand,PersonDto}.HandleAsync"/>
+    /// <inheritdoc/>
     /// <exception cref="PersonNameTooLongException">The person's name is too long.</exception>
-    /// <exception cref="PersonDuplicateException">A person with the same name and date of birth already exists.</exception>
+    /// <exception cref="PersonDuplicateException">The person with the same name and year of birth already exists.</exception>
     /// <exception cref="CountryNotFoundException">The specified birth country does not exist.</exception>
     public async Task<Guid> HandleAsync(
         CreatePersonCommand command,

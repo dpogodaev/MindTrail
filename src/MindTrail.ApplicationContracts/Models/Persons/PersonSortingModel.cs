@@ -12,7 +12,7 @@ public sealed record PersonSortingModel : SortingModel
     /// Initializes a new instance of the <see cref="PersonSortingModel"/> class.
     /// </summary>
     /// <param name="field">The field to sort by.</param>
-    /// <param name="direction">The sort direction.</param>
+    /// <param name="direction">The sort direction. Optional.</param>
     /// <remarks>If <paramref name="direction"/> is <c>null</c>, sorting is applied in ascending order.</remarks>
     public PersonSortingModel(
         PersonSortingFieldType field,

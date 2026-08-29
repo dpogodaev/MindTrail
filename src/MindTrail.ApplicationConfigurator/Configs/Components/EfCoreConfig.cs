@@ -18,6 +18,9 @@ namespace MindTrail.ApplicationConfigurator.Configs.Components;
 /// </summary>
 public static class EfCoreConfig
 {
+    /// <summary>
+    /// The name of the configuration section containing the EF Core settings.
+    /// </summary>
     public const string EfCoreConfigSection = "EfCore";
 
     private const string SqlServerProviderName = "sqlserver";
@@ -26,10 +29,12 @@ public static class EfCoreConfig
     /// <summary>
     /// Adds a configuration for EF Core and the specified database provider.
     /// </summary>
-    /// <param name="services">Used to register application services.</param>
+    /// <param name="services">The service collection used to register application services.</param>
     /// <param name="configuration">The application configuration.</param>
     /// <param name="logger">The startup logger. Optional.</param>
     /// <returns>The same <see cref="IServiceCollection"/> instance, so that additional calls can be chained.</returns>
+    /// <exception cref="InvalidOperationException">The configuration section is not specified.</exception>
+    /// <exception cref="InvalidOperationException">The specified database provider is not supported.</exception>
     public static IServiceCollection AddEfCoreConfig(
         this IServiceCollection services,
         IConfiguration configuration,
@@ -47,8 +52,11 @@ public static class EfCoreConfig
     /// <param name="host">The application host.</param>
     /// <param name="configuration">The application configuration.</param>
     /// <param name="logger">The startup logger. Optional.</param>
+    /// <exception cref="InvalidOperationException">The configuration section is not specified.</exception>
+    /// <exception cref="InvalidOperationException">The specified database provider is not supported.</exception>
     /// <exception cref="Exception">The <see cref="MssqlDbContext"/> is not configured.</exception>
     /// <exception cref="Exception">The <see cref="PostgreSqlDbContext"/> is not configured.</exception>
+    /// <returns>A task that represents the asynchronous operation.</returns>
     public static async Task ApplyMigrationAsync(
         this IHost host,
         IConfiguration configuration,

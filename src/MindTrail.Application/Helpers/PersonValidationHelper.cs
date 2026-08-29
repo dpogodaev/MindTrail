@@ -15,9 +15,10 @@ public static class PersonValidationHelper
     /// Validates that the person's birth country exists.
     /// </summary>
     /// <param name="person">The person whose birth country is validated.</param>
-    /// <param name="countryRepository">Provides access to country data.</param>
+    /// <param name="countryRepository">The repository providing access to country data.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <exception cref="CountryNotFoundException">The specified birth country does not exist.</exception>
+    /// <returns>A task that represents the asynchronous operation.</returns>
     public static async Task ValidateCountryExistsAndThrowAsync(
         Person person,
         ICountryRepository countryRepository,
@@ -38,11 +39,12 @@ public static class PersonValidationHelper
     /// Validates that no other person with the same name and year of birth already exists.
     /// </summary>
     /// <param name="person">The person to check for duplicates.</param>
-    /// <param name="personRepository">Provides access to person data.</param>
+    /// <param name="personRepository">The repository providing access to person data.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <exception cref="PersonDuplicateException">
-    /// A person with the same name and date of birth already exists.
+    /// The person with the same name and year of birth already exists.
     /// </exception>
+    /// <returns>A task that represents the asynchronous operation.</returns>
     public static async Task ValidatePersonDuplicatesAndThrowAsync(
         Person person,
         IPersonRepository personRepository,

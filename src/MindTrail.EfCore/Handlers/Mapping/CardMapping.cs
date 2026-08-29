@@ -5,8 +5,15 @@ using MindTrail.EfCore.Entities;
 
 namespace MindTrail.EfCore.Handlers.Mapping;
 
+/// <summary>
+/// Maps <see cref="Card"/> entities to <see cref="CardDto"/> objects.
+/// </summary>
 internal static class CardMapping
 {
+    /// <summary>
+    /// Returns an expression that maps a <see cref="Card"/> entity to a <see cref="CardDto"/>.
+    /// </summary>
+    /// <returns>The mapping expression.</returns>
     public static Expression<Func<Card, CardDto>> ToDto()
     {
         return efEntity => new CardDto

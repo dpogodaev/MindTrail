@@ -22,7 +22,7 @@ public static class EfCorePostgreSqlConfig
     /// <summary>
     /// Adds a configuration of EF Core database provider for PostgreSQL.
     /// </summary>
-    /// <param name="services">Used to register application services.</param>
+    /// <param name="services">The service collection used to register application services.</param>
     /// <param name="configuration">The application configuration.</param>
     /// <param name="logger">The startup logger. Optional.</param>
     /// <typeparam name="TContext">The type of the database context.</typeparam>
@@ -63,6 +63,7 @@ public static class EfCorePostgreSqlConfig
     /// <param name="logger">The startup logger. Optional.</param>
     /// <typeparam name="TContext">The type of the database context.</typeparam>
     /// <exception cref="Exception">The <see cref="DbContext"/> is not configured.</exception>
+    /// <returns>A task that represents the asynchronous operation.</returns>
     public static async Task ApplyPostgreSqlMigrationAsync<TContext>(
         this IHost host,
         IStartupLogger? logger = null)
@@ -82,7 +83,7 @@ public static class EfCorePostgreSqlConfig
             var dbContext = scope.ServiceProvider.GetService<TContext>();
             if (dbContext is null)
             {
-                const string msg = $"The {nameof(TContext)} is not configured";
+                var msg = $"The {typeof(TContext).Name} is not configured";
                 logger?.Error(msg);
                 throw new Exception(msg);
             }

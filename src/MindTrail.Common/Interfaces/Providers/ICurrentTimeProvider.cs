@@ -10,5 +10,6 @@ public interface ICurrentTimeProvider
     /// <summary>
     /// Returns the current date and time.
     /// </summary>
+    /// <returns>The current date and time (UTC).</returns>
     DateTime GetCurrentTime();
 }

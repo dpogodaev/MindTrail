@@ -5,40 +5,40 @@ using MindTrail.EfCore.Interfaces.Entities;
 namespace MindTrail.EfCore.Entities;
 
 /// <summary>
-/// Information about the person.
+/// Information about a person.
 /// </summary>
 [Table("Persons")]
 public class Person : IPersistentEntity, IHasCreationTime, IHasModificationTime
 {
     /// <summary>
-    /// Gets unique identifier (primary key).
+    /// Gets a unique identifier (primary key).
     /// </summary>
     public Guid Id { get; init; }
 
     /// <summary>
-    /// Gets or sets full name.
+    /// Gets or sets the full name.
     /// </summary>
     public required string FullName { get; set; }
 
     /// <summary>
-    /// Gets or sets year of birth.
+    /// Gets or sets the year of birth.
     /// </summary>
     public int? BirthYear { get; set; }
 
     /// <summary>
-    /// Gets or sets iD of the country of birth.
+    /// Gets or sets the ID of the country in which the person was born.
     /// </summary>
     public int? BirthCountryId { get; set; }
 
     /// <summary>
-    /// Gets country of birth.
+    /// Gets the country in which the person was born.
     /// </summary>
     [ForeignKey(nameof(BirthCountryId))]
     public Country? BirthCountry { get; init; }
 
-    /// <inheritdoc cref="IHasCreationTime.CreationTime"/>
+    /// <inheritdoc/>
     public DateTime CreationTime { get; set; }
 
-    /// <inheritdoc cref="IHasModificationTime.LastModificationTime"/>
+    /// <inheritdoc/>
     public DateTime? LastModificationTime { get; set; }
 }

@@ -5,8 +5,10 @@ using MindTrail.WebHost.Abstractions.Builders;
 
 namespace MindTrail.WebHost.Abstractions.Factories;
 
+/// <inheritdoc/>
 public class ProblemDetailsBuilderFactory : IProblemDetailsBuilderFactory
 {
+    /// <inheritdoc/>
     public IProblemDetailsBuilder Create(DomainException e)
     {
         return new ProblemDetailsBuilder(e);

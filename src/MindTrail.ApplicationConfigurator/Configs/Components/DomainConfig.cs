@@ -10,7 +10,7 @@ public static class DomainConfig
     /// <summary>
     /// Adds a configuration for domain core.
     /// </summary>
-    /// <param name="services">Used to register application services.</param>
+    /// <param name="services">The service collection used to register application services.</param>
     /// <returns>The same <see cref="IServiceCollection"/> instance, so that additional calls can be chained.</returns>
     public static IServiceCollection AddDomainServicesConfig(this IServiceCollection services)
     {

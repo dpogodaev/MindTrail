@@ -69,6 +69,7 @@ public class HttpErrorResultProvider(
     }
 
     /// <inheritdoc/>
+    /// <exception cref="InvalidOperationException">The <see cref="SimpleExceptionHandler"/> is not registered.</exception>
     public BadRequestObjectResult ToBadRequest(DomainException e, string? invalidPropertyName = null)
     {
         var (handler, ex) = GetMatchingHandler(e);
@@ -88,6 +89,7 @@ public class HttpErrorResultProvider(
     }
 
     /// <inheritdoc/>
+    /// <exception cref="InvalidOperationException">The <see cref="SimpleExceptionHandler"/> is not registered.</exception>
     public ConflictObjectResult ToConflict(DomainException e)
     {
         var (handler, ex) = GetMatchingHandler(e);

@@ -10,7 +10,7 @@ public interface IElapsedTimeMeterProvider
     /// <summary>
     /// Returns the elapsed time meter.
     /// </summary>
-    /// <param name="enableAutoStartup">Indicates if the time meter should be started automatically. Optional.</param>
+    /// <param name="enableAutoStartup"><c>true</c> to start the time meter automatically; otherwise, <c>false</c>.</param>
     /// <returns>The elapsed time meter.</returns>
     IElapsedTimeMeter GetElapsedTimeMeter(bool enableAutoStartup = false);
 }

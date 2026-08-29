@@ -3,32 +3,32 @@
 namespace MindTrail.ApplicationContracts.Dtos;
 
 /// <summary>
-/// Information about the person.
+/// Information about a person.
 /// </summary>
 public record PersonDto
 {
     /// <summary>
-    /// Gets a unique identifier (primary key).
+    /// The unique identifier (primary key) of the person.
     /// </summary>
     public Guid Id { get; init; }
 
     /// <summary>
-    /// Gets the full name.
+    /// The full name of the person.
     /// </summary>
     public required string FullName { get; init; }
 
     /// <summary>
-    /// Gets the year of birth.
+    /// The person's year of birth.
     /// </summary>
     public int? BirthYear { get; init; }
 
     /// <summary>
-    /// Gets the ID of the country in which the person was born.
+    /// The ID of the country in which the person was born.
     /// </summary>
     public int? BirthCountryId { get; init; }
 
     /// <summary>
-    /// Gets the name of the country where the person was born.
+    /// The name of the country in which the person was born.
     /// </summary>
     public string? BirthCountryName { get; init; }
 }

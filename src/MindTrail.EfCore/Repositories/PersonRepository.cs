@@ -12,11 +12,12 @@ using EfEntities = MindTrail.EfCore.Entities;
 
 namespace MindTrail.EfCore.Repositories;
 
-/// <inheritdoc cref="IPersonRepository"/>
-/// <param name="dbContext">Application database context.</param>
+/// <inheritdoc/>
+/// <param name="dbContext">The application database context.</param>
 public class PersonRepository(AppDbContext dbContext)
     : BaseRepository(dbContext), IPersonRepository
 {
+    /// <inheritdoc/>
     public async Task<DomainEntities.Person> GetRequiredPersonByIdAsync(
         Guid id,
         CancellationToken cancellationToken = default)
@@ -29,6 +30,7 @@ public class PersonRepository(AppDbContext dbContext)
             : throw new PersonNotFoundException(id);
     }
 
+    /// <inheritdoc/>
     public async Task<DomainEntities.Person?> GetPersonByNameAndBirthAsync(
         string fullName,
         int? birthYear,
@@ -49,6 +51,7 @@ public class PersonRepository(AppDbContext dbContext)
             : null;
     }
 
+    /// <inheritdoc/>
     public async Task<Guid> CreatePersonAsync(
         DomainEntities.Person personToCreate,
         CancellationToken cancellationToken = default)
@@ -62,6 +65,7 @@ public class PersonRepository(AppDbContext dbContext)
         return createdPerson.Id;
     }
 
+    /// <inheritdoc/>
     public async Task<DomainEntities.Person> UpdatePersonAsync(
         DomainEntities.Person personToUpdate,
         CancellationToken cancellationToken = default)
@@ -82,6 +86,7 @@ public class PersonRepository(AppDbContext dbContext)
         return MapToDomainEntity(existingPerson);
     }
 
+    /// <inheritdoc/>
     public async Task<DomainEntities.Person> DeletePersonAsync(
         Guid id,
         CancellationToken cancellationToken = default)

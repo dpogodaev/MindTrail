@@ -5,13 +5,13 @@ using MindTrail.EfCore.Interfaces.Entities;
 namespace MindTrail.EfCore.Entities;
 
 /// <summary>
-/// A card with a note.
+/// Note-taking card.
 /// </summary>
 [Table("Cards")]
 public class Card : IPersistentEntity, IHasCreationTime, IHasModificationTime
 {
     /// <summary>
-    /// Gets unique identifier (primary key).
+    /// Gets a unique identifier (primary key).
     /// </summary>
     public int Id { get; init; }
 
@@ -35,9 +35,9 @@ public class Card : IPersistentEntity, IHasCreationTime, IHasModificationTime
     /// </summary>
     public DateTime? EditedAt { get; set; }
 
-    /// <inheritdoc cref="IHasCreationTime.CreationTime"/>
+    /// <inheritdoc/>
     public DateTime CreationTime { get; set; }
 
-    /// <inheritdoc cref="IHasModificationTime.LastModificationTime"/>
+    /// <inheritdoc/>
     public DateTime? LastModificationTime { get; set; }
 }

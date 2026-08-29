@@ -5,6 +5,8 @@ namespace MindTrail.DomainShared.Exceptions.Cards;
 /// <summary>
 /// An exception thrown when the card's title is too long.
 /// </summary>
+/// <param name="title">The specified title.</param>
+/// <param name="maxLength">The maximum allowed length of the card's title.</param>
 public sealed class CardTitleTooLongException(string title, int maxLength)
     : DomainException(
         $"The maximum length of the card's title is {maxLength} characters. " +

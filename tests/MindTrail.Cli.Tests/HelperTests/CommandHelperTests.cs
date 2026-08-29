@@ -15,7 +15,7 @@ public class CommandHelperTests
     /// <summary>
     /// Test for <see cref="CommandHelper.GetCommandName"/> method.
     /// </summary>
-    /// <param name="commandLine">Command line content.</param>
+    /// <param name="commandLine">The command line content.</param>
     [TestMethod]
     [DataRow("command-name -t -p 10")]
     [DataRow(" command-name -t  -p   10")]
@@ -34,7 +34,7 @@ public class CommandHelperTests
     /// <summary>
     /// Test for <see cref="CommandHelper.GetCommandName"/> method.
     /// </summary>
-    /// <param name="commandLine">Command line content.</param>
+    /// <param name="commandLine">The command line content.</param>
     [TestMethod]
     [DataRow("")]
     [DataRow(" ")]
@@ -56,7 +56,7 @@ public class CommandHelperTests
     /// <summary>
     /// Test for <see cref="CommandHelper.GetCommandOptions"/> method.
     /// </summary>
-    /// <param name="commandLine">Command line content.</param>
+    /// <param name="commandLine">The command line content.</param>
     [TestMethod]
     [DataRow("-t -p 10 --opt1 100 --opt2 'A b c' --opt3 \"d e f\"")]
     [DataRow(" -t  -p  10  --opt1  100 --opt2  'A b c'  --opt3  \"d e f\" ")]

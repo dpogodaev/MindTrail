@@ -4,8 +4,12 @@ using MindTrail.EfCore.Entities;
 
 namespace MindTrail.EfCore.Configs;
 
+/// <summary>
+/// Configures the entity type mapping for <see cref="Country"/>.
+/// </summary>
 public class CountryConfig : IEntityTypeConfiguration<Country>
 {
+    /// <inheritdoc/>
     public void Configure(EntityTypeBuilder<Country> entity)
     {
         entity.HasKey(x => x.Id);

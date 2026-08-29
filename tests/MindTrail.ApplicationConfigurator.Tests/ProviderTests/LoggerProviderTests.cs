@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MindTrail.ApplicationConfigurator.Interfaces.Logging;
@@ -50,13 +49,4 @@ public class LoggerProviderTests
     }
 
     #endregion
-
-    private static IConfiguration BuildConfiguration(Dictionary<string, string>? settings = null)
-    {
-        var initialData = settings ?? new Dictionary<string, string>();
-
-        return new ConfigurationBuilder()
-            .AddInMemoryCollection(initialData!)
-            .Build();
-    }
 }

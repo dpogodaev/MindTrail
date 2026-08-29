@@ -5,6 +5,8 @@ namespace MindTrail.DomainShared.Exceptions;
 /// <summary>
 /// An exception thrown when the person's name is too long.
 /// </summary>
+/// <param name="fullName">The specified full name.</param>
+/// <param name="maxLength">The maximum allowed length of the person's name.</param>
 public sealed class PersonNameTooLongException(string fullName, int maxLength)
     : DomainException(
         $"The maximum length of the person's name is {maxLength} characters. " +

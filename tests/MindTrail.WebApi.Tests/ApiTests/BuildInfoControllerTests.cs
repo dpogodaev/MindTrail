@@ -43,7 +43,7 @@ public class BuildInfoControllerTests
     /// <summary>
     /// Test for <see cref="BuildInfoController.HeadInfo"/> method.
     /// </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+    /// <returns>A task that represents the asynchronous operation.</returns>
     [TestMethod]
     public async Task Build_info_returned_in_response_headers()
     {
@@ -59,7 +59,7 @@ public class BuildInfoControllerTests
     /// <summary>
     /// Test for <see cref="BuildInfoController.GetInfo"/> method.
     /// </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+    /// <returns>A task that represents the asynchronous operation.</returns>
     [TestMethod]
     public async Task Build_info_returned_in_json_response_body()
     {

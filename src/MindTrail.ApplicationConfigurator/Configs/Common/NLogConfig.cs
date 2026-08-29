@@ -12,13 +12,13 @@ using NLog.Extensions.Logging;
 namespace MindTrail.ApplicationConfigurator.Configs.Common;
 
 /// <summary>
-/// Used to configure the NLog.
+/// Used to configure NLog.
 /// </summary>
 /// <remarks>
 /// The sequence of method calls:
 /// <br/>1) <see cref="AddNLogConfig"/>
 /// <br/>2) <see cref="UseNLogForDI(IHostBuilder)"/> or <see cref="UseNLogForDI(IServiceCollection)"/>
-/// <br/>3) <see cref="ShutdownNLog"/>
+/// <br/>3) <see cref="ShutdownNLog"/>.
 /// </remarks>
 public static class NLogConfig
 {
@@ -36,7 +36,7 @@ public static class NLogConfig
     }
 
     /// <summary>
-    /// Setup NLog as logger provider for dependency injection.
+    /// Sets up NLog as a logger provider for dependency injection.
     /// </summary>
     /// <param name="builder">The builder used to configure application services.</param>
     /// <remarks>
@@ -49,9 +49,9 @@ public static class NLogConfig
     }
 
     /// <summary>
-    /// Setup NLog as logger provider for dependency injection.
+    /// Sets up NLog as a logger provider for dependency injection.
     /// </summary>
-    /// <param name="services">Used to register application services.</param>
+    /// <param name="services">The service collection used to register application services.</param>
     /// <remarks>
     /// Adds the use of the NLog as a logger provider for working with <see cref="Microsoft.Extensions.Logging.ILogger{TCategoryName}"/> objects.
     /// </remarks>
@@ -65,7 +65,7 @@ public static class NLogConfig
     }
 
     /// <summary>
-    /// Disposes all targets, and shutdowns logging.
+    /// Disposes all targets, and shuts down logging.
     /// </summary>
     public static void ShutdownNLog()
     {
@@ -75,7 +75,7 @@ public static class NLogConfig
     /// <summary>
     /// Sets the instance ID in the logical scope context.
     /// </summary>
-    /// <param name="id">Instance ID.</param>
+    /// <param name="id">The instance ID.</param>
     public static void SetInstanceId(string id)
     {
         ScopeContext.PushProperty("instanceId", id);

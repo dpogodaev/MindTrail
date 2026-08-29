@@ -8,7 +8,7 @@ namespace MindTrail.Common.Interfaces.Utilities;
 public interface IElapsedTimeMeter
 {
     /// <summary>
-    /// Indicates if the time meter is active.
+    /// Gets a value indicating whether the time meter is active.
     /// </summary>
     /// <remarks>
     /// When the time meter is not active, the values of the <see cref="ElapsedTimeInMs"/> and <see cref="TotalElapsedTimeInMs"/> are <c>0</c>.
@@ -16,12 +16,12 @@ public interface IElapsedTimeMeter
     bool IsActive { get; }
 
     /// <summary>
-    /// Elapsed time in milliseconds since the meter was started.
+    /// Gets the elapsed time in milliseconds since the meter was started.
     /// </summary>
     long ElapsedTimeInMs { get; }
 
     /// <summary>
-    /// Total elapsed time in milliseconds (taking into account the restart).
+    /// Gets the total elapsed time in milliseconds (taking into account the restart).
     /// </summary>
     long TotalElapsedTimeInMs { get; }
 
@@ -29,7 +29,7 @@ public interface IElapsedTimeMeter
     /// Starts the time meter.
     /// </summary>
     /// <remarks>After the time meter is started, the <see cref="IsActive"/> is set to <c>true</c>.</remarks>
-    /// <exception cref="InvalidOperationException">Thrown when time meter has already been started.</exception>
+    /// <exception cref="InvalidOperationException">The time meter has already been started.</exception>
     void Start();
 
     /// <summary>
@@ -39,7 +39,7 @@ public interface IElapsedTimeMeter
     /// After the time meter is stopped, the <see cref="IsActive"/> is set to <c>false</c>,
     /// <see cref="ElapsedTimeInMs"/> and <see cref="TotalElapsedTimeInMs"/> are set to <c>0</c>.
     /// </remarks>
-    /// <exception cref="InvalidOperationException">Thrown when time meter meter was not started.</exception>
+    /// <exception cref="InvalidOperationException">The time meter was not started.</exception>
     void Stop();
 
     /// <summary>
@@ -49,6 +49,6 @@ public interface IElapsedTimeMeter
     /// The <see cref="ElapsedTimeInMs"/> is set to <c>0</c>.<br/>
     /// The <see cref="TotalElapsedTimeInMs"/> is not reset.
     /// </remarks>
-    /// <exception cref="InvalidOperationException">Thrown when time meter is not active.</exception>
+    /// <exception cref="InvalidOperationException">The time meter is not active.</exception>
     void Restart();
 }

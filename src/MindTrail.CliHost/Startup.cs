@@ -38,8 +38,8 @@ internal static class Startup
     /// </summary>
     /// <param name="host">The application host.</param>
     /// <param name="configuration">The application configuration.</param>
-    /// <param name="logger">The startup logger. Optional.</param>
-    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+    /// <param name="logger">The startup logger.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
     public static async Task ApplyAutoMigrationAsync(
         this IHost host,
         IConfiguration configuration,

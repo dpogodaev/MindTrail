@@ -4,7 +4,7 @@ using MindTrail.Common.Interfaces.Utilities;
 
 namespace MindTrail.Common.Utilities;
 
-/// <inheritdoc cref="IElapsedTimeMeter"/>
+/// <inheritdoc/>
 public class ElapsedTimeMeter : IElapsedTimeMeter
 {
     private readonly Stopwatch _stopwatch = new();
@@ -14,7 +14,7 @@ public class ElapsedTimeMeter : IElapsedTimeMeter
     /// <summary>
     /// Initializes a new instance of the <see cref="ElapsedTimeMeter"/> class.
     /// </summary>
-    /// <param name="autoStartupEnabled">Indicates if the time meter should be started automatically. Optional.</param>
+    /// <param name="autoStartupEnabled"><c>true</c> to start the time meter automatically; otherwise, <c>false</c>.</param>
     public ElapsedTimeMeter(bool autoStartupEnabled = false)
     {
         if (autoStartupEnabled)
@@ -23,16 +23,16 @@ public class ElapsedTimeMeter : IElapsedTimeMeter
         }
     }
 
-    /// <inheritdoc cref="IElapsedTimeMeter.IsActive"/>
+    /// <inheritdoc/>
     public bool IsActive { get; private set; }
 
-    /// <inheritdoc cref="IElapsedTimeMeter.ElapsedTimeInMs"/>
+    /// <inheritdoc/>
     public long ElapsedTimeInMs => GetElapsedTimeInMs();
 
-    /// <inheritdoc cref="IElapsedTimeMeter.TotalElapsedTimeInMs"/>
+    /// <inheritdoc/>
     public long TotalElapsedTimeInMs => _totalElapsedTimeInMs + GetElapsedTimeInMs();
 
-    /// <inheritdoc cref="IElapsedTimeMeter.Start"/>
+    /// <inheritdoc/>
     public void Start()
     {
         if (IsActive)
@@ -45,7 +45,7 @@ public class ElapsedTimeMeter : IElapsedTimeMeter
         _stopwatch.Start();
     }
 
-    /// <inheritdoc cref="IElapsedTimeMeter.Stop"/>
+    /// <inheritdoc/>
     public void Stop()
     {
         if (!IsActive)
@@ -59,7 +59,7 @@ public class ElapsedTimeMeter : IElapsedTimeMeter
         IsActive = false;
     }
 
-    /// <inheritdoc cref="IElapsedTimeMeter.Restart"/>
+    /// <inheritdoc/>
     public void Restart()
     {
         if (!IsActive)

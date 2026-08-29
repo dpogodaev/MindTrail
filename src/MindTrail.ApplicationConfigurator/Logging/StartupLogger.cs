@@ -4,18 +4,18 @@ using NLog;
 
 namespace MindTrail.ApplicationConfigurator.Logging;
 
-/// <inheritdoc cref="IStartupLogger"/>
+/// <inheritdoc/>
 public class StartupLogger : IStartupLogger
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-    /// <inheritdoc cref="IStartupLogger.Debug"/>
+    /// <inheritdoc/>
     public void Debug(string msg)
     {
         _logger.Debug("{Title}", msg);
     }
 
-    /// <inheritdoc cref="IStartupLogger.Info"/>
+    /// <inheritdoc/>
     public void Info(string msg, long? elapsedTimeInMs = null, long? totalElapsedTimeInMs = null)
     {
         if (elapsedTimeInMs == null && totalElapsedTimeInMs == null)
@@ -39,13 +39,13 @@ public class StartupLogger : IStartupLogger
         _logger.Info("{Title} {ElapsedTimeInMs} {TotalElapsedTimeInMs}", msg, elapsedTimeInMs, totalElapsedTimeInMs);
     }
 
-    /// <inheritdoc cref="IStartupLogger.Warn"/>
+    /// <inheritdoc/>
     public void Warn(string msg)
     {
         _logger.Warn("{Title}", msg);
     }
 
-    /// <inheritdoc cref="IStartupLogger.Error"/>
+    /// <inheritdoc/>
     public void Error(string msg, Exception? e = null)
     {
         _logger.Error(e, "{Title}", msg);

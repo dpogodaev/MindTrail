@@ -22,7 +22,7 @@ internal static class WebApiConfig
     /// <summary>
     /// Adds a configuration for the web API (Swagger, health checks, HTTP logging, etc.).
     /// </summary>
-    /// <param name="services">Used to register application services.</param>
+    /// <param name="services">The service collection used to register application services.</param>
     /// <param name="configuration">The application configuration.</param>
     /// <param name="logger">The startup logger. Optional.</param>
     /// <returns>The same <see cref="IServiceCollection"/> instance, so that additional calls can be chained.</returns>

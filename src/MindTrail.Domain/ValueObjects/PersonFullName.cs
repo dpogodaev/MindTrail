@@ -3,8 +3,14 @@ using MindTrail.DomainShared.Exceptions;
 
 namespace MindTrail.Domain.ValueObjects;
 
+/// <summary>
+/// The full name of a person.
+/// </summary>
 public sealed record PersonFullName
 {
+    /// <summary>
+    /// The maximum allowed length of the full name.
+    /// </summary>
     public const int MaxNameLength = 64;
 
     private PersonFullName(string value)
@@ -24,6 +30,9 @@ public sealed record PersonFullName
         Value = value;
     }
 
+    /// <summary>
+    /// Gets the full name value.
+    /// </summary>
     public string Value { get; }
 
     public static implicit operator string(PersonFullName x) => x.Value;

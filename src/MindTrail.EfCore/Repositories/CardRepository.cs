@@ -13,12 +13,13 @@ using EfEntities = MindTrail.EfCore.Entities;
 namespace MindTrail.EfCore.Repositories;
 
 /// <summary>
-/// <inheritdoc cref="ICardRepository"/>
+/// <inheritdoc/>
 /// </summary>
-/// <param name="dbContext">Application database context.</param>
+/// <param name="dbContext">The application database context.</param>
 public class CardRepository(AppDbContext dbContext)
     : BaseRepository(dbContext), ICardRepository
 {
+    /// <inheritdoc/>
     public async Task<DomainEntities.Card?> GetCardByNumberAsync(
         int number,
         CancellationToken cancellationToken = default)
@@ -31,6 +32,7 @@ public class CardRepository(AppDbContext dbContext)
             : null;
     }
 
+    /// <inheritdoc/>
     public async Task<DomainEntities.Card> GetRequiredCardByNumberAsync(
         int number,
         CancellationToken cancellationToken = default)
@@ -43,6 +45,7 @@ public class CardRepository(AppDbContext dbContext)
             : throw new CardNotFoundException(number);
     }
 
+    /// <inheritdoc/>
     public async Task<int> CreateCardAsync(
         DomainEntities.Card cardToCreate,
         CancellationToken cancellationToken = default)
@@ -56,6 +59,7 @@ public class CardRepository(AppDbContext dbContext)
         return createdCard.Id;
     }
 
+    /// <inheritdoc/>
     public async Task<DomainEntities.Card> UpdateCardAsync(
         DomainEntities.Card cardToUpdate,
         CancellationToken cancellationToken = default)
@@ -76,6 +80,7 @@ public class CardRepository(AppDbContext dbContext)
         return MapToDomainEntity(existingCard);
     }
 
+    /// <inheritdoc/>
     public async Task<DomainEntities.Card> DeleteCardAsync(
         int number,
         CancellationToken cancellationToken = default)

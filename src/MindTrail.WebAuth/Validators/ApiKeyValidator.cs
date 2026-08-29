@@ -7,12 +7,12 @@ using MindTrail.WebAuth.Settings;
 
 namespace MindTrail.WebAuth.Validators;
 
-/// <inheritdoc cref="IApiKeyValidator"/>
-/// <param name="settings">API key settings.</param>
+/// <inheritdoc/>
+/// <param name="settings">The API key settings.</param>
 public class ApiKeyValidator(ApiKeySettings settings)
     : IApiKeyValidator
 {
-    /// <inheritdoc cref="IApiKeyValidator.IsValid"/>
+    /// <inheritdoc/>
     public bool IsValid(string apiKey)
     {
         if (IsApiKeyValid(apiKey, settings.ApiKey))

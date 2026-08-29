@@ -10,12 +10,12 @@ public sealed record PagedDto<T>
     where T : class
 {
     /// <summary>
-    /// Gets the total number of items that match the query.
+    /// The total number of items that match the query.
     /// </summary>
     public long Total { get; init; }
 
     /// <summary>
-    /// Gets the collection of items returned for the current page.
+    /// The collection of items returned for the current page.
     /// </summary>
     public IReadOnlyCollection<T> Items { get; init; } = [];
 }

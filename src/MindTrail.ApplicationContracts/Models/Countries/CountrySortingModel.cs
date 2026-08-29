@@ -12,7 +12,7 @@ public sealed record CountrySortingModel : SortingModel
     /// Initializes a new instance of the <see cref="CountrySortingModel"/> class.
     /// </summary>
     /// <param name="field">The field to sort by.</param>
-    /// <param name="direction">The sort direction.</param>
+    /// <param name="direction">The sort direction. Optional.</param>
     /// <remarks>If <paramref name="direction"/> is <c>null</c>, sorting is applied in ascending order.</remarks>
     public CountrySortingModel(
         CountrySortingFieldType field,

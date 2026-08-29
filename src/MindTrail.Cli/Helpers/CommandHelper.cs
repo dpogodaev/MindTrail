@@ -11,8 +11,8 @@ public class CommandHelper
     /// <summary>
     /// Returns the command name from the command line.
     /// </summary>
-    /// <param name="commandLine">Command line.</param>
-    /// <returns>The command name if parsing succeeds; otherwise, null.</returns>
+    /// <param name="commandLine">The command line.</param>
+    /// <returns>The command name if parsing succeeds; otherwise, <c>null</c>.</returns>
     public static string? GetCommandName(string commandLine)
     {
         var splittedLine = commandLine.Trim().Split(" ");
@@ -29,9 +29,9 @@ public class CommandHelper
     /// <summary>
     /// Returns the command options from the command line.
     /// </summary>
-    /// <param name="commandLine">Command line.</param>
-    /// <param name="withCommandName">Indicates if the command name is on the command line.</param>
-    /// <returns>Command options.</returns>
+    /// <param name="commandLine">The command line.</param>
+    /// <param name="withCommandName">Indicates whether the command name is on the command line. Optional.</param>
+    /// <returns>The command options.</returns>
     public static Dictionary<string, string> GetCommandOptions(string commandLine, bool withCommandName = true)
     {
         var options = new Dictionary<string, string>();

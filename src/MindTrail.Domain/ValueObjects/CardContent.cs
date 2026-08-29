@@ -8,6 +8,9 @@ namespace MindTrail.Domain.ValueObjects;
 /// </summary>
 public sealed record CardContent
 {
+    /// <summary>
+    /// The maximum allowed length of the content.
+    /// </summary>
     public const int MaxLength = 8000;
 
     private CardContent(string value)

@@ -26,6 +26,6 @@ public interface ICommand
     /// <summary>
     /// Executes the command.
     /// </summary>
-    /// <param name="control">Command execution controller.</param>
+    /// <param name="control">The command execution controller.</param>
     void Execute(CommandControl control);
 }

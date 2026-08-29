@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MindTrail.Common.Extensions;
 using MindTrail.DomainShared.Exceptions.Base;
 using MindTrail.WebApi.Abstractions.Builders;
 
 namespace MindTrail.WebHost.Abstractions.Builders;
 
-/// <inheritdoc cref="IProblemDetailsBuilder"/>
+/// <inheritdoc/>
 public class ProblemDetailsBuilder(DomainException e)
     : IProblemDetailsBuilder
 {
@@ -37,13 +38,13 @@ public class ProblemDetailsBuilder(DomainException e)
     private string? _traceId;
     private string? _instance;
 
-    /// <inheritdoc cref="IProblemDetailsBuilder.Exception"/>
+    /// <inheritdoc/>
     public DomainException Exception { get; } = e;
 
-    /// <inheritdoc cref="IProblemDetailsBuilder.ErrorCode"/>
+    /// <inheritdoc/>
     public string? ErrorCode { get; private set; }
 
-    /// <inheritdoc cref="IProblemDetailsBuilder.Build"/>
+    /// <inheritdoc/>
     public ProblemDetails Build(int statusCode)
     {
         var problemDetails = CreateProblemDetails(statusCode);
@@ -59,7 +60,7 @@ public class ProblemDetailsBuilder(DomainException e)
         return problemDetails;
     }
 
-    /// <inheritdoc cref="IProblemDetailsBuilder.AddTitle"/>
+    /// <inheritdoc/>
     public IProblemDetailsBuilder AddTitle(string title)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(title, nameof(title));
@@ -69,7 +70,7 @@ public class ProblemDetailsBuilder(DomainException e)
         return this;
     }
 
-    /// <inheritdoc cref="IProblemDetailsBuilder.AddDetail"/>
+    /// <inheritdoc/>
     public IProblemDetailsBuilder AddDetail(string? detail)
     {
         if (string.IsNullOrEmpty(detail))
@@ -82,7 +83,7 @@ public class ProblemDetailsBuilder(DomainException e)
         return this;
     }
 
-    /// <inheritdoc cref="IProblemDetailsBuilder.AddTraceId"/>
+    /// <inheritdoc/>
     public IProblemDetailsBuilder AddTraceId(string? traceId)
     {
         if (string.IsNullOrEmpty(traceId))
@@ -95,7 +96,7 @@ public class ProblemDetailsBuilder(DomainException e)
         return this;
     }
 
-    /// <inheritdoc cref="IProblemDetailsBuilder.AddErrorCode"/>
+    /// <inheritdoc/>
     public IProblemDetailsBuilder AddErrorCode(string? code)
     {
         if (string.IsNullOrEmpty(code))
@@ -108,7 +109,7 @@ public class ProblemDetailsBuilder(DomainException e)
         return this;
     }
 
-    /// <inheritdoc cref="IProblemDetailsBuilder.AddInstance"/>
+    /// <inheritdoc/>
     public IProblemDetailsBuilder AddInstance(string? instance)
     {
         if (string.IsNullOrEmpty(instance))
@@ -121,7 +122,7 @@ public class ProblemDetailsBuilder(DomainException e)
         return this;
     }
 
-    /// <inheritdoc cref="IProblemDetailsBuilder.AddValidationErrorDescription"/>
+    /// <inheritdoc/>
     public IProblemDetailsBuilder AddValidationErrorDescription(
         string? invalidPropName,
         string? errorDescription = null)
@@ -136,12 +137,12 @@ public class ProblemDetailsBuilder(DomainException e)
             errorDescription = DefaultValidationErrorDescription;
         }
 
-        _validationErrors[FirstCharToLowerCase(invalidPropName)] = [errorDescription.TrimEnd('.')];
+        _validationErrors[invalidPropName.FirstCharToLowerCase()] = [errorDescription.TrimEnd('.')];
 
         return this;
     }
 
-    /// <inheritdoc cref="IProblemDetailsBuilder.AddParameter(string, string?)"/>
+    /// <inheritdoc/>
     public IProblemDetailsBuilder AddParameter(string name, string? value)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name, nameof(name));
@@ -156,7 +157,7 @@ public class ProblemDetailsBuilder(DomainException e)
         return this;
     }
 
-    /// <inheritdoc cref="IProblemDetailsBuilder.AddParameter(string, int?)"/>
+    /// <inheritdoc/>
     public IProblemDetailsBuilder AddParameter(string name, int? value)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name, nameof(name));
@@ -171,7 +172,7 @@ public class ProblemDetailsBuilder(DomainException e)
         return this;
     }
 
-    /// <inheritdoc cref="IProblemDetailsBuilder.AddParameter(string, DateTime?)"/>
+    /// <inheritdoc/>
     public IProblemDetailsBuilder AddParameter(string name, DateTime? value)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name, nameof(name));
@@ -264,14 +265,6 @@ public class ProblemDetailsBuilder(DomainException e)
         }
     }
 
-    private void SetDefaultTitle(ProblemDetails problemDetails)
-    {
-        if (DefaultTitle.TryGetValue(problemDetails.Status!.Value, out var title))
-        {
-            problemDetails.Title = title;
-        }
-    }
-
     private void SetParametersIfAvailable(ProblemDetails problemDetails)
     {
         if (_parameters.Count <= 0)
@@ -313,17 +306,5 @@ public class ProblemDetailsBuilder(DomainException e)
         }
 
         problemDetails.Extensions["traceId"] = _traceId;
-    }
-
-    private string FirstCharToLowerCase(string source)
-    {
-        if (string.IsNullOrEmpty(source) || char.IsLower(source[0]))
-        {
-            return source;
-        }
-
-        return source.Length == 1
-            ? char.ToLower(source[0]).ToString()
-            : char.ToLower(source[0]) + source[1..];
     }
 }

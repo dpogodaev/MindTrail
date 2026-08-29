@@ -11,7 +11,7 @@ namespace MindTrail.Cli.Commands;
 public class EmptyCommand()
     : Command(string.Empty, string.Empty, new Dictionary<string, string>())
 {
-    /// <inheritdoc cref="Command.Execute"/>
+    /// <inheritdoc/>
     public override void Execute(CommandControl control)
     {
         Console.ForegroundColor = ColorConstants.ErrorOutputColor;

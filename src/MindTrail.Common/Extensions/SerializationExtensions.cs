@@ -10,11 +10,10 @@ public static class SerializationExtensions
     /// <summary>
     /// Serializes an object of the specified type into a string.
     /// </summary>
-    /// <param name="source">Source object.</param>
-    /// <typeparam name="T">Object type.</typeparam>
+    /// <param name="source">The source object.</param>
+    /// <typeparam name="T">The type of the object being serialized.</typeparam>
     /// <returns>
-    /// Serialized string value if the <paramref name="source"/> is not <c>null</c>;
-    /// <c><see cref="string.Empty"/></c> otherwise.
+    /// The serialized string, or <c><see cref="string.Empty"/></c> if <paramref name="source"/> is <c>null</c>.
     /// </returns>
     public static string Serialize<T>(this T? source)
         where T : class

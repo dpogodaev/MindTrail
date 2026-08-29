@@ -4,10 +4,10 @@ using MindTrail.Common.Utilities;
 
 namespace MindTrail.Common.Providers;
 
-/// <inheritdoc cref="IElapsedTimeMeterProvider"/>
+/// <inheritdoc/>
 public class ElapsedTimeMeterProvider : IElapsedTimeMeterProvider
 {
-    /// <inheritdoc cref="IElapsedTimeMeterProvider.GetElapsedTimeMeter"/>
+    /// <inheritdoc/>
     public IElapsedTimeMeter GetElapsedTimeMeter(bool enableAutoStartup = false)
     {
         return new ElapsedTimeMeter(enableAutoStartup);

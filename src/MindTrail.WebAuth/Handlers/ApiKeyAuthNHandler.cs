@@ -13,7 +13,7 @@ using MindTrail.WebAuth.Options;
 namespace MindTrail.WebAuth.Handlers;
 
 /// <summary>
-/// Handler of authentication using the API key.
+/// Handles authentication using the API key.
 /// </summary>
 /// <remarks>It is applied when using the attribute <see cref="AuthorizeAttribute"/>.</remarks>
 public class ApiKeyAuthNHandler(
@@ -27,6 +27,7 @@ public class ApiKeyAuthNHandler(
     /// Handles custom authentication by API key.
     /// </summary>
     /// <returns>An <see cref="AuthenticateResult"/> indicating the result of the authentication attempt.</returns>
+    /// <exception cref="InvalidOperationException">The <see cref="ApiKeyAuthNOptions.ClaimName"/> is not specified.</exception>
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
     {
         var apiKey = Request.GetHeaderKeyValue(Options.ApiKeyHeaderName);

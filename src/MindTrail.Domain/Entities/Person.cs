@@ -4,7 +4,7 @@ using MindTrail.Domain.ValueObjects;
 namespace MindTrail.Domain.Entities;
 
 /// <summary>
-/// Information about the person.
+/// Information about a person.
 /// </summary>
 public class Person
 {
@@ -53,6 +53,7 @@ public class Person
     /// <param name="fullName">The full name.</param>
     /// <param name="birthYear">The year of birth. Optional.</param>
     /// <param name="birthCountryId">The ID of the country in which the person was born. Optional.</param>
+    /// <returns>A new <see cref="Person"/> instance.</returns>
     public static Person Create(
         PersonFullName fullName,
         BirthYear? birthYear = null,
@@ -71,7 +72,7 @@ public class Person
     }
 
     /// <summary>
-    /// Changes the birth information of the person.
+    /// Changes the birth information.
     /// </summary>
     /// <param name="birthYear">The year of birth. Optional.</param>
     /// <param name="birthCountryId">The ID of the country in which the person was born. Optional.</param>

@@ -9,6 +9,9 @@ using MindTrail.WebApi.Tests.Extensions;
 
 namespace MindTrail.WebApi.Tests.Providers;
 
+/// <summary>
+/// Sends requests to the <see cref="PersonController"/> endpoints.
+/// </summary>
 public class PersonApiProvider
 {
     private const string BaseUrl = "api/mind-trail/v1/persons";
@@ -16,6 +19,11 @@ public class PersonApiProvider
     private readonly string _apiKey;
     private readonly string _baseUrl;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PersonApiProvider"/> class.
+    /// </summary>
+    /// <param name="client">The HTTP client used to send requests.</param>
+    /// <param name="apiKey">The API key used to authenticate requests.</param>
     public PersonApiProvider(HttpClient client, string apiKey)
     {
         _client = client;
@@ -27,7 +35,7 @@ public class PersonApiProvider
     /// Request for endpoint <see cref="PersonController.GetPersons"/>.
     /// </summary>
     /// <param name="model">The model to query a list of persons.</param>
-    /// <returns>The HTTP response message received from the endpoint. </returns>
+    /// <returns>The HTTP response message received from the endpoint.</returns>
     public async Task<HttpResponseMessage> GetPersonsAsync(PersonQueryModel model)
     {
         ArgumentNullException.ThrowIfNull(model);
@@ -63,7 +71,7 @@ public class PersonApiProvider
     /// Request for endpoint <see cref="PersonController.CreatePerson"/>.
     /// </summary>
     /// <param name="model">The model to create a person.</param>
-    /// <returns>The HTTP response message received from the endpoint. </returns>
+    /// <returns>The HTTP response message received from the endpoint.</returns>
     public async Task<HttpResponseMessage> CreatePersonAsync(PersonCreationModel model)
     {
         var request = new HttpRequestMessage(HttpMethod.Post, BaseUrl)

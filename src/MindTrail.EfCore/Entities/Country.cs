@@ -4,7 +4,7 @@ using MindTrail.EfCore.Interfaces.Entities;
 namespace MindTrail.EfCore.Entities;
 
 /// <summary>
-/// Information about the country.
+/// Information about a country.
 /// </summary>
 [Table("Countries")]
 public class Country : IPersistentEntity

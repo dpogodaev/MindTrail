@@ -8,6 +8,9 @@ namespace MindTrail.Domain.ValueObjects;
 /// </summary>
 public sealed record BirthYear
 {
+    /// <summary>
+    /// The minimum valid birth year.
+    /// </summary>
     public const int MinBirthYear = 1600;
 
     private BirthYear(int birthYear, DateTime currentTime)
@@ -22,6 +25,9 @@ public sealed record BirthYear
 
     private BirthYear(int value) => Value = value;
 
+    /// <summary>
+    /// Gets the birth year value.
+    /// </summary>
     public int Value { get; }
 
     public static implicit operator int(BirthYear x) => x.Value;

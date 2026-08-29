@@ -9,10 +9,10 @@ namespace MindTrail.WebAuth.Extensions;
 public static class HttpRequestExtensions
 {
     /// <summary>
-    /// Returns query parameter from HTTP request.
+    /// Returns a query parameter from the HTTP request.
     /// </summary>
-    /// <param name="httpRequest">HTTP request.</param>
-    /// <param name="name">Parameter name.</param>
+    /// <param name="httpRequest">The HTTP request.</param>
+    /// <param name="name">The parameter name.</param>
     /// <returns>The parameter value if the parameter is found; <c>null</c> otherwise.</returns>
     public static string? GetQueryParameter(this HttpRequest httpRequest, string name)
     {
@@ -25,10 +25,10 @@ public static class HttpRequestExtensions
     }
 
     /// <summary>
-    /// Returns route parameter from HTTP request.
+    /// Returns a route parameter from the HTTP request.
     /// </summary>
-    /// <param name="httpRequest">HTTP request.</param>
-    /// <param name="name">Parameter name.</param>
+    /// <param name="httpRequest">The HTTP request.</param>
+    /// <param name="name">The parameter name.</param>
     /// <returns>The parameter value if the parameter is found; <c>null</c> otherwise.</returns>
     public static string? GetRouteParameter(this HttpRequest httpRequest, string name)
     {
@@ -40,8 +40,8 @@ public static class HttpRequestExtensions
     /// <summary>
     /// Returns the value of the header key.
     /// </summary>
-    /// <param name="httpRequest">HTTP request.</param>
-    /// <param name="key">Header key.</param>
+    /// <param name="httpRequest">The HTTP request.</param>
+    /// <param name="key">The header key.</param>
     /// <returns>The key value if the key is found in the header; <c>null</c> otherwise.</returns>
     public static string? GetHeaderKeyValue(this HttpRequest httpRequest, string? key)
     {

@@ -6,7 +6,7 @@
 public sealed record CountryFilterModel(string? Code, string? Name)
 {
     /// <summary>
-    /// Gets the filter value by country code.
+    /// Gets a filter value by country code.
     /// </summary>
     /// <remarks>
     /// Performs a partial, case-insensitive match.
@@ -15,7 +15,7 @@ public sealed record CountryFilterModel(string? Code, string? Name)
     public string? Code { get; } = Code;
 
     /// <summary>
-    /// Gets the filter value by the name of the country.
+    /// Gets a filter value by the name of the country.
     /// </summary>
     /// <remarks>
     /// Performs a partial, case-insensitive match.

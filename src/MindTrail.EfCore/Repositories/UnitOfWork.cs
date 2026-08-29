@@ -10,7 +10,7 @@ namespace MindTrail.EfCore.Repositories;
 /// <summary>
 /// Entity Framework implementation of <see cref="IUnitOfWork"/>.
 /// </summary>
-/// <param name="dbContext">Database context.</param>
+/// <param name="dbContext">The database context.</param>
 /// <typeparam name="TContext">The type of application database context.</typeparam>
 public class UnitOfWork<TContext>(TContext dbContext)
     : IUnitOfWork, IDisposable
@@ -27,7 +27,10 @@ public class UnitOfWork<TContext>(TContext dbContext)
         Dispose(false);
     }
 
-    /// <inheritdoc cref="IUnitOfWork.IsAutoSaveEnabled"/>
+    /// <summary>
+    /// Gets a value indicating whether changes should be saved automatically after entity operations.
+    /// </summary>
+    /// <exception cref="ObjectDisposedException">The unit of work has been disposed.</exception>
     public bool IsAutoSaveEnabled
     {
         get
@@ -43,13 +46,16 @@ public class UnitOfWork<TContext>(TContext dbContext)
         }
     }
 
-    /// <inheritdoc cref="IUnitOfWork.EnableAutoSave"/>
+    /// <inheritdoc/>
+    /// <exception cref="ObjectDisposedException">The unit of work has been disposed.</exception>
     public void EnableAutoSave()
     {
         ThrowIfDisposed();
         IsAutoSaveEnabled = true;
     }
 
+    /// <inheritdoc/>
+    /// <exception cref="ObjectDisposedException">The unit of work has been disposed.</exception>
     public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         ThrowIfDisposed();
@@ -57,7 +63,8 @@ public class UnitOfWork<TContext>(TContext dbContext)
         await dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    /// <inheritdoc cref="IUnitOfWork.BeginTransactionAsync"/>
+    /// <inheritdoc/>
+    /// <exception cref="ObjectDisposedException">The unit of work has been disposed.</exception>
     public async Task BeginTransactionAsync(CancellationToken cancellationToken = default)
     {
         ThrowIfDisposed();
@@ -70,7 +77,8 @@ public class UnitOfWork<TContext>(TContext dbContext)
         _transaction = await dbContext.Database.BeginTransactionAsync(cancellationToken);
     }
 
-    /// <inheritdoc cref="IUnitOfWork.CommitTransactionAsync"/>
+    /// <inheritdoc/>
+    /// <exception cref="ObjectDisposedException">The unit of work has been disposed.</exception>
     public async Task CommitTransactionAsync(CancellationToken cancellationToken = default)
     {
         ThrowIfDisposed();
@@ -91,7 +99,8 @@ public class UnitOfWork<TContext>(TContext dbContext)
         }
     }
 
-    /// <inheritdoc cref="IUnitOfWork.RollbackTransactionAsync"/>
+    /// <inheritdoc/>
+    /// <exception cref="ObjectDisposedException">The unit of work has been disposed.</exception>
     public async Task RollbackTransactionAsync(CancellationToken cancellationToken = default)
     {
         ThrowIfDisposed();
@@ -125,7 +134,7 @@ public class UnitOfWork<TContext>(TContext dbContext)
     /// Protected implementation of Dispose pattern.
     /// </summary>
     /// <param name="disposing">
-    /// Indicates if the method call comes from a Dispose method (its value is true) or from a finalizer (its value is false).
+    /// Indicates whether the method call comes from a Dispose method (its value is true) or from a finalizer (its value is false).
     /// </param>
     private void Dispose(bool disposing)
     {

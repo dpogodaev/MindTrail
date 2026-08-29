@@ -1,13 +1,13 @@
 ﻿namespace MindTrail.EfCore.Interfaces.Entities;
 
 /// <summary>
-/// Soft-delete entities are not actually deleted, are marked as deleted in the database,
-/// but cannot be retrieved to the application.
+/// Soft-deleted entities are not physically removed from the database — they are marked as deleted
+/// and excluded from application queries.
 /// </summary>
 public interface ISoftDelete
 {
     /// <summary>
-    /// Gets or sets a value indicating whether used to mark an entity as 'Deleted'.
+    /// Gets or sets a value indicating whether the entity is marked as deleted.
     /// </summary>
     bool IsDeleted { get; set; }
 }

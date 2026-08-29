@@ -20,7 +20,7 @@ namespace MindTrail.EfCore.Handlers;
 /// <summary>
 /// Handles <see cref="GetCardsQuery"/> requests.
 /// </summary>
-/// <param name="dbContext">Application database context.</param>
+/// <param name="dbContext">The application database context.</param>
 public class GetCardsQueryHandler(AppDbContext dbContext)
     : BaseQueryHandler(dbContext), IQueryHandler<GetCardsQuery, PagedDto<CardDto>>
 {

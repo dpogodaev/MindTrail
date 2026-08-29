@@ -3,18 +3,18 @@ using System.ComponentModel.DataAnnotations;
 namespace MindTrail.WebApi.Models.Cards;
 
 /// <summary>
-/// Model for creating a card with a note.
+/// Model for creating a note-taking card.
 /// </summary>
-public class CardCreationModel
+public sealed record CardCreationModel
 {
     /// <summary>
-    /// Gets the title.
+    /// The title of the card.
     /// </summary>
     [Required]
     public required string Title { get; init; }
 
     /// <summary>
-    /// Gets the content.
+    /// The content of the card.
     /// </summary>
     public string? Content { get; init; }
 }

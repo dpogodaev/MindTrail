@@ -41,7 +41,7 @@ internal static class Startup
     /// <summary>
     /// Configures the HTTP request pipeline.
     /// </summary>
-    /// <param name="app">Used to configure the HTTP pipeline and routes.</param>
+    /// <param name="app">The application used to configure the HTTP pipeline and routes.</param>
     public static void ConfigureHttpRequestPipeline(this WebApplication app)
     {
         app.MapHealthChecks("/health");
@@ -62,8 +62,8 @@ internal static class Startup
     /// </summary>
     /// <param name="host">The application host.</param>
     /// <param name="configuration">The application configuration.</param>
-    /// <param name="logger">The startup logger. Optional.</param>
-    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+    /// <param name="logger">The startup logger.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
     public static async Task ApplyAutoMigrationAsync(
         this IHost host, IConfiguration configuration, IStartupLogger logger)
     {

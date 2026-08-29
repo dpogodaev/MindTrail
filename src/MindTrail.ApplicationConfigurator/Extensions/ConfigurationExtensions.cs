@@ -8,9 +8,9 @@ namespace MindTrail.ApplicationConfigurator.Extensions;
 public static class ConfigurationExtensions
 {
     /// <summary>
-    /// Indicates if the configuration section exists.
+    /// Indicates whether the configuration section exists.
     /// </summary>
-    /// <param name="configuration">Represents a set of key/value application configuration properties.</param>
+    /// <param name="configuration">The application configuration.</param>
     /// <param name="key">The key of the configuration section. The colon is used as a separator.</param>
     /// <returns><c>true</c> if the section with the specified key is found; <c>false</c> otherwise.</returns>
     public static bool SectionExists(this IConfiguration configuration, string key)
@@ -21,7 +21,7 @@ public static class ConfigurationExtensions
     /// <summary>
     /// Binds the configuration section to a new instance of the specified type.
     /// </summary>
-    /// <param name="configuration">Represents a set of key/value application configuration properties.</param>
+    /// <param name="configuration">The application configuration.</param>
     /// <param name="key">The key of the configuration section. The colon is used as a separator.</param>
     /// <typeparam name="T">The type of the new instance to bind.</typeparam>
     /// <returns>
@@ -36,9 +36,9 @@ public static class ConfigurationExtensions
     }
 
     /// <summary>
-    /// Indicates if the configuration parameter exists and has a value other than <c><see cref="string.Empty"/></c> and <c>null</c>.
+    /// Indicates whether the configuration parameter exists and has a value other than <c><see cref="string.Empty"/></c> and <c>null</c>.
     /// </summary>
-    /// <param name="configuration">Represents a set of key/value application configuration properties.</param>
+    /// <param name="configuration">The application configuration.</param>
     /// <param name="key">The key of the configuration property. The colon is used as a separator.</param>
     /// <returns>
     /// <c>true</c> if a parameter with the specified key is found and has a value other than <c><see cref="string.Empty"/></c> and <c>null</c>;
@@ -52,9 +52,9 @@ public static class ConfigurationExtensions
     /// <summary>
     /// Checks for the presence of the parameter and gets it from the configuration.
     /// </summary>
-    /// <param name="configuration">Represents a set of key/value application configuration properties.</param>
+    /// <param name="configuration">The application configuration.</param>
     /// <param name="key">The key of the configuration property. The colon is used as a separator.</param>
-    /// <param name="value">Parameter value obtained from the configuration.</param>
+    /// <param name="value">The parameter value obtained from the configuration.</param>
     /// <returns>
     /// <c>true</c> if the configuration parameter exists and is not equal to null or an empty string;
     /// <c>false</c> otherwise.
@@ -69,7 +69,7 @@ public static class ConfigurationExtensions
     /// <summary>
     /// Returns the value of the configuration property.
     /// </summary>
-    /// <param name="configuration">Represents a set of key/value application configuration properties.</param>
+    /// <param name="configuration">The application configuration.</param>
     /// <param name="key">The key of the configuration property. The colon is used as a separator.</param>
     /// <returns>Parameter value in <c>string</c> format if the configuration parameter exists; <c>null</c> otherwise.</returns>
     public static string? GetProperty(this IConfiguration configuration, string key)

@@ -17,7 +17,7 @@ try
     builder.Services.UseLoggerProviderForDI();
     builder.ConfigureServices(builder.Configuration, logger: startupLogger);
 
-    startupLogger.Info("The application's services was successfully configured", timer.ElapsedTimeInMs);
+    startupLogger.Info("The application's services were successfully configured", timer.ElapsedTimeInMs);
 
     timer.Restart();
     var host = builder.Build();

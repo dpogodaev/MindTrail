@@ -22,7 +22,7 @@ public class JsonSerializerTests
     /// <summary>
     /// Test for <see cref="JsonSerializer.DeserializeAsync{TValue}(Stream,JsonSerializerOptions?,System.Threading.CancellationToken)"/> method.
     /// </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+    /// <returns>A task that represents the asynchronous operation.</returns>
     [TestMethod]
     public async Task DeserializeAsync_ShouldDeserializeCamelCaseJsonCorrectly()
     {
@@ -41,7 +41,7 @@ public class JsonSerializerTests
     /// <summary>
     /// Test for <see cref="JsonSerializer.DeserializeAsync{TValue}(Stream,JsonSerializerOptions?,System.Threading.CancellationToken)"/> method.
     /// </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+    /// <returns>A task that represents the asynchronous operation.</returns>
     [TestMethod]
     public async Task DeserializeAsync_ShouldDeserializePascalCaseJsonCorrectly()
     {
@@ -60,7 +60,7 @@ public class JsonSerializerTests
     /// <summary>
     /// Test for <see cref="JsonSerializer.DeserializeAsync{TValue}(Stream,JsonSerializerOptions?,System.Threading.CancellationToken)"/> method.
     /// </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+    /// <returns>A task that represents the asynchronous operation.</returns>
     [TestMethod]
     public async Task DeserializeAsync_ShouldHandleNullValuesCorrectly()
     {

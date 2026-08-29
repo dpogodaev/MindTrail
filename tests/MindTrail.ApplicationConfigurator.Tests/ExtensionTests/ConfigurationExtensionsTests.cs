@@ -6,7 +6,7 @@ using MindTrail.ApplicationConfigurator.Extensions;
 namespace MindTrail.ApplicationConfigurator.Tests.ExtensionTests;
 
 /// <summary>
-/// Tests for <see cref="ApplicationConfigurator.Extensions.ConfigurationExtensions"/> class.
+/// Tests for <see cref="MindTrail.ApplicationConfigurator.Extensions.ConfigurationExtensions"/> class.
 /// </summary>
 [TestClass]
 public class ConfigurationExtensionsTests
@@ -14,7 +14,7 @@ public class ConfigurationExtensionsTests
     #region SectionExists
 
     /// <summary>
-    /// Test for <see cref="Extensions.ConfigurationExtensions.SectionExists"/> method.
+    /// Test for <see cref="MindTrail.ApplicationConfigurator.Extensions.ConfigurationExtensions.SectionExists"/> method.
     /// </summary>
     [TestMethod]
     public void SectionExists_SpecifiedSectionExists_ReturnsTrue()
@@ -35,7 +35,7 @@ public class ConfigurationExtensionsTests
     }
 
     /// <summary>
-    /// Test for <see cref="Extensions.ConfigurationExtensions.SectionExists"/> method.
+    /// Test for <see cref="MindTrail.ApplicationConfigurator.Extensions.ConfigurationExtensions.SectionExists"/> method.
     /// </summary>
     [TestMethod]
     public void SectionExists_SpecifiedSectionDoesNotExist_ReturnsFalse()
@@ -57,7 +57,7 @@ public class ConfigurationExtensionsTests
     #region PropertyExists
 
     /// <summary>
-    /// Test for <see cref="Extensions.ConfigurationExtensions.PropertyExists"/> method.
+    /// Test for <see cref="MindTrail.ApplicationConfigurator.Extensions.ConfigurationExtensions.PropertyExists"/> method.
     /// </summary>
     [TestMethod]
     public void PropertyExists_SpecifiedPropertyExists_ReturnsTrue()
@@ -78,7 +78,7 @@ public class ConfigurationExtensionsTests
     }
 
     /// <summary>
-    /// Test for <see cref="Extensions.ConfigurationExtensions.PropertyExists"/> method.
+    /// Test for <see cref="MindTrail.ApplicationConfigurator.Extensions.ConfigurationExtensions.PropertyExists"/> method.
     /// </summary>
     [TestMethod]
     public void PropertyExists_SpecifiedPropertyDoesNotExist_ReturnsFalse()
@@ -100,7 +100,7 @@ public class ConfigurationExtensionsTests
     #region GetProperty
 
     /// <summary>
-    /// Test for <see cref="ApplicationConfigurator.Extensions.ConfigurationExtensions.GetProperty"/> method.
+    /// Test for <see cref="MindTrail.ApplicationConfigurator.Extensions.ConfigurationExtensions.GetProperty"/> method.
     /// </summary>
     [TestMethod]
     public void GetProperty_SpecifiedPropertyExists_ReturnsPropertyValue()
@@ -122,7 +122,7 @@ public class ConfigurationExtensionsTests
     }
 
     /// <summary>
-    /// Test for <see cref="ApplicationConfigurator.Extensions.ConfigurationExtensions.GetProperty"/> method.
+    /// Test for <see cref="MindTrail.ApplicationConfigurator.Extensions.ConfigurationExtensions.GetProperty"/> method.
     /// </summary>
     [TestMethod]
     public void GetProperty_SpecifiedPropertyDoesNotExist_ReturnsNull()
@@ -144,7 +144,7 @@ public class ConfigurationExtensionsTests
     #region TryGetProperty
 
     /// <summary>
-    /// Test for <see cref="ApplicationConfigurator.Extensions.ConfigurationExtensions.TryGetProperty"/> method.
+    /// Test for <see cref="MindTrail.ApplicationConfigurator.Extensions.ConfigurationExtensions.TryGetProperty"/> method.
     /// </summary>
     [TestMethod]
     public void TryGetProperty_SpecifiedPropertyExists_ReturnsTrue()
@@ -167,7 +167,7 @@ public class ConfigurationExtensionsTests
     }
 
     /// <summary>
-    /// Test for <see cref="ApplicationConfigurator.Extensions.ConfigurationExtensions.TryGetProperty"/> method.
+    /// Test for <see cref="MindTrail.ApplicationConfigurator.Extensions.ConfigurationExtensions.TryGetProperty"/> method.
     /// </summary>
     [TestMethod]
     public void TryGetProperty_SpecifiedPropertyDoesNotExist_ReturnsFalse()
@@ -189,7 +189,7 @@ public class ConfigurationExtensionsTests
     #region BindSection
 
     /// <summary>
-    /// Test for <see cref="ApplicationConfigurator.Extensions.ConfigurationExtensions.BindSection{T}"/> method.
+    /// Test for <see cref="MindTrail.ApplicationConfigurator.Extensions.ConfigurationExtensions.BindSection{T}"/> method.
     /// </summary>
     [TestMethod]
     public void BindSection_SpecifiedSectionExists_BindsSectionToSpecifiedClass()
@@ -215,7 +215,7 @@ public class ConfigurationExtensionsTests
     }
 
     /// <summary>
-    /// Test for <see cref="ApplicationConfigurator.Extensions.ConfigurationExtensions.BindSection{T}"/> method.
+    /// Test for <see cref="MindTrail.ApplicationConfigurator.Extensions.ConfigurationExtensions.BindSection{T}"/> method.
     /// </summary>
     [TestMethod]
     public void BindSection_SpecifiedSectionDoesNotExist_ReturnsNull()

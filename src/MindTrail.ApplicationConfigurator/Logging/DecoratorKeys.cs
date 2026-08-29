@@ -6,7 +6,7 @@ namespace MindTrail.ApplicationConfigurator.Logging;
 internal static class DecoratorKeys
 {
     /// <summary>
-    /// Key for the innermost, undecorated implementation of a decorated service.
+    /// The key for the innermost, undecorated implementation of a decorated service.
     /// </summary>
     public const string Inner = "inner";
 }

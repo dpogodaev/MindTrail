@@ -9,11 +9,11 @@ namespace MindTrail.Cli.Factories;
 /// <summary>
 /// Command factory.
 /// </summary>
-/// <param name="scope">Used to create application services within a scope.</param>
+/// <param name="scope">The scope used to resolve application services.</param>
 public class CommandFactory(IServiceScope scope)
 {
     /// <summary>
-    /// The name of the command for getting help.
+    /// The name of the help command.
     /// </summary>
     public const string HelpCommandName = "help";
 
@@ -23,7 +23,7 @@ public class CommandFactory(IServiceScope scope)
     public const string ExitCommandName = "exit";
 
     /// <summary>
-    /// The name of the command for getting the history.
+    /// The name of the history command.
     /// </summary>
     public const string HistoryCommandName = "history";
 
@@ -32,7 +32,7 @@ public class CommandFactory(IServiceScope scope)
     /// <summary>
     /// Builds the specified command using the command line.
     /// </summary>
-    /// <param name="commandLine">Command line.</param>
+    /// <param name="commandLine">The command line.</param>
     /// <returns>The command to execute.</returns>
     public ICommand Build(string? commandLine)
     {

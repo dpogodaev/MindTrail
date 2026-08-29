@@ -10,13 +10,13 @@ namespace MindTrail.Cli.Commands;
 /// <summary>
 /// The command to display help information about application.
 /// </summary>
-/// <param name="line">Command line.</param>
-/// <param name="name">Command name.</param>
-/// <param name="options">Command options.</param>
+/// <param name="line">The command line.</param>
+/// <param name="name">The command name.</param>
+/// <param name="options">The command options.</param>
 public class HelpCommand(string line, string name, Dictionary<string, string> options)
     : Command(line, name, options)
 {
-    /// <inheritdoc cref="Command.Execute"/>
+    /// <inheritdoc/>
     public override void Execute(CommandControl control)
     {
         AddToHistory(control);

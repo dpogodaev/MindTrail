@@ -12,11 +12,11 @@ namespace MindTrail.Cli.Services;
 /// <summary>
 /// Service that implements the command line interface.
 /// </summary>
-/// <param name="scopeFactory">Used to create application services within a scope.</param>
+/// <param name="scopeFactory">The factory used to create a scope for resolving application services.</param>
 public class CliService(IServiceScopeFactory scopeFactory)
     : IHostedService
 {
-    /// <inheritdoc cref="IHostedService.StartAsync"/>
+    /// <inheritdoc/>
     public Task StartAsync(CancellationToken cancellationToken)
     {
         Console.Clear();
@@ -41,7 +41,7 @@ public class CliService(IServiceScopeFactory scopeFactory)
         return Task.CompletedTask;
     }
 
-    /// <inheritdoc cref="IHostedService.StopAsync"/>
+    /// <inheritdoc/>
     public Task StopAsync(CancellationToken cancellationToken)
     {
         throw new NotImplementedException();

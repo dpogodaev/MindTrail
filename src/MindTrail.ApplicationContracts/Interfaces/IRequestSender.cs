@@ -13,7 +13,7 @@ public interface IRequestSender
     /// <summary>
     /// Sends a command to its corresponding handler.
     /// </summary>
-    /// <typeparam name="TResult">Type of the result produced when the command is handled.</typeparam>
+    /// <typeparam name="TResult">The type of the result produced when the command is handled.</typeparam>
     /// <param name="command">The command to send.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <returns>The result of handling the command.</returns>
@@ -22,7 +22,7 @@ public interface IRequestSender
     /// <summary>
     /// Sends a query to its corresponding handler.
     /// </summary>
-    /// <typeparam name="TResult">Type of the result produced when the query is handled.</typeparam>
+    /// <typeparam name="TResult">The type of the result produced when the query is handled.</typeparam>
     /// <param name="query">The query to send.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <returns>The result of handling the query.</returns>

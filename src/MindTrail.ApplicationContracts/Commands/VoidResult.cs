@@ -1,4 +1,4 @@
-namespace MindTrail.ApplicationContracts.Commands.Common;
+namespace MindTrail.ApplicationContracts.Commands;
 
 /// <summary>
 /// Represents a void return type for commands that produce no result, other than confirming completion.

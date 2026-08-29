@@ -21,8 +21,8 @@ internal static class SwaggerConfig
     /// <summary>
     /// Adds a configuration for Swagger.
     /// </summary>
-    /// <param name="services">Used to register application services.</param>
-    /// <param name="settings">Swagger settings.</param>
+    /// <param name="services">The service collection used to register application services.</param>
+    /// <param name="settings">The Swagger settings.</param>
     public static void AddSwaggerConfig(this IServiceCollection services, SwaggerSettings settings)
     {
         _swaggerSettings = settings;
@@ -48,10 +48,14 @@ internal static class SwaggerConfig
     /// <summary>
     /// Configures the Swagger user interface.
     /// </summary>
-    /// <param name="options">Swagger UI options.</param>
+    /// <param name="options">The Swagger UI options.</param>
+    /// <exception cref="InvalidOperationException">The Swagger is not configured.</exception>
     public static void ConfigureSwaggerUI(SwaggerUIOptions options)
     {
-        ArgumentNullException.ThrowIfNull(_swaggerSettings, "The Swagger is not configured");
+        if (_swaggerSettings == null)
+        {
+            throw new InvalidOperationException("The Swagger is not configured.");
+        }
 
         var url = $"/swagger/{_swaggerSettings.DocumentName}/swagger.json";
         var name = $"{_swaggerSettings.AppTitle} {_swaggerSettings.DocumentVersion}";

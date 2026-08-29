@@ -10,7 +10,7 @@ using MindTrail.ApplicationContracts.Interfaces.Queries;
 
 namespace MindTrail.ApplicationConfigurator.Abstractions.Providers;
 
-/// <inheritdoc cref="IRequestSender"/>
+/// <inheritdoc/>
 public class RequestSenderProvider(IServiceProvider serviceProvider) : IRequestSender
 {
     private static readonly ConcurrentDictionary<Type, MethodInfo> HandleMethodCache = new();

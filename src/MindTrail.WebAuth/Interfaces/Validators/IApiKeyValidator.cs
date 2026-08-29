@@ -6,7 +6,7 @@
 public interface IApiKeyValidator
 {
     /// <summary>
-    /// Indicates if the API key is valid.
+    /// Indicates whether the API key is valid.
     /// </summary>
     /// <param name="apiKey">API key value.</param>
     /// <returns><c>true</c> if the API key is valid; <c>false</c> otherwise.</returns>

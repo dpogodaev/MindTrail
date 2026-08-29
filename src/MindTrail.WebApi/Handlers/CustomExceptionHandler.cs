@@ -12,7 +12,7 @@ namespace MindTrail.WebApi.Handlers;
 /// <summary>
 /// Adds custom exception handling that produces a <see cref="ProblemDetails"/> response for all unhandled exceptions.
 /// </summary>
-/// <param name="environment">Information about the hosting environment.</param>
+/// <param name="environment">The information about the hosting environment.</param>
 /// <remarks>
 /// The <see cref="ProblemDetails.Status"/> is always set to <see cref="StatusCodes.Status500InternalServerError"/>.<br/>
 /// The <see cref="ProblemDetails.Title"/> contains brief information about the error.<br/>
@@ -22,7 +22,7 @@ namespace MindTrail.WebApi.Handlers;
 public sealed class CustomExceptionHandler(IHostEnvironment environment)
     : IExceptionHandler
 {
-    /// <inheritdoc cref="IExceptionHandler.TryHandleAsync"/>
+    /// <inheritdoc/>
     public async ValueTask<bool> TryHandleAsync(
         HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {

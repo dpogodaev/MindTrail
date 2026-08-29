@@ -8,17 +8,17 @@ namespace MindTrail.Cli.Constants;
 public class ColorConstants
 {
     /// <summary>
-    /// Color of the entered command.
+    /// The color of the entered command.
     /// </summary>
     public const ConsoleColor InputColor = ConsoleColor.Blue;
 
     /// <summary>
-    /// Color of the output information.
+    /// The color of the output information.
     /// </summary>
     public const ConsoleColor OutputColor = ConsoleColor.Gray;
 
     /// <summary>
-    /// Color of the output information when an error occurs.
+    /// The color of the output information when an error occurs.
     /// </summary>
     public const ConsoleColor ErrorOutputColor = ConsoleColor.Red;
 }

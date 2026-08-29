@@ -1,11 +1,10 @@
 using System;
-using MindTrail.Common.Interfaces.Providers;
 using MindTrail.Domain.ValueObjects;
 
 namespace MindTrail.Domain.Entities;
 
 /// <summary>
-/// A card with a note.
+/// Note-taking card.
 /// </summary>
 public class Card
 {

@@ -1,5 +1,4 @@
 using System;
-using MindTrail.ApplicationContracts.Commands.Common;
 using MindTrail.ApplicationContracts.Interfaces.Commands;
 using MindTrail.DomainShared.Exceptions;
 using MindTrail.DomainShared.Exceptions.Persons;
