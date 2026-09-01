@@ -21,7 +21,7 @@ public class EfCoreArchTests
     ];
 
     /// <summary>
-    /// Verifies that the <see cref="MindTrail.EfCore"/> component follows the dependency rules.
+    /// Ensures that the <see cref="MindTrail.EfCore"/> component follows the dependency rules.
     /// </summary>
     [TestMethod]
     public void EfCore_ShouldFollowDependencyRules()
@@ -89,7 +89,7 @@ public class EfCoreArchTests
     }
 
     /// <summary>
-    /// Verifies that the <see cref="MindTrail.EfCore"/> component's types follow the naming conventions.
+    /// Ensures that the <see cref="MindTrail.EfCore"/> component's types follow the naming conventions.
     /// </summary>
     [TestMethod]
     public void EfCore_ShouldFollowNamingConventions()

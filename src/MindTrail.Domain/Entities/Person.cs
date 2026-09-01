@@ -9,6 +9,11 @@ namespace MindTrail.Domain.Entities;
 public class Person
 {
     /// <summary>
+    /// The identifier value used for a person that has not yet been persisted.
+    /// </summary>
+    private static readonly Guid UnassignedId = Guid.Empty;
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="Person"/> class with identifier.
     /// </summary>
     /// <param name="id">A unique identifier. Optional.</param>
@@ -21,7 +26,7 @@ public class Person
         BirthYear? birthYear = null,
         int? birthCountryId = null)
     {
-        Id = id ?? Guid.Empty;
+        Id = id ?? UnassignedId;
         FullName = fullName;
         BirthYear = birthYear;
         BirthCountryId = birthCountryId;

@@ -22,7 +22,7 @@ public class WebHostArchTests
     ];
 
     /// <summary>
-    /// Verifies that the <see cref="MindTrail.WebHost"/> component follows the dependency rules.
+    /// Ensures that the <see cref="MindTrail.WebHost"/> component follows the dependency rules.
     /// </summary>
     [TestMethod]
     public void WebHost_ShouldFollowDependencyRules()
@@ -104,7 +104,7 @@ public class WebHostArchTests
     }
 
     /// <summary>
-    /// Verifies that the <see cref="MindTrail.WebHost"/> component's types follow the naming conventions.
+    /// Ensures that the <see cref="MindTrail.WebHost"/> component's types follow the naming conventions.
     /// </summary>
     [TestMethod]
     public void WebHost_ShouldFollowNamingConventions()

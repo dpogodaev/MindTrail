@@ -22,7 +22,7 @@ public class WebApiArchTests
     ];
 
     /// <summary>
-    /// Verifies that the <see cref="MindTrail.WebApi"/> component follows the dependency rules.
+    /// Ensures that the <see cref="MindTrail.WebApi"/> component follows the dependency rules.
     /// </summary>
     [TestMethod]
     public void WebApi_ShouldFollowDependencyRules()
@@ -104,7 +104,7 @@ public class WebApiArchTests
     }
 
     /// <summary>
-    /// Verifies that the <see cref="MindTrail.WebApi"/> component's types follow the naming conventions.
+    /// Ensures that the <see cref="MindTrail.WebApi"/> component's types follow the naming conventions.
     /// </summary>
     [TestMethod]
     public void WebApi_ShouldFollowNamingConventions()

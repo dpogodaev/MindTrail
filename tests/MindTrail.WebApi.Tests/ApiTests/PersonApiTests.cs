@@ -62,9 +62,8 @@ public class PersonApiTests
     }
 
     /// <summary>
-    /// Verifies that persons are sorted by creation date in descending order by default when getting the persons list.
+    /// Ensures that persons are sorted by creation date in descending order by default when getting the persons list.
     /// </summary>
-    /// <returns>A task that represents the asynchronous operation.</returns>
     [TestMethod]
     [TestCategory("API")]
     public async Task Default_sorting_by_creation_date_desc_applied_when_getting_persons_list()
@@ -97,9 +96,8 @@ public class PersonApiTests
     }
 
     /// <summary>
-    /// Verifies that sorting by full name is applied when getting the persons list.
+    /// Ensures that sorting by full name is applied when getting the persons list.
     /// </summary>
-    /// <returns>A task that represents the asynchronous operation.</returns>
     [TestMethod]
     [TestCategory("API")]
     public async Task Sorting_by_full_name_applied_when_getting_persons_list()
@@ -136,9 +134,8 @@ public class PersonApiTests
     }
 
     /// <summary>
-    /// Verifies that sorting by year of birth is applied when getting the persons list.
+    /// Ensures that sorting by year of birth is applied when getting the persons list.
     /// </summary>
-    /// <returns>A task that represents the asynchronous operation.</returns>
     [TestMethod]
     [TestCategory("API")]
     public async Task Sorting_by_birth_year_applied_when_getting_persons_list()
@@ -178,9 +175,8 @@ public class PersonApiTests
     }
 
     /// <summary>
-    /// Verifies that text search filtering is applied when getting the persons list.
+    /// Ensures that text search filtering is applied when getting the persons list.
     /// </summary>
-    /// <returns>A task that represents the asynchronous operation.</returns>
     [TestMethod]
     [TestCategory("API")]
     public async Task Search_filtering_applied_when_getting_persons_list()
@@ -215,9 +211,8 @@ public class PersonApiTests
     }
 
     /// <summary>
-    /// Verifies that pagination is applied when getting the persons list.
+    /// Ensures that pagination is applied when getting the persons list.
     /// </summary>
-    /// <returns>A task that represents the asynchronous operation.</returns>
     [TestMethod]
     [TestCategory("API")]
     public async Task Pagination_applied_when_getting_persons_list()
@@ -254,9 +249,8 @@ public class PersonApiTests
     }
 
     /// <summary>
-    /// Verifies that person creation is rejected when the birth year is less than the minimum allowed value.
+    /// Ensures that person creation is rejected when the birth year is less than the minimum allowed value.
     /// </summary>
-    /// <returns>A task that represents the asynchronous operation.</returns>
     [TestMethod]
     [TestCategory("API")]
     public async Task Person_creation_rejects_birth_year_less_than_min()
@@ -288,9 +282,8 @@ public class PersonApiTests
     }
 
     /// <summary>
-    /// Verifies that person creation is rejected when the full name exceeds the maximum allowed length.
+    /// Ensures that person creation is rejected when the full name exceeds the maximum allowed length.
     /// </summary>
-    /// <returns>A task that represents the asynchronous operation.</returns>
     [TestMethod]
     [TestCategory("API")]
     public async Task Person_creation_rejects_too_long_full_name()
@@ -321,9 +314,8 @@ public class PersonApiTests
     }
 
     /// <summary>
-    /// Verifies that person creation is rejected when a duplicate person already exists.
+    /// Ensures that person creation is rejected when a duplicate person already exists.
     /// </summary>
-    /// <returns>A task that represents the asynchronous operation.</returns>
     [TestMethod]
     [TestCategory("API")]
     public async Task Person_creation_rejects_duplicate()

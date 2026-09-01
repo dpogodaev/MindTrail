@@ -21,8 +21,8 @@ public sealed record CardQueryModel
     /// A filter value by card's number.
     /// </summary>
     /// <remarks>
-    /// Performs a partial, case-insensitive match.
-    /// If <c>null</c> or empty, filtering is not applied.
+    /// Performs an exact match.
+    /// If <c>null</c>, filtering is not applied.
     /// </remarks>
     public int? CardNumber { get; init; }
 
@@ -39,8 +39,8 @@ public sealed record CardQueryModel
     /// A filter value by content.
     /// </summary>
     /// <remarks>
-    /// Performs an exact match.
-    /// If <c>null</c>, filtering is not applied.
+    /// Performs a partial, case-insensitive match.
+    /// If <c>null</c> or empty, filtering is not applied.
     /// </remarks>
     public string? Content { get; init; }
 

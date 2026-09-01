@@ -20,7 +20,7 @@ public class DomainArchTests
     ];
 
     /// <summary>
-    /// Verifies that the <see cref="MindTrail.Domain"/> component follows the dependency rules.
+    /// Ensures that the <see cref="MindTrail.Domain"/> component follows the dependency rules.
     /// </summary>
     [TestMethod]
     public void Domain_ShouldFollowDependencyRules()
@@ -122,7 +122,7 @@ public class DomainArchTests
     }
 
     /// <summary>
-    /// Verifies that the <see cref="MindTrail.Domain"/> component's types follow the naming conventions.
+    /// Ensures that the <see cref="MindTrail.Domain"/> component's types follow the naming conventions.
     /// </summary>
     [TestMethod]
     public void Domain_ShouldFollowNamingConventions()

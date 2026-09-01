@@ -11,7 +11,7 @@ public class Card
     /// <summary>
     /// The identifier value used for a card that has not yet been persisted.
     /// </summary>
-    private const int DefaultId = 0;
+    private const int UnassignedId = 0;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Card"/> class.
@@ -28,7 +28,7 @@ public class Card
         DateTime createdAt,
         DateTime? editedAt = null)
     {
-        Id = id ?? DefaultId;
+        Id = id ?? UnassignedId;
         Title = title;
         Content = content;
         CreatedAt = createdAt;

@@ -69,5 +69,7 @@ internal static class WebApiConfig
         services.AddScoped<IDomainExceptionHandler<DomainException>, PersonDuplicateExceptionHandler>();
         services.AddScoped<IDomainExceptionHandler<DomainException>, PersonNameTooLongExceptionHandler>();
         services.AddScoped<IDomainExceptionHandler<DomainException>, BirthYearOutOfRangeExceptionHandler>();
+        services.AddScoped<IDomainExceptionHandler<DomainException>, CardTitleTooLongExceptionHandler>();
+        services.AddScoped<IDomainExceptionHandler<DomainException>, CardContentTooLongExceptionHandler>();
     }
 }

@@ -22,7 +22,7 @@ public class ApplicationConfiguratorArchTests
     ];
 
     /// <summary>
-    /// Verifies that the <see cref="MindTrail.ApplicationConfigurator"/> component follows the dependency rules.
+    /// Ensures that the <see cref="MindTrail.ApplicationConfigurator"/> component follows the dependency rules.
     /// </summary>
     [TestMethod]
     public void ApplicationConfigurator_ShouldFollowDependencyRules()
@@ -83,7 +83,7 @@ public class ApplicationConfiguratorArchTests
     }
 
     /// <summary>
-    /// Verifies that the <see cref="MindTrail.ApplicationConfigurator"/> component's types follow the naming conventions.
+    /// Ensures that the <see cref="MindTrail.ApplicationConfigurator"/> component's types follow the naming conventions.
     /// </summary>
     [TestMethod]
     public void ApplicationConfigurator_ShouldFollowNamingConventions()

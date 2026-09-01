@@ -21,7 +21,7 @@ public class WebAuthArchTests
     ];
 
     /// <summary>
-    /// Verifies that the <see cref="MindTrail.WebAuth"/> component follows the dependency rules.
+    /// Ensures that the <see cref="MindTrail.WebAuth"/> component follows the dependency rules.
     /// </summary>
     [TestMethod]
     public void WebAuth_ShouldFollowDependencyRules()
@@ -56,7 +56,7 @@ public class WebAuthArchTests
     }
 
     /// <summary>
-    /// Verifies that the <see cref="MindTrail.WebAuth"/> component's types follow the naming conventions.
+    /// Ensures that the <see cref="MindTrail.WebAuth"/> component's types follow the naming conventions.
     /// </summary>
     [TestMethod]
     public void WebAuth_ShouldFollowNamingConventions()

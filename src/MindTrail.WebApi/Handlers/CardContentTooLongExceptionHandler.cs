@@ -1,4 +1,4 @@
-﻿using MindTrail.DomainShared.Exceptions;
+using MindTrail.DomainShared.Exceptions.Cards;
 using MindTrail.WebApi.Abstractions.Builders;
 using MindTrail.WebApi.Abstractions.Factories;
 using MindTrail.WebApi.Handlers.Base;
@@ -6,22 +6,22 @@ using MindTrail.WebApi.Handlers.Base;
 namespace MindTrail.WebApi.Handlers;
 
 /// <summary>
-/// Handles a <see cref="PersonNameTooLongException"/>.
+/// Handles a <see cref="CardContentTooLongException"/>.
 /// </summary>
 /// <param name="problemDetailsBuilderFactory">The factory for creating <see cref="IProblemDetailsBuilder"/> instances.</param>
-public sealed class PersonNameTooLongExceptionHandler(
+public sealed class CardContentTooLongExceptionHandler(
     IProblemDetailsBuilderFactory problemDetailsBuilderFactory)
-    : DomainExceptionHandler<PersonNameTooLongException>(problemDetailsBuilderFactory)
+    : DomainExceptionHandler<CardContentTooLongException>(problemDetailsBuilderFactory)
 {
     /// <inheritdoc/>
     protected override IProblemDetailsBuilder Handle(
-        PersonNameTooLongException e,
+        CardContentTooLongException e,
         string? invalidPropName = null)
     {
         return ProblemDetailsBuilderFactory.Create(e)
-            .AddTitle("The name is too long")
+            .AddTitle("The content is too long")
             .AddParameter("maxLength", e.MaxLength)
-            .AddParameter("specifiedLength", e.SpecifiedNameLength)
+            .AddParameter("specifiedLength", e.SpecifiedContentLength)
             .AddValidationErrorDescription(
                 invalidPropName,
                 $"The maximum length is {e.MaxLength} characters");

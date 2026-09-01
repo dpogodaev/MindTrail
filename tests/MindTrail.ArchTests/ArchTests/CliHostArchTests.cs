@@ -21,7 +21,7 @@ public class CliHostArchTests
     ];
 
     /// <summary>
-    /// Verifies that the <see cref="MindTrail.CliHost"/> component follows the dependency rules.
+    /// Ensures that the <see cref="MindTrail.CliHost"/> component follows the dependency rules.
     /// </summary>
     [TestMethod]
     public void CliHost_ShouldFollowDependencyRules()
@@ -103,7 +103,7 @@ public class CliHostArchTests
     }
 
     /// <summary>
-    /// Verifies that the <see cref="MindTrail.CliHost"/> component's types follow the naming conventions.
+    /// Ensures that the <see cref="MindTrail.CliHost"/> component's types follow the naming conventions.
     /// </summary>
     [TestMethod]
     public void CliHost_ShouldFollowNamingConventions()

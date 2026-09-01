@@ -121,6 +121,22 @@ public static class HttpMessageExtensions
                 $"Failed to parse the Guid from the API response. Received: {content}");
     }
 
+    /// <summary>
+    /// Parses the response content as an <see cref="int"/>.
+    /// </summary>
+    /// <param name="response">The response to read the content from.</param>
+    /// <returns>The parsed <see cref="int"/>.</returns>
+    /// <exception cref="InvalidOperationException">The response content is not a valid <see cref="int"/>.</exception>
+    public static async Task<int> GetIntAsync(this HttpResponseMessage response)
+    {
+        var content = await response.Content.ReadAsStringAsync();
+
+        return int.TryParse(content.Trim('\"', ' ', '\r', '\n'), out var value)
+            ? value
+            : throw new InvalidOperationException(
+                $"Failed to parse the int from the API response. Received: {content}");
+    }
+
     private static UriBuilder GetUriBuilder(HttpRequestMessage request, string baseUrl)
     {
         if (request == null)

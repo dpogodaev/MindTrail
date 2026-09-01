@@ -1,0 +1,5 @@
+[*.cs]
+
+# SA1615: return value should be documented. The API test methods return Task with no
+# meaningful result, so a "<returns>...</returns>" line is pure ceremony here.
+dotnet_diagnostic.SA1615.severity = none

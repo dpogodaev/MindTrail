@@ -20,7 +20,7 @@ public class ApplicationContractsArchTests
     ];
 
     /// <summary>
-    /// Verifies that the <see cref="MindTrail.ApplicationContracts"/> component follows the dependency rules.
+    /// Ensures that the <see cref="MindTrail.ApplicationContracts"/> component follows the dependency rules.
     /// </summary>
     [TestMethod]
     public void Application_ShouldFollowDependencyRules()
@@ -102,7 +102,7 @@ public class ApplicationContractsArchTests
     }
 
     /// <summary>
-    /// Verifies that the <see cref="MindTrail.ApplicationContracts"/> component's types follow the naming conventions.
+    /// Ensures that the <see cref="MindTrail.ApplicationContracts"/> component's types follow the naming conventions.
     /// </summary>
     [TestMethod]
     public void Application_ShouldFollowNamingConventions()

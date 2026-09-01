@@ -20,7 +20,7 @@ public class DomainSharedArchTests
     ];
 
     /// <summary>
-    /// Verifies that the <see cref="MindTrail.DomainShared"/> component follows the dependency rules.
+    /// Ensures that the <see cref="MindTrail.DomainShared"/> component follows the dependency rules.
     /// </summary>
     [TestMethod]
     public void DomainEntities_ShouldFollowDependencyRules()
@@ -52,7 +52,7 @@ public class DomainSharedArchTests
     }
 
     /// <summary>
-    /// Verifies that the <see cref="MindTrail.DomainShared"/> component's types follow the naming conventions.
+    /// Ensures that the <see cref="MindTrail.DomainShared"/> component's types follow the naming conventions.
     /// </summary>
     [TestMethod]
     public void DomainEntities_ShouldFollowNamingConventions()

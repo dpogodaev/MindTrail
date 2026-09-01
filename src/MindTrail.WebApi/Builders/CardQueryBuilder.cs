@@ -33,7 +33,7 @@ public static class CardQueryBuilder
 
         var paginationModel = new PaginationModel(model.PageNumber, model.PageSize);
 
-        var filterModel = string.IsNullOrEmpty(model.Title) && model.Content == null
+        var filterModel = string.IsNullOrEmpty(model.Title) && model.Content == null && model.CardNumber == null
             ? null
             : new CardFilterModel
             {

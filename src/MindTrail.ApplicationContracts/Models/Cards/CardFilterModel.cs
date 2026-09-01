@@ -9,8 +9,8 @@ public sealed record CardFilterModel
     /// Gets a filter value by number.
     /// </summary>
     /// <remarks>
-    /// Performs a partial, case-insensitive match.
-    /// Ignored if <c>null</c> or empty.
+    /// Performs an exact match.
+    /// Ignored if <c>null</c>.
     /// </remarks>
     public int? Number { get; init; }
 
@@ -27,8 +27,8 @@ public sealed record CardFilterModel
     /// Gets a filter value by content.
     /// </summary>
     /// <remarks>
-    /// Performs an exact match.
-    /// Ignored if <c>null</c>.
+    /// Performs a partial, case-insensitive match.
+    /// Ignored if <c>null</c> or empty.
     /// </remarks>
     public string? Content { get; init; }
 }

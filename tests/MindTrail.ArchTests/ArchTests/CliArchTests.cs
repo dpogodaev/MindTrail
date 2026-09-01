@@ -22,7 +22,7 @@ public class CliArchTests
     ];
 
     /// <summary>
-    /// Verifies that the <see cref="MindTrail.Cli"/> component follows the dependency rules.
+    /// Ensures that the <see cref="MindTrail.Cli"/> component follows the dependency rules.
     /// </summary>
     [TestMethod]
     public void Cli_ShouldFollowDependencyRules()
@@ -104,7 +104,7 @@ public class CliArchTests
     }
 
     /// <summary>
-    /// Verifies that the <see cref="MindTrail.Cli"/> component's types follow the naming conventions.
+    /// Ensures that the <see cref="MindTrail.Cli"/> component's types follow the naming conventions.
     /// </summary>
     [TestMethod]
     public void Cli_ShouldFollowNamingConventions()

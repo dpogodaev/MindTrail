@@ -21,7 +21,7 @@ public class EfCorePostgreSqlArchTests
     ];
 
     /// <summary>
-    /// Verifies that the <see cref="MindTrail.EfCorePostgreSql"/> component follows the dependency rules.
+    /// Ensures that the <see cref="MindTrail.EfCorePostgreSql"/> component follows the dependency rules.
     /// </summary>
     [TestMethod]
     public void EfCorePostgreSql_ShouldFollowDependencyRules()

@@ -21,7 +21,7 @@ public class CommonArchTests
     ];
 
     /// <summary>
-    /// Verifies that the <see cref="MindTrail.Common"/> component follows the dependency rules.
+    /// Ensures that the <see cref="MindTrail.Common"/> component follows the dependency rules.
     /// </summary>
     [TestMethod]
     public void Common_ShouldFollowDependencyRules()
@@ -54,7 +54,7 @@ public class CommonArchTests
     }
 
     /// <summary>
-    /// Verifies that the <see cref="MindTrail.Common"/> component's types follow the naming conventions.
+    /// Ensures that the <see cref="MindTrail.Common"/> component's types follow the naming conventions.
     /// </summary>
     [TestMethod]
     public void Common_ShouldFollowNamingConventions()

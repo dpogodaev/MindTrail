@@ -3,6 +3,7 @@ using System.Collections.Frozen;
 using System.Collections.Generic;
 using MindTrail.DomainShared.Exceptions;
 using MindTrail.DomainShared.Exceptions.Base;
+using MindTrail.DomainShared.Exceptions.Cards;
 
 namespace MindTrail.WebHost.Abstractions.Providers;
 
@@ -18,6 +19,8 @@ public class ErrorCodeProvider
             { typeof(PersonNameTooLongException), $"{ServiceName}.person_name_too_long" },
             { typeof(PersonDuplicateException), $"{ServiceName}.person_duplicate" },
             { typeof(BirthYearOutOfRangeException), $"{ServiceName}.birth_year_out_of_range" },
+            { typeof(CardTitleTooLongException), $"{ServiceName}.card_title_too_long" },
+            { typeof(CardContentTooLongException), $"{ServiceName}.card_content_too_long" },
         }
         .ToFrozenDictionary();
 
